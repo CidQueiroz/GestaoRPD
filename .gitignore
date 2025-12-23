@@ -1,4 +1,38 @@
-/node_modules
-/backend/.venv
-/.env
-.firebase
+# General
+.DS_Store
+*.log
+*.swo
+*.swp
+.firebase/
+.firebaserc
+
+# Frontend (React/Vite)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.env*
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+frontend/package-lock.json
+
+# Backend (Python/Django)
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+db.sqlite3
+instance/
+*.egg-info/
+/Wallet_CDKTECKDB/
+/backend/.venv/
+
+# Editor directories
+.vscode/
+.idea/
+
+*.sql
+README_backup.md
