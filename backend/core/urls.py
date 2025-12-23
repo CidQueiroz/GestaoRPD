@@ -24,7 +24,12 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include("api.urls")),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # Production API for GestaoRPD
+    path("gestaorpd/api/", include("api.urls")),
+    path('gestaorpd/api/token/', TokenObtainPairView.as_view(), name='gestaorpd_token_obtain_pair'),
+    path('gestaorpd/api/token/refresh/', TokenRefreshView.as_view(), name='gestaorpd_token_refresh'),
+    # Staging API for GestaoRPD
+    path("staging/gestaorpd/api/", include("api.urls")),
+    path('staging/gestaorpd/api/token/', TokenObtainPairView.as_view(), name='staging_gestaorpd_token_obtain_pair'),
+    path('staging/gestaorpd/api/token/refresh/', TokenRefreshView.as_view(), name='staging_gestaorpd_token_refresh'),
 ]

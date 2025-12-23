@@ -1,0 +1,101 @@
+.
+├── backend
+│   ├── api
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── __init__.py
+│   │   ├── management
+│   │   │   └── commands
+│   │   │       ├── migrate_data.py
+│   │   │       └── __pycache__
+│   │   │           └── migrate_data.cpython-313.pyc
+│   │   ├── migrations
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_estoque.py
+│   │   │   ├── 0003_venda.py
+│   │   │   ├── 0004_atividade.py
+│   │   │   ├── 0005_diariobordo.py
+│   │   │   ├── 0006_rpd.py
+│   │   │   ├── 0007_logpoddiario.py
+│   │   │   ├── __init__.py
+│   │   │   └── __pycache__
+│   │   │       ├── 0001_initial.cpython-313.pyc
+│   │   │       ├── 0002_estoque.cpython-313.pyc
+│   │   │       ├── 0003_venda.cpython-313.pyc
+│   │   │       ├── 0004_atividade.cpython-313.pyc
+│   │   │       ├── 0005_diariobordo.cpython-313.pyc
+│   │   │       ├── 0006_rpd.cpython-313.pyc
+│   │   │       ├── 0007_logpoddiario.cpython-313.pyc
+│   │   │       └── __init__.cpython-313.pyc
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── core
+│   │   ├── asgi.py
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── Dockerfile
+│   ├── manage.py
+│   └── requirements.txt
+├── CHANGELOG.md
+├── docker-compose.yml
+├── .env
+├── estrutura_do_projeto.txt
+├── firebase.json
+├── .firebaserc
+├── .github
+│   └── workflows
+│       ├── deploy_oci.yml
+│       ├── deploy-production-firebase.yml
+│       ├── deploy-production-oci.yml
+│       ├── deploy-staging-oci.yml
+│       └── release.yml
+├── .gitignore
+├── index.html
+├── LICENSE
+├── .npmrc
+├── package.json
+├── package-lock.json
+├── public
+│   ├── assets
+│   │   ├── favicon2.png
+│   │   └── foto.jpg
+│   └── components
+│       └── curriculo.pdf
+├── README_backup.md
+├── README.md
+├── README.pt-br.md
+├── rpd_app_db_2025-11-10_173650.sql
+├── src
+│   ├── api.js
+│   ├── App.jsx
+│   ├── components
+│   │   ├── Cabecalho.jsx
+│   │   ├── ClientLayout.tsx
+│   │   ├── ContatoModal.jsx
+│   │   ├── Rodape.jsx
+│   │   └── ThemeToggle.jsx
+│   ├── context
+│   │   ├── AuthContext.jsx
+│   │   └── ThemeContext.jsx
+│   ├── index.jsx
+│   ├── pages
+│   │   ├── AtividadesPage.jsx
+│   │   ├── curso_tracker.jsx
+│   │   ├── DashboardPage.jsx
+│   │   ├── DiarioBordoPage.jsx
+│   │   ├── EstoquePage.jsx
+│   │   ├── LoginPage.jsx
+│   │   ├── LogPODDiarioPage.jsx
+│   │   ├── RegistrarVendaPage.jsx
+│   │   └── RPDPage.jsx
+│   └── styles
+│       └── index.css
+├── tsconfig.json
+└── vite.config.js
+
+21 directories, 100 files

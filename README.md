@@ -1,122 +1,135 @@
 <div align="center">
 
-# 📊 Gestão RPD
-### Sua Plataforma Integrada de Produtividade e Gestão Pessoal
+# 🧠 GestãoRPD - Personal Development & Business Management Suite
+### An integrated tool for cognitive self-improvement and simplified business operations.
 
+![React](https://img.shields.io/badge/React-Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Django](https://img.shields.io/badge/Django-API-092E20?style=for-the-badge&logo=django&logoColor=white)
+![OCI](https://img.shields.io/badge/OCI-Backend-F80000?style=for-the-badge&logo=oracle&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-Frontend-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-5.0-092E20?style=for-the-badge&logo=django&logoColor=white)
-![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-[**Portfólio CDKTeck**](https://www.cdkteck.com.br) | [**LinkedIn do Autor**](https://www.linkedin.com/in/ciddy-queiroz/)
-
-<br />
 </div>
 
 ---
 
-## 🚀 Visão Geral
+## 🚀 Project Vision
 
-O **Gestão RPD** é uma aplicação web robusta desenvolvida para otimizar a produtividade pessoal e empresarial. A plataforma integra ferramentas essenciais como o Registro de Pensamentos Disfuncionais (RPD) para bem-estar mental, um eficiente sistema de controle de hábitos, e um módulo simplificado para gestão de vendas e estoque, ideal para pequenas e médias empresas.
+**GestãoRPD** is a dual-purpose application designed to serve two distinct but complementary needs: **personal cognitive development** and **simplified business management**. It provides users with tools grounded in Cognitive Behavioral Therapy (CBT) while also offering a lightweight solution for managing small business operations.
+
+The project demonstrates the ability to build a full-stack, multi-faceted application with a clear separation of concerns and a hybrid cloud deployment strategy.
 
 ---
 
-## 🧠 Arquitetura & Tecnologias
+## 🏛️ System Architecture
 
-Este projeto é construído com uma arquitetura moderna e escalável, focada em performance e manutenibilidade.
+The application uses a decoupled architecture with a React frontend served by Firebase and a Django backend API containerized and deployed on Oracle Cloud Infrastructure (OCI).
 
-| Camada | Tecnologias | Descrição |
+```mermaid
+graph TD
+    subgraph "User"
+        direction LR
+        UserBrowser(User's Browser)
+    end
+
+    subgraph "Cloud Platforms"
+        OCI_VM(OCI VM)
+        Firebase(Firebase Hosting)
+        OCI_DB[(OCI Autonomous DB)]
+    end
+
+    subgraph "Application Services"
+        Frontend(Frontend: React SPA)
+        Backend(Backend: Django API)
+    end
+
+    UserBrowser -- HTTPS --> Firebase
+    Firebase -- Serves --> Frontend
+    UserBrowser -- API Calls --> OCI_VM
+    OCI_VM -- hosts --> Backend
+    Backend -- Reads/Writes --> OCI_DB
+
+    style OCI_VM fill:#F80000,stroke:#fff,stroke-width:2px,color:#fff
+    style Firebase fill:#FFCA28,stroke:#333,stroke-width:2px,color:#000
+    style OCI_DB fill:#007BFF,stroke:#fff,stroke-width:2px,color:#fff
+```
+
+---
+
+## ✨ Key Features
+
+-   ### Personal Development Module
+    -   **Dysfunctional Thought Record (RPD/DTR):** A digital tool to help users identify, challenge, and reframe negative or automatic thoughts, a core technique in CBT.
+    -   **Habit Tracker:** A module for creating, tracking, and analyzing personal habits to foster positive behavioral change.
+    -   **Personal Dashboard:** A private space to view progress, insights, and historical data.
+
+-   ### Business Management Module
+    -   **Simple Sales Log:** A lightweight CRM to log sales, customer information, and transaction details.
+    -   **Inventory Control:** Basic stock management to track product quantities and values.
+    -   **Business Dashboard:** A summary of sales, revenue, and stock levels.
+
+---
+
+## ⚙️ Tech Stack
+
+| Layer | Technology | Purpose |
 | :--- | :--- | :--- |
-| **Frontend** | React.js, Vite, Chart.js, Axios | Interface de usuário dinâmica e responsiva para uma experiência fluida. |
-| **Backend** | Python, Django REST Framework, djangorestframework-simplejwt, django-cors-headers, gunicorn | API robusta e segura para manipulação de dados e lógica de negócio. |
-| **Database** | Oracle, oracledb | Banco de dados relacional para armazenamento seguro e eficiente das informações. |
-| **Deployment** | Docker, Firebase | Containerização para ambientes consistentes e hospedagem ágil e escalável. |
+| **Frontend** | React, Vite, `@cidqueiroz/cdkteck-ui` | A fast, modern, and responsive Single Page Application (SPA). |
+| **Backend** | Django, Django Rest Framework | A secure and robust RESTful API for all application logic. |
+| **Database** | Oracle Autonomous Database (on OCI) | Scalable and managed database for all user and business data. |
+| **Deployment** | Docker, Firebase Hosting (Frontend), OCI (Backend) | Hybrid-cloud deployment strategy optimizing for cost and performance. |
+| **DevOps** | GitHub Actions, Semantic Release | Fully automated CI/CD for releases and deployments. |
 
 ---
 
-## ✨ Funcionalidades Chave
+## 🛠️ Getting Started: Local Development
 
-- 📝 **Registro de Pensamentos Disfuncionais (RPD):** Ferramenta interativa para auxiliar na identificação e reestruturação cognitiva de pensamentos negativos.
-- ✅ **Controle de Hábitos:** Módulo intuitivo para acompanhamento e construção de hábitos diários, com visualização de progresso.
-- 📦 **Gestão Simplificada de Vendas e Estoque:** Funcionalidades essenciais para controle de produtos, transações e inventário, ideal para otimização de pequenos negócios.
-- 📈 **Dashboard Interativo:** Visualização clara e concisa de dados de produtividade e vendas através de gráficos e relatórios.
-- 🧠 **RAG Inteligente:** Sistema de busca semântica com embeddings.
-- 🚀 **Groq AI:** Respostas ultra-rápidas com Llama 3.
-- 🌐 **Google AI:** Fallback automático com Gemini 1.5.
-- 🔐 **Segurança:** Autenticação Firebase + dados protegidos.
-- 🐳 **Containerizado:** Ambiente de desenvolvimento e produção 100% em Docker.
-- 🤖 **Versionamento Automático:** Releases e changelogs automáticos com semantic-release.
+The application is fully containerized with Docker, providing a one-command setup for the local environment.
 
----
+### Prerequisites
+* Docker & Docker Compose
+* Git
 
-## 🛠️ Como Executar Localmente
-
-### Pré-requisitos
-* Python 3.10+
-* Node.js 18+
-* Docker
-
-### 1. Clone o repositório
-
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/CidQueiroz/GestaoRPD.git
 cd GestaoRPD
 ```
 
-### 2. Configuração do Backend
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# .\venv\Scripts\activate # Windows
+### 2. Configure Environment Variables
 
-pip install -r requirements.txt
+Create an `.env` file in the root directory by copying `.env.example` if it exists.
 
-# Configure as variáveis de ambiente (.env)
-# DATABASE_URL=... (Se estiver usando um banco de dados externo)
+**Key variables to set:**
+-   `DATABASE_URL`: Your local or cloud database connection string for the backend.
+-   `SECRET_KEY`: A Django secret key.
+-   `NODE_AUTH_TOKEN`: Your GitHub PAT to install the private `@cidqueiroz/cdkteck-ui` package.
 
-python manage.py migrate
-python manage.py runserver
-```
+### 3. Build and Run the Application
 
-### 3. Configuração do Frontend
+This command will build and start the Django backend and React frontend services.
 
 ```bash
-cd ../ # Voltar para a raiz do projeto
-npm install
-npm run dev
+# Ensure NODE_AUTH_TOKEN is exported in your shell
+export NODE_AUTH_TOKEN="YOUR_GITHUB_PAT_HERE"
+
+# Build and start the containers
+docker-compose up --build
 ```
-
-A aplicação estará disponível em `http://localhost:3000`.
-
----
-
-## 🛣️ Roadmap
-
-- [ ] **Integração com Google Sheets:** Sincronização de dados de vendas/estoque com planilhas Google.
-- [ ] **Módulo Financeiro:** Adição de controle de despesas e receitas pessoais/empresariais.
-- [ ] **Gamificação:** Implementação de elementos de gamificação para o controle de hábitos e RPD.
-- [ ] **Deploy Automatizado (CI/CD):** Configuração de GitHub Actions para deploy contínuo na OCI.
+-   **Backend API** will be available at `http://localhost:8000`.
+-   **Frontend App** will be available at `http://localhost:5173`.
 
 ---
 
-## 📄 Licença
+## 🚀 CI/CD Pipeline
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+The project features a sophisticated, dual-deployment CI/CD pipeline:
 
----
-
-## 👨‍💻 Autor
-
-<img src="https://github.com/CidQueiroz.png" width="100px;" alt="Foto de Cidirclay"/>
-**Cidirclay Queiroz** <br>
-Solutions Architect AI | MLOps Engineer | OCI Specialist
-
-[LinkedIn](https://www.linkedin.com/in/ciddy-queiroz/) | [Website](https://cdkteck.com.br/) | [Email](mailto:cydy.queiroz@cdkteck.com.br) | [Instagram](https://www.instagram.com/ciddyqueiroz/)
-
-Especialista em transformar problemas de negócio complexos em soluções escaláveis na nuvem. Focado em Arquitetura Multi-Cloud e Engenharia de IA Generativa.
-
----
-
-<div align="center"> <sub>Built with ❤️ and paixão</sub> </div>
+1.  **On Push to `main`:** A `release` workflow uses `semantic-release` to create a new version tag based on conventional commit messages.
+2.  **On New Release (Backend):**
+    -   A `deploy-production-oci` workflow is triggered.
+    -   It connects to the OCI VM via SSH and runs `docker compose up --build` to deploy the new backend container.
+3.  **On Push to `main` (Frontend):**
+    -   A `deploy-production-firebase` workflow is triggered on changes to the frontend code (`src/**`, `index.html`, etc.).
+    -   It installs dependencies (using `NODE_AUTH_TOKEN`), builds the React application, and deploys the static files to **Firebase Hosting**.
