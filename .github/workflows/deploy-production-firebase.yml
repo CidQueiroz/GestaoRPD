@@ -25,6 +25,13 @@ jobs:
           token: ${{ secrets.ASSETS_REPO_TOKEN }}
           path: ./.temp-assets
 
+      - name: NEW - Checkout cdkteck-ui Repository
+        uses: actions/checkout@v3
+        with:
+          repository: CidQueiroz/cdkteck-ui
+          path: cdkteck-ui
+          token: ${{ secrets.ASSETS_REPO_TOKEN }} # Assuming same token can be used
+
       - name: 3. Copy Shared Assets to Public Folder
         run: |
           echo "Copying shared assets..."
