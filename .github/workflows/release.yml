@@ -25,11 +25,13 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./frontend
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
       - name: Run Frontend Build Check
         run: npm run build
+        working-directory: ./frontend
 
       - name: Run Backend Docker Build Check
         run: docker build . --file ./backend/Dockerfile
