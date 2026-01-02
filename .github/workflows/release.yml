@@ -18,6 +18,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Checkout cdkteck-ui Repository
+        uses: actions/checkout@v3
+        with:
+          repository: CidQueiroz/cdkteck-ui
+          path: cdkteck-ui
+          token: ${{ secrets.NODE_AUTH_TOKEN }} # Assuming this token has access, otherwise ASSETS_REPO_TOKEN if it's the same.
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
