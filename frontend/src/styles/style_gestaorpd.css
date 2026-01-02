@@ -1,0 +1,224 @@
+main {
+  padding-top: 6.5rem; /* Espaçamento para o header fixo */
+}
+
+/* =========================================
+   VARIÁVEIS DE CONTEXTO (Dinâmicas)
+   ========================================= */
+.contexto-gestao {
+    --cor-destaque: #F7931E; /* Laranja da CDK */
+    --cor-destaque-glow: rgba(247, 147, 30, 0.4);
+    --bg-gradiente: linear-gradient(135deg, rgba(247, 147, 30, 0.1), rgba(0, 174, 239, 0.05));
+}
+
+/* GESTÃO (Laranja/Industrial) */
+body[data-theme='light'] .contexto-gestao .dashboard-card:hover,
+body[data-theme='dark'] .contexto-gestao .dashboard-card:hover {
+    border-color: #F7931E !important;
+    box-shadow: 0 0 20px rgba(247, 147, 30, 0.3), inset 0 0 10px rgba(247, 147, 30, 0.1); 
+}
+
+body[data-theme='light'] .contexto-gestao .card-action-btn:hover,
+body[data-theme='dark'] .contexto-gestao .card-action-btn:hover {
+    background: #F7931E;
+    box-shadow: 0 0 15px #F7931E;
+}
+
+.contexto-rpd {
+    --cor-destaque: #00AEEF; /* Azul Ciano (ou Roxo se preferir manter o tema light) */
+    --cor-destaque-glow: rgba(0, 174, 239, 0.4);
+    --bg-gradiente: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(139, 92, 246, 0.05));
+}
+
+/* RPD (Ciano/Sonhador) */
+body[data-theme='light'] .contexto-rpd .dashboard-card:hover,
+body[data-theme='dark'] .contexto-rpd .dashboard-card:hover {
+    border-color: #00AEEF !important;
+    box-shadow: 0 0 20px rgba(0, 174, 239, 0.4), 0 0 40px rgba(236, 72, 153, 0.2); 
+}
+
+body[data-theme='light'] .contexto-rpd .card-action-btn:hover,
+body[data-theme='dark'] .contexto-rpd .card-action-btn:hover {
+    background: linear-gradient(90deg, #00AEEF, #8B5CF6); /* Degradê no botão */
+    box-shadow: 0 0 15px rgba(0, 174, 239, 0.6);
+    border-color: transparent;
+}
+
+/* =========================================
+   CONTAINER E TABS
+   ========================================= */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Estilização das Abas (Toggle) */
+.dashboard-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background: rgba(0,0,0,0.05); /* Fundo sutil */
+    padding: 0.5rem;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.tab-btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    color: var(--text-secondary, #666); /* Ajuste conforme seu tema global */
+}
+
+.tab-btn.active {
+    background: var(--cor-destaque);
+    color: white;
+    box-shadow: 0 4px 15px var(--cor-destaque-glow);
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   GRID DE CARDS (Layout)
+   ========================================= */
+.dashboard-grid {
+    display: grid;
+    /* Responsivo automático: cria colunas de min 300px */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+/* --- 1. O Card (Limpeza Geral) --- */
+.dashboard-card {
+    /* Fundo sutilmente mais claro que o fundo da página */
+    background: rgba(255, 255, 255, 0.03); 
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Borda quase invisível */
+    border-radius: 12px;
+    padding: 1.5rem;
+    
+    /* Sombra suave para dar profundidade, não brilho neon */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-icon-bg {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    opacity: 0.05;
+    color: var(--text-primary);
+    transform: rotate(-15deg);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.dashboard-card:hover .card-icon-bg {
+    opacity: 0.1;
+    transform: rotate(0deg) scale(1.1);
+}
+
+/* --- 2. Títulos e Textos --- */
+.dashboard-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    border-left: 3px solid transparent;
+    padding-left: 0;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary); /* Cinza médio */
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+/* --- 3. O Hover Elegante (Gestão - Laranja) --- */
+.contexto-gestao .dashboard-card:hover {
+    transform: translateY(-4px);
+    background: rgba(247, 147, 30, 0.05);
+    border-color: rgba(247, 147, 30, 0.3) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.contexto-gestao .dashboard-card:hover h3 {
+    border-left-color: #F7931E;
+    padding-left: 10px;
+    color: #F7931E;
+}
+
+/* --- 4. O Hover Elegante (RPD - Azul) --- */
+.contexto-rpd .dashboard-card:hover {
+    transform: translateY(-4px);
+    background: rgba(0, 174, 239, 0.05);
+    border-color: rgba(0, 174, 239, 0.3) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.contexto-rpd .dashboard-card:hover h3 {
+    border-left-color: #00AEEF;
+    padding-left: 10px;
+    color: #00AEEF;
+}
+
+/* --- 5. Botões Menores e Mais Limpos --- */
+.card-action-btn {
+    align-self: flex-start; /* Não estica o botão */
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Botão Hover Gestão */
+.contexto-gestao .card-action-btn:hover {
+    background: #F7931E;
+    border-color: #F7931E;
+    color: white;
+    box-shadow: 0 0 10px rgba(247, 147, 30, 0.4);
+}
+
+/* Botão Hover RPD */
+.contexto-rpd .card-action-btn:hover {
+    background: #00AEEF;
+    border-color: #00AEEF;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 174, 239, 0.4);
+}
+
+.btn-logout-minimal {
+    margin: 40px auto;
+    display: block;
+    background: transparent;
+    border: 1px solid #64748b;
+    color: #64748b; /* Cinza discreto */
+    font-size: 1rem;
+    cursor: pointer;
+    /* border-bottom: 1px solid transparent; */
+    transition: color 0.3s;
+}
+
+.btn-logout-minimal:hover {
+    color: #ef4444; /* Vermelho só no hover */
+    border-bottom-color: #ef4444;
+}

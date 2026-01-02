@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import LoginPage from './pages/LoginPage';
-import DashboardPage from './pages/DashboardPage';
-import EstoquePage from './pages/EstoquePage';
-import RegistrarVendaPage from './pages/RegistrarVendaPage';
-import AtividadesPage from './pages/AtividadesPage';
-import DiarioBordoPage from './pages/DiarioBordoPage';
-import RPDPage from './pages/RPDPage';
-import CursoTracker from './pages/curso_tracker';
-import LogPODDiarioPage from './pages/LogPODDiarioPage';
 import { Header, Footer } from '@cidqueiroz/cdkteck-ui';
+
+// Lazy load pages
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const EstoquePage = lazy(() => import('./pages/EstoquePage'));
+const RegistrarVendaPage = lazy(() => import('./pages/RegistrarVendaPage'));
+const AtividadesPage = lazy(() => import('./pages/AtividadesPage'));
+const DiarioBordoPage = lazy(() => import('./pages/DiarioBordoPage'));
+const RPDPage = lazy(() => import('./pages/RPDPage'));
+const CursoTracker = lazy(() => import('./pages/curso_tracker'));
+const LogPODDiarioPage = lazy(() => import('./pages/LogPODDiarioPage'));
+const Privacidade = lazy(() => import('./pages/Privacidade'));
+const Termos = lazy(() => import('./pages/Termos'));
 
 const PrivateRoute = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -21,7 +25,6 @@ const PrivateRoute = ({ children }) => {
 };
 
 function App() {
-  const { user, isLoading } = useAuth();
   const location = useLocation(); 
   const [isContactModalOpen, setContactModalOpen] = useState(false);
 
@@ -44,19 +47,23 @@ function App() {
       />
       
       <main className="flex-grow">
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<PrivateRoute><Navigate to="/gestao" /></PrivateRoute>} />
-          <Route path="/gestao" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
-          <Route path="/gestao/estoque" element={<PrivateRoute><EstoquePage /></PrivateRoute>} />
-          <Route path="/gestao/vendas/registrar" element={<PrivateRoute><RegistrarVendaPage /></PrivateRoute>} />
-          <Route path="/rpd" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
-          <Route path="/cursos" element={<CursoTracker />} />
-          <Route path="/rpd/atividades" element={<PrivateRoute><AtividadesPage /></PrivateRoute>} />
-          <Route path="/rpd/diario_bordo" element={<PrivateRoute><DiarioBordoPage /></PrivateRoute>} />
-          <Route path="/rpd/rpd" element={<PrivateRoute><RPDPage /></PrivateRoute>} />
-          <Route path="/rpd/log_pod_diario" element={<PrivateRoute><LogPODDiarioPage /></PrivateRoute>} />
-        </Routes>
+        <Suspense fallback={<div>Carregando página...</div>}>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/privacidade" element={<Privacidade />} />
+            <Route path="/termos" element={<Termos />} />
+            <Route path="/" element={<PrivateRoute><Navigate to="/gestao" /></PrivateRoute>} />
+            <Route path="/gestao" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
+            <Route path="/gestao/estoque" element={<PrivateRoute><EstoquePage /></PrivateRoute>} />
+            <Route path="/gestao/vendas/registrar" element={<PrivateRoute><RegistrarVendaPage /></PrivateRoute>} />
+            <Route path="/rpd" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
+            <Route path="/rpd/cursos" element={<CursoTracker />} />
+            <Route path="/rpd/atividades" element={<PrivateRoute><AtividadesPage /></PrivateRoute>} />
+            <Route path="/rpd/diario_bordo" element={<PrivateRoute><DiarioBordoPage /></PrivateRoute>} />
+            <Route path="/rpd/rpd" element={<PrivateRoute><RPDPage /></PrivateRoute>} />
+            <Route path="/rpd/log_pod_diario" element={<PrivateRoute><LogPODDiarioPage /></PrivateRoute>} />
+          </Routes>
+        </Suspense>
       </main>
       
       <Footer 
@@ -69,4 +76,3 @@ function App() {
 }
 
 export default App;
-

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Button, Card } from '@cidqueiroz/cdkteck-ui';
 
 const DashboardPage = () => {
   const { logout } = useAuth();
@@ -9,60 +10,83 @@ const DashboardPage = () => {
 
   const gestaoLinks = (
     <>
-      <div className="card">
-        <h2 className="card-title">Controle de Estoque</h2>
-        <p className="card-text">Gerencie seus produtos e inventário.</p>
-        <Link to="/gestao/estoque" className="btn btn-primario">Acessar Estoque</Link>
-      </div>
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h3>Controle de Estoque</h3>
+          <p>Gerencie seus produtos e inventário.</p>
+        </div>
+        <Link to="/gestao/estoque" className="card-action-btn">Acessar Estoque</Link>
+      </Card>
 
-      <div className="card">
-        <h2 className="card-title">Registrar Venda</h2>
-        <p className="card-text">Registre suas vendas de forma rápida e fácil.</p>
-        <Link to="/gestao/vendas/registrar" className="btn btn-primario">Nova Venda</Link>
-      </div>
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h3>Registrar Venda</h3>
+          <p>Registre suas vendas de forma rápida e fácil.</p>
+        </div>
+        <Link to="/gestao/vendas/registrar" className="card-action-btn">Nova Venda</Link>
+      </Card>
     </>
   );
 
   const rpdLinks = (
     <>
-      <div className="card">
-        <h2 className="card-title">Gerenciar Atividades</h2>
-        <p className="card-text">Organize suas tarefas e projetos.</p>
-        <Link to="/rpd/atividades" className="btn btn-primario">Minhas Atividades</Link>
-      </div>
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h3>Gerenciar Atividades</h3>
+          <p>Organize suas tarefas e projetos.</p>
+        </div>
+        <Link to="/rpd/atividades" className="card-action-btn">Minhas Atividades</Link>
+      </Card>
 
-      <div className="card">
-        <h2 className="card-title">Diário de Bordo</h2>
-        <p className="card-text">Registre seus pensamentos e experiências diárias.</p>
-        <Link to="/rpd/diario_bordo" className="btn btn-primario">Abrir Diário</Link>
-      </div>
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h3>Diário de Bordo</h3>
+          <p>Registre seus pensamentos e experiências diárias.</p>
+        </div>
+        <Link to="/rpd/diario_bordo" className="card-action-btn">Abrir Diário</Link>
+      </Card>
 
-      <div className="card">
-        <h2 className="card-title">Registro de Pensamentos Disfuncionais (RPD)</h2>
-        <p className="card-text">Identifique e reestruture pensamentos negativos.</p>
-        <Link to="/rpd/rpd" className="btn btn-primario">Iniciar RPD</Link>
-      </div>
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h3>Registro de Pensamentos Disfuncionais (RPD)</h3>
+          <p>Identifique e reestruture pensamentos negativos.</p>
+        </div>
+        <Link to="/rpd/rpd" className="card-action-btn">Iniciar RPD</Link>
+      </Card>
 
-      <div className="card">
-        <h2 className="card-title">Log POD Diário</h2>
-        <p className="card-text">Acompanhe seu progresso diário.</p>
-        <Link to="/rpd/log_pod_diario" className="btn btn-primario">Ver Log</Link>
-      </div>
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h3>Cursor Tracker</h3>
+          <p>Acompanhe o andamento do curso.</p>
+        </div>
+        <Link to="/rpd/cursos" className="card-action-btn">Ver acompanhamento</Link>
+      </Card>
+
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h3>Log POD Diário</h3>
+          <p>Acompanhe seu progresso diário.</p>
+        </div>
+        <Link to="/rpd/log_pod_diario" className="card-action-btn">Ver Log</Link>
+      </Card>
     </>
   );
 
   return (
-    <>
+    <div className={`dashboard-container ${isGestao ? 'contexto-gestao' : 'contexto-rpd'}`}>
       <h1 className="dashboard-title">Dashboard</h1>
-      <div className="saas-cta-buttons">
-        <Link to="/gestao" className={`btn ${isGestao ? 'btn-primario' : 'btn-secundario'}`}>Gestão</Link>
-        <Link to="/rpd" className={`btn ${!isGestao ? 'btn-primario' : 'btn-secundario'}`}>RPD</Link>
+      
+      <div className="dashboard-tabs">
+        <Link to="/gestao" className={`tab-btn ${isGestao ? 'active' : ''}`}>Gestão</Link>
+        <Link to="/rpd" className={`tab-btn ${!isGestao ? 'active' : ''}`}>RPD</Link>
       </div>
-      <div className="card-grid">
+
+      <div className="dashboard-grid">
         {isGestao ? gestaoLinks : rpdLinks}
       </div>
-      <button onClick={logout} className="btn btn-perigo">Sair</button>
-    </>
+
+      <Button onClick={logout} className="btn-logout-minimal">Sair</Button>
+    </div>
   );
 };
 

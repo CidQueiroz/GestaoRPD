@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "@cidqueiroz/cdkteck-ui": "file:../cdkteck-ui",
     "dev": "vite --host 0.0.0.0 --force",
     "start": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cidqueiroz/cdkteck-ui": "^2.0.5",
+    "@cidqueiroz/cdkteck-ui": "^2.5.1",
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^3.0.1",

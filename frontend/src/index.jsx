@@ -4,7 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from '@cidqueiroz/cdkteck-ui';
-import '@cidqueiroz/cdkteck-ui/global.css'; // Correct global CSS import
+import '@cidqueiroz/cdkteck-ui/global.css';
+import './styles/style_gestaorpd.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

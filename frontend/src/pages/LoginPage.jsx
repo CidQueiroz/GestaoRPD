@@ -5,13 +5,13 @@ import { LoginPage as CdkLoginPage } from '@cidqueiroz/cdkteck-ui';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const { login, register, loginWithGoogle, isLoading, error } = useAuth();
+  const { login, register, loginWithGoogle, loginWithLinked, loginWithFace, isLoading, error } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async ({ email, password }) => {
     try {
       await login(email, password);
-      navigate('/'); // Redirect to home after successful login
+      navigate('/');
     } catch (err) {
       // Error is handled in AuthContext
     }
@@ -34,12 +34,32 @@ const LoginPage = () => {
       // Error is handled in AuthContext
     }
   };
+  
+  const handleFaceLogin = async () => {
+    try {
+      await loginWithFace();
+      navigate('/'); // Redirect after successful Google login
+    } catch (err) {
+      // Error is handled in AuthContext
+    }
+  };
+
+  const handleLinkedLogin = async () => {
+    try {
+      await loginWithLinked();
+      navigate('/'); // Redirect after successful LinkedIn login
+    } catch (err) {
+      // Error is handled in AuthContext
+    }
+  };
 
   return (
     <CdkLoginPage
       onLogin={handleLogin}
       onRegister={handleRegister}
       onGoogleLogin={handleGoogleLogin}
+      onFacebookLogin={handleFaceLogin}
+      onLinkedInLogin={handleLinkedLogin}
       isLoading={isLoading}
       error={error}
       appName="Gestão RPD"

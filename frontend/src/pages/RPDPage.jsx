@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { Card, Input } from '@cidqueiroz/cdkteck-ui';
 
 const RPDPage = () => {
   const { authTokens, logout } = useAuth();
@@ -77,71 +78,79 @@ const RPDPage = () => {
   };
 
   return (
-    <>
+    <div className="dashboard-container contexto-rpd">
       <h1 className="dashboard-title">Registro de Pensamentos Disfuncionais (RPD)</h1>
       
-      <div className="form-container">
-        <h2>Adicionar Nova Entrada</h2>
-        {message && <p className={`message-${messageType}`}>{message}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="data">Data:</label>
-            <input type="date" id="data" name="data" value={formData.data} onChange={handleChange} required />
+      <div className="dashboard-grid">
+        <Card className="dashboard-card">
+          <div className="card-header">
+            <h3>Adicionar Nova Entrada</h3>
+            {message && <p className={`message-${messageType}`}>{message}</p>}
           </div>
-          <div className="form-group">
-            <label htmlFor="situacao">Situação:</label>
-            <textarea id="situacao" name="situacao" value={formData.situacao} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="pensamento_automatico">Pensamento Automático:</label>
-            <textarea id="pensamento_automatico" name="pensamento_automatico" value={formData.pensamento_automatico} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="emocao">Emoção:</label>
-            <input type="text" id="emocao" name="emocao" value={formData.emocao} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="resposta_adaptativa">Resposta Adaptativa:</label>
-            <textarea id="resposta_adaptativa" name="resposta_adaptativa" value={formData.resposta_adaptativa} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="resultado">Resultado:</label>
-            <textarea id="resultado" name="resultado" value={formData.resultado} onChange={handleChange} required />
-          </div>
-          <div className="form-actions">
-            <button type="submit" className="btn btn-primario">Salvar Entrada</button>
-          </div>
-        </form>
-      </div>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="data">Data:</label>
+              <Input type="date" id="data" name="data" value={formData.data} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="situacao">Situação:</label>
+              <textarea id="situacao" name="situacao" value={formData.situacao} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="pensamento_automatico">Pensamento Automático:</label>
+              <textarea id="pensamento_automatico" name="pensamento_automatico" value={formData.pensamento_automatico} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="emocao">Emoção:</label>
+              <Input type="text" id="emocao" name="emocao" value={formData.emocao} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="resposta_adaptativa">Resposta Adaptativa:</label>
+              <textarea id="resposta_adaptativa" name="resposta_adaptativa" value={formData.resposta_adaptativa} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="resultado">Resultado:</label>
+              <textarea id="resultado" name="resultado" value={formData.resultado} onChange={handleChange} required />
+            </div>
+            <div className="form-actions" style={{ marginTop: '1rem' }}>
+              <button type="submit" className="card-action-btn">Salvar Entrada</button>
+            </div>
+          </form>
+        </Card>
 
-      <h2 className="dashboard-title">Minhas Entradas</h2>
-      {rpdEntries.length === 0 ? (
-        <p>Nenhuma entrada de RPD.</p>
-      ) : (
-        <div className="list-view-container">
-          <table className="product-table">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Situação</th>
-                <th>Pensamento Automático</th>
-                <th>Emoção</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rpdEntries.map((entry) => (
-                <tr key={entry.id}>
-                  <td>{new Date(entry.data).toLocaleDateString()}</td>
-                  <td>{entry.situacao}</td>
-                  <td>{entry.pensamento_automatico}</td>
-                  <td>{entry.emocao}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </>
+        <Card className="dashboard-card">
+          <div className="card-header">
+            <h3>Minhas Entradas</h3>
+          </div>
+          {rpdEntries.length === 0 ? (
+            <p>Nenhuma entrada de RPD.</p>
+          ) : (
+            <div className="table-responsive">
+              <table className="product-table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Situação</th>
+                    <th>Pensamento Automático</th>
+                    <th>Emoção</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rpdEntries.map((entry) => (
+                    <tr key={entry.id}>
+                      <td>{new Date(entry.data).toLocaleDateString()}</td>
+                      <td>{entry.situacao}</td>
+                      <td>{entry.pensamento_automatico}</td>
+                      <td>{entry.emocao}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </Card>
+      </div>
+    </div>
   );
 };
 
