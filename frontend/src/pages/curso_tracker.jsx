@@ -3,121 +3,225 @@ import { Check, X, AlertCircle, Download, Calendar, FileText, Plus, Trash2 } fro
 
 const CourseTracker = () => {
   const [courses, setCourses] = useState([
+    // === ONDA 1: Vibe Coding & Velocidade (JAN - MAR) ===
+    // Foco: Produtividade imediata e primeiros agentes funcionais.
     {
       id: 1,
-      name: "AI-Powered Microservices with Vibe Coding",
-      hours: 2,
+      name: "Google Antigravity for Beginners: AI Coding Crash Course",
+      hours: 12.5,
       completed: 0,
-      priority: "Alta",
-      link: "https://www.udemy.com/course/ai_powered_microservices_with_vibe_coding/",
-      startDate: "",
+      priority: "Máxima",
+      link: "https://www.udemy.com/course/google-antigravity-for-beginners-ai-coding-crash-course/learn/lecture/54111807?start=0#overview",
+      startDate: "2026-01-01",
       endDate: "",
-      notes: "",
+      notes: "Prioridade 01: Instalar Cursor/Windsurf e dominar Vibe Coding.",
       lessons: []
     },
     {
       id: 2,
-      name: "Complete RAG Bootcamp",
-      hours: 28,
+      name: "AI-Powered Microservices with Vibe Coding",
+      hours: 2,
       completed: 0,
       priority: "Máxima",
-      link: "https://www.udemy.com/course/complete-rag-bootcamp-build-optimize-and-deploy-ai-apps/",
-      startDate: "",
+      link: "https://www.udemy.com/course/ai_powered_microservices_with_vibe_coding/",
+      startDate: "2026-01-01",
       endDate: "",
-      notes: "",
+      notes: "Base de arquitetura para os agentes.",
       lessons: []
     },
     {
       id: 3,
-      name: "Certified Generative AI Architect with Knowledge Graphs",
+      name: "Complete AI Agent Practical Course C| AIPC",
       hours: 8,
       completed: 0,
-      priority: "Média",
-      link: "https://www.udemy.com/course/certified_generative_ai_architect_with_knowledge_graphs",
-      startDate: "",
+      priority: "Máxima",
+      link: "https://www.udemy.com/course/complete-ai-agent-practical-course-c-aipc/learn/lecture/52990311?start=0#overview",
+      startDate: "2026-02-01",
       endDate: "",
-      notes: "",
+      notes: "Foco em automação mobile e n8n para Minsait.",
       lessons: []
     },
     {
       id: 4,
+      name: "DeepSeek R1 AI: 25 Real World Projects",
+      hours: 6,
+      completed: 0,
+      priority: "Máxima",
+      link: "https://www.udemy.com/course/deepseek-r1-real-world-projects/",
+      startDate: "2026-03-01",
+      endDate: "",
+      notes: "Construção de volume para o portfólio (25 projetos).",
+      lessons: []
+    },
+    // === ONDA 2: Inteligência e Dados (ABR - JUN) ===
+    // Foco: RAG, Grafos e Otimização para Hardware Limitado.
+    {
+      id: 5,
+      name: "Complete RAG Bootcamp: Build & Deploy AI Apps",
+      hours: 28,
+      completed: 0,
+      priority: "Alta",
+      link: "https://www.udemy.com/course/complete-rag-bootcamp-build-optimize-and-deploy-ai-apps/",
+      startDate: "2026-04-01",
+      endDate: "",
+      notes: "O curso mais denso. Vital para lidar com docs da Petrobras.",
+      lessons: []
+    },
+    {
+      id: 6,
+      name: "Quantization for GenAI Models",
+      hours: 2,
+      completed: 0,
+      priority: "Alta",
+      link: "https://www.udemy.com/course/quantization",
+      startDate: "2026-05-01",
+      endDate: "",
+      notes: "Essencial para rodar modelos no Dell 8GB.",
+      lessons: []
+    },
+    {
+      id: 7,
       name: "Mastering Agentic Design Patterns",
       hours: 3,
       completed: 0,
       priority: "Alta",
       link: "https://www.udemy.com/course/mastering-agentic-design-patterns",
-      startDate: "",
+      startDate: "2026-05-15",
       endDate: "",
-      notes: "",
+      notes: "Teoria avançada de agentes autônomos.",
       lessons: []
     },
     {
-      id: 5,
-      name: "Quantization for GenAI Models",
-      hours: 2,
+      id: 8,
+      name: "Certified Generative AI Architect with Knowledge Graphs",
+      hours: 8,
+      completed: 0,
+      priority: "Alta",
+      link: "https://www.udemy.com/course/certified_generative_ai_architect_with_knowledge_graphs",
+      startDate: "2026-06-01",
+      endDate: "",
+      notes: "Estruturação de dados complexos.",
+      lessons: []
+    },
+    // === ONDA 3: Automação Enterprise e Workflows (JUL - SET) ===
+    // Foco: Governança, Integração e MLOps.
+    {
+      id: 9,
+      name: "AI Agents: From Foundations to Enterprise Systems",
+      hours: 13,
       completed: 0,
       priority: "Média",
-      link: "https://www.udemy.com/course/quantization",
-      startDate: "",
+      link: "https://www.udemy.com/course/ai-agents-from-foundations-to-enterprise-systems/learn/lecture/54061297?start=0#overview",
+      startDate: "2026-07-01",
       endDate: "",
-      notes: "",
+      notes: "Governança e orquestração em larga escala.",
       lessons: []
     },
     {
-      id: 6,
+      id: 10,
+      name: "Base44 Mastery: Build Enterprise AI Workflow Automations",
+      hours: 7,
+      completed: 0,
+      priority: "Média",
+      link: "https://www.udemy.com/course/base44-mastery-build-enterprise-ai-workflow-automations/learn/lecture/53868305?start=0#overview",
+      startDate: "2026-08-01",
+      endDate: "",
+      notes: "Integração com Slack, Notion e Google Workspace.",
+      lessons: []
+    },
+    {
+      id: 11,
+      name: "Ultimate DevOps to MLOps Bootcamp",
+      hours: 9,
+      completed: 0,
+      priority: "Média",
+      link: "https://www.udemy.com/course/devops-to-mlops-bootcamp/",
+      startDate: "2026-08-15",
+      endDate: "",
+      notes: "CI/CD para seus agentes.",
+      lessons: []
+    },
+    {
+      id: 12,
       name: "Build On-Device AI",
       hours: 4,
       completed: 0,
       priority: "Média",
       link: "https://www.udemy.com/course/build-on-device-ai/",
-      startDate: "",
+      startDate: "2026-09-01",
       endDate: "",
-      notes: "",
+      notes: "Execução local e privacidade de dados.",
       lessons: []
     },
+    // === ONDA 4: Liderança e Governança (OUT - DEZ) ===
+    // Foco: Estratégia, Compliance e Finalização do Portfólio.
     {
-      id: 7,
-      name: "DeepSeek R1 AI: 25 Real World Projects",
-      hours: 6,
-      completed: 0,
-      priority: "Baixa",
-      link: "https://www.udemy.com/course/deepseek-r1-real-world-projects/",
-      startDate: "",
-      endDate: "",
-      notes: "",
-      lessons: []
-    },
-    {
-      id: 8,
-      name: "Ultimate DevOps to MLOps Bootcamp",
-      hours: 9,
-      completed: 0,
-      priority: "Máxima",
-      link: "https://www.udemy.com/course/devops-to-mlops-bootcamp/",
-      startDate: "",
-      endDate: "",
-      notes: "",
-      lessons: []
-    },
-    {
-      id: 9,
+      id: 13,
       name: "Certified Chief AI Officer Program",
       hours: 12,
       completed: 0,
       priority: "Baixa",
       link: "https://www.udemy.com/course/chief-ai-officer-program-lead-ai-strategy-governance",
+      startDate: "2026-10-01",
+      endDate: "",
+      notes: "Visão executiva para cargo de liderança.",
+      lessons: []
+    },
+    {
+      id: 14,
+      name: "CAIXA - Inteligência Artificial na Prática (DIO)",
+      hours: 16,
+      completed: 0,
+      priority: "Baixa",
+      link: "https://web.dio.me/track/31b3e5fd-262e-4d2f-8b7c-f614da085c46",
+      startDate: "2026-10-15",
+      endDate: "",
+      notes: "Validação no mercado nacional.",
+      lessons: []
+    },
+    {
+      id: 15,
+      name: "AI for Risk Management & Compliance Excellence",
+      hours: 5,
+      completed: 0,
+      priority: "Baixa",
+      link: "https://www.udemy.com/course/ai-for-risk-management-compliance-excellence/learn/lecture/50961515",
+      startDate: "2026-11-01",
+      endDate: "",
+      notes: "Segurança e ética para Enterprise.",
+      lessons: []
+    },
+    {
+      id: 16,
+      name: "Generative AI for Personal Productivity: Get More Done",
+      hours: 23,
+      completed: 0,
+      priority: "Baixa",
+      link: "https://www.udemy.com/course/generative-ai-for-personal-productivity",
+      startDate: "2026-12-01",
+      endDate: "",
+      notes: "O fechar do ciclo: Automatizar a vida pessoal, saúde e finanças para colher os frutos da SOBERANIA 2026.",
+      lessons: []
+    }, 
+    {
+      id: 15,
+      name: "100 AI Agents in 100 Days 2026",
+      hours: 8,
+      completed: 0,
+      priority: "Alta",
+      link: "https://www.udemy.com/course/100-ai-agents/learn/lecture/54073525?start=0#overview",
       startDate: "",
       endDate: "",
       notes: "",
       lessons: []
     },
     {
-      id: 10,
-      name: "CAIXA - Inteligência Artificial na Prática (DIO)",
-      hours: 10,
+      id: 0,
+      name: "Awesome Claude Skills",
+      hours: 0,
       completed: 0,
-      priority: "Baixa",
-      link: "https://web.dio.me/track/31b3e5fd-262e-4d2f-8b7c-f614da085c46",
+      priority: "Alta",
+      link: "https://github.com/ComposioHQ/awesome-claude-skills",
       startDate: "",
       endDate: "",
       notes: "",
@@ -129,7 +233,15 @@ const CourseTracker = () => {
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [collapsedCourses, setCollapsedCourses] = useState({});
 
-  // Load data from localStorage
+  // State for new course form
+  const [newCourseName, setNewCourseName] = useState('');
+  const [newCourseHours, setNewCourseHours] = useState('');
+  const [newCoursePriority, setNewCoursePriority] = useState('Média'); // Default priority
+  const [newCourseLink, setNewCourseLink] = useState('');
+  const [showAddCourseForm, setShowAddCourseForm] = useState(false);
+
+  // State for new course form                                                                                                             │
+
   useEffect(() => {
     const saved = localStorage.getItem('courseTrackerData');
     if (saved) {
@@ -141,16 +253,26 @@ const CourseTracker = () => {
     }
   }, []);
 
-  // Save to localStorage whenever courses change
   useEffect(() => {
     localStorage.setItem('courseTrackerData', JSON.stringify(courses));
   }, [courses]);
 
-  // Save collapsed state
   useEffect(() => {
     localStorage.setItem('collapsedCourses', JSON.stringify(collapsedCourses));
   }, [collapsedCourses]);
 
+
+  const getPriorityClass = (priority) => {
+    switch (priority) {
+      case "Máxima": return "priority-maxima";
+      case "Alta": return "priority-alta";
+      case "Média": return "priority-media";
+      case "Baixa": return "priority-baixa";
+      default: return "priority-baixa";
+    }
+  };
+  
+  // ... (all other functions remain the same)
   const toggleCollapse = (courseId) => {
     setCollapsedCourses(prev => ({
       ...prev,
@@ -214,39 +336,30 @@ const CourseTracker = () => {
   };
 
   const getProgress = (completed, total) => {
+    if (total === 0) return 0;
     return Math.round((completed / total) * 100);
   };
-
-  const getPriorityColor = (priority) => {
-    switch(priority) {
-      case "Máxima": return "bg-red-100 text-red-800 border-red-300";
-      case "Alta": return "bg-orange-100 text-orange-800 border-orange-300";
-      case "Média": return "bg-yellow-100 text-yellow-800 border-yellow-300";
-      case "Baixa": return "bg-gray-100 text-gray-800 border-gray-300";
-      default: return "bg-gray-100 text-gray-800 border-gray-300";
-    }
-  };
-
+  
   const exportToCSV = () => {
     let csv = "ID,Curso,Prioridade,Total (h),Concluído (h),Progresso (%),Data Início,Data Fim,Notas,Link\n";
     
     courses.forEach(course => {
       const progress = getProgress(course.completed, course.hours);
-      const notes = course.notes.replace(/"/g, '""').replace(/\n/g, ' ');
-      csv += `${course.id},"${course.name}",${course.priority},${course.hours},${course.completed},${progress},"${course.startDate}","${course.endDate}","${notes}","${course.link}"\n`;
+      const notes = (course.notes || "").replace(/"/g, '""').replace(/\n/g, ' ');
+      csv += `${course.id},"${course.name}",${course.priority},${course.hours},${course.completed},${progress},"${course.startDate || ''}","${course.endDate || ''}","${notes}","${course.link}"\n`;
       
       if (course.lessons.length > 0) {
-        csv += "\nAulas:\n";
-        csv += "ID Aula,Título,Duração (min),Concluída,Notas Aula\n";
+        csv += "\n,Aulas:\n";
+        csv += ",ID Aula,Título,Duração (min),Concluída,Notas Aula\n";
         course.lessons.forEach(lesson => {
-          const lessonNotes = lesson.notes.replace(/"/g, '""').replace(/\n/g, ' ');
-          csv += `${lesson.id},"${lesson.title}",${lesson.duration},${lesson.completed ? 'Sim' : 'Não'},"${lessonNotes}"\n`;
+          const lessonNotes = (lesson.notes || "").replace(/"/g, '""').replace(/\n/g, ' ');
+          csv += `,${lesson.id},"${lesson.title}",${lesson.duration},${lesson.completed ? 'Sim' : 'Não'},"${lessonNotes}"\n`;
         });
         csv += "\n";
       }
     });
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `cursos_ai_cidirclay_${new Date().toISOString().split('T')[0]}.csv`;
@@ -262,9 +375,34 @@ const CourseTracker = () => {
     link.click();
   };
 
+  const handleAddCourse = (e) => {
+    e.preventDefault();
+    if (!newCourseName || !newCourseHours) return; // Basic validation
+
+    const newId = courses.length > 0 ? Math.max(...courses.map(c => c.id)) + 1 : 1;
+    const newCourse = {
+      id: newId,
+      name: newCourseName,
+      hours: parseFloat(newCourseHours),
+      completed: 0,
+      priority: newCoursePriority,
+      link: newCourseLink,
+      startDate: "",
+      endDate: "",
+      notes: "",
+      lessons: []
+    };
+    setCourses([...courses, newCourse]);
+    setNewCourseName('');
+    setNewCourseHours('');
+    setNewCoursePriority('Média');
+    setNewCourseLink('');
+    setShowAddCourseForm(false); // Hide form after adding
+  };
+
   const totalHours = courses.reduce((sum, course) => sum + course.hours, 0);
   const completedHours = courses.reduce((sum, course) => sum + course.completed, 0);
-  const overallProgress = Math.round((completedHours / totalHours) * 100);
+  const overallProgress = getProgress(completedHours, totalHours);
 
   const priorityCourses = courses
     .filter(c => c.priority === "Máxima" || c.priority === "Alta")
@@ -274,360 +412,256 @@ const CourseTracker = () => {
     });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <div className="flex justify-between items-start mb-4">
+    <div className="dashboard-container" style={{paddingTop: '2rem'}}>
+      <div className="course-tracker__container">
+        <div className="course-tracker__main-header">
+          <div className="course-tracker__header-top">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                Plano de Estudos - Engenharia de IA
-              </h1>
-              <p className="text-gray-600">Cidirclay Santos de Lima Queiroz</p>
+              <h1 className="course-tracker__title">Plano de Estudos - Engenharia de IA</h1>
+              <p className="course-tracker__subtitle">CDK TECK</p>
             </div>
-            
-            {/* Export Menu */}
-            <div className="relative">
-              <button
-                onClick={() => setShowExportMenu(!showExportMenu)}
-                className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-              >
+            <div className="course-tracker__export-container">
+              <button onClick={() => setShowExportMenu(!showExportMenu)} className="course-tracker__export-btn">
                 <Download size={18} />
                 Exportar
               </button>
-              
               {showExportMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-10">
-                  <button
-                    onClick={() => { exportToCSV(); setShowExportMenu(false); }}
-                    className="w-full text-left px-4 py-3 hover:bg-gray-50 rounded-t-lg transition-colors"
-                  >
+                <div className="course-tracker__export-menu">
+                  <button onClick={() => { exportToCSV(); setShowExportMenu(false); }} className="course-tracker__export-item">
                     📊 Exportar CSV
                   </button>
-                  <button
-                    onClick={() => { exportToJSON(); setShowExportMenu(false); }}
-                    className="w-full text-left px-4 py-3 hover:bg-gray-50 rounded-b-lg transition-colors"
-                  >
+                  <button onClick={() => { exportToJSON(); setShowExportMenu(false); }} className="course-tracker__export-item">
                     📦 Exportar JSON
                   </button>
                 </div>
               )}
             </div>
           </div>
-          
-          {/* Overall Progress */}
-          <div className="mt-6">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-lg font-semibold text-gray-700">Progresso Geral</span>
-              <span className="text-2xl font-bold text-indigo-600">{overallProgress}%</span>
+          <div className="course-tracker__overall-progress">
+            <div className="course-tracker__progress-header">
+              <span className="course-tracker__progress-label">Progresso Geral</span>
+              <span className="course-tracker__progress-percent">{overallProgress}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-4">
-              <div 
-                className="bg-gradient-to-r from-indigo-500 to-purple-600 h-4 rounded-full transition-all duration-500"
-                style={{ width: `${overallProgress}%` }}
-              />
+            <div className="course-tracker__progress-bar-bg">
+              <div className="course-tracker__progress-bar-fg" style={{ width: `${overallProgress}%` }} />
             </div>
-            <p className="text-sm text-gray-600 mt-2">
-              {completedHours.toFixed(1)}h de {totalHours}h concluídas
-            </p>
+            <p className="course-tracker__progress-caption">{completedHours.toFixed(1)}h de {totalHours}h concluídas</p>
           </div>
         </div>
 
-        {/* Priority Alert */}
-        <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6 rounded-r-lg">
-          <div className="flex items-start">
-            <AlertCircle className="text-amber-600 mr-3 flex-shrink-0 mt-1" size={20} />
-            <div>
-              <h3 className="text-amber-800 font-semibold mb-1">Cursos Prioritários (60 dias)</h3>
-              <p className="text-amber-700 text-sm">
-                Foque primeiro nos {priorityCourses.length} cursos de prioridade Máxima e Alta para maximizar suas chances de recolocação.
-              </p>
-            </div>
+        <div className="course-tracker__priority-alert">
+          <AlertCircle className="course-tracker__priority-alert-icon" size={20} />
+          <div>
+            <h3>Cursos Prioritários (60 dias)</h3>
+            <p>Foque primeiro nos {priorityCourses.length} cursos de prioridade Máxima e Alta para maximizar suas chances de recolocação.</p>
           </div>
         </div>
 
-        {/* Courses List */}
-        <div className="space-y-4">
+        {/* Add New Course Form */}
+        <button onClick={() => setShowAddCourseForm(!showAddCourseForm)} className="course-tracker__add-course-toggle-btn">
+          {showAddCourseForm ? 'Ocultar Formulário' : 'Adicionar Novo Curso'}
+        </button>
+
+        {showAddCourseForm && (
+          <Card className="dashboard-card course-tracker__add-course-form-card">
+            <h2>Adicionar Novo Curso</h2>
+            <form onSubmit={handleAddCourse} className="course-tracker__form">
+              <div className="course-tracker__form-group">
+                <label htmlFor="newCourseName">Nome do Curso:</label>
+                <Input
+                  id="newCourseName"
+                  type="text"
+                  value={newCourseName}
+                  onChange={(e) => setNewCourseName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="course-tracker__form-group">
+                <label htmlFor="newCourseHours">Total de Horas:</label>
+                <Input
+                  id="newCourseHours"
+                  type="number"
+                  value={newCourseHours}
+                  onChange={(e) => setNewCourseHours(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="course-tracker__form-group">
+                <label htmlFor="newCoursePriority">Prioridade:</label>
+                <select
+                  id="newCoursePriority"
+                  value={newCoursePriority}
+                  onChange={(e) => setNewCoursePriority(e.target.value)}
+                  className="course-tracker__select"
+                >
+                  <option value="Máxima">Máxima</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Média">Média</option>
+                  <option value="Baixa">Baixa</option>
+                </select>
+              </div>
+              <div className="course-tracker__form-group">
+                <label htmlFor="newCourseLink">Link do Curso:</label>
+                <Input
+                  id="newCourseLink"
+                  type="url"
+                  value={newCourseLink}
+                  onChange={(e) => setNewCourseLink(e.target.value)}
+                />
+              </div>
+              <Button type="submit" variant="primary">Adicionar Curso</Button>
+            </form>
+          </Card>
+        )}
+
+        <div className="course-tracker__list">
           {courses.map((course) => {
             const progress = getProgress(course.completed, course.hours);
             const isExpanded = expandedCourse === course.id;
             const isCollapsed = collapsedCourses[course.id] || false;
-            
             return (
-              <div key={course.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                {/* Course Header - Always Visible */}
-                <div 
-                  className="p-4 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-200 cursor-pointer hover:bg-gradient-to-r hover:from-indigo-100 hover:to-purple-100 transition-colors"
-                  onClick={() => toggleCollapse(course.id)}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 flex-1">
-                      <button className="text-gray-600 hover:text-gray-900 transition-colors">
+              <div key={course.id} className="course-tracker__course-card">
+                <div className="course-tracker__course-header" onClick={() => toggleCollapse(course.id)}>
+                  <div className="course-tracker__course-header-content">
+                    <div className="course-tracker__course-header-main">
+                      <button>
                         {isCollapsed ? (
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                         ) : (
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                         )}
                       </button>
-                      <span className="text-lg font-bold text-gray-900">#{course.id}</span>
-                      <h3 className="text-lg font-semibold text-gray-900 flex-1">{course.name}</h3>
-                      <span className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold border ${getPriorityColor(course.priority)}`}>
-                        {course.priority}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <div className="w-32 bg-gray-200 rounded-full h-2">
-                          <div 
-                            className={`h-2 rounded-full transition-all duration-300 ${
-                              progress === 100 ? 'bg-green-500' : 'bg-indigo-500'
-                            }`}
-                            style={{ width: `${progress}%` }}
-                          />
+                      <span className="course-tracker__course-id">#{course.id}</span>
+                      <h3 className="course-tracker__course-name">{course.name}</h3>
+                      <span className={`course-tracker__priority-badge ${getPriorityClass(course.priority)}`}>{course.priority}</span>
+                      <div className="course-tracker__course-progress">
+                        <div className="course-tracker__course-progress-bar-bg">
+                          <div className={`course-tracker__course-progress-bar-fg ${progress === 100 ? 'course-tracker__course-progress-bar-fg--complete' : 'course-tracker__course-progress-bar-fg--incomplete'}`} style={{ width: `${progress}%` }} />
                         </div>
-                        <span className={`text-sm font-bold ${progress === 100 ? 'text-green-600' : 'text-gray-700'} min-w-[45px]`}>
-                          {progress}%
-                        </span>
-                        {progress === 100 && <Check className="text-green-500" size={20} />}
+                        <span className={`course-tracker__course-progress-percent ${progress === 100 ? 'course-tracker__course-progress-percent--complete' : 'course-tracker__course-progress-percent--incomplete'}`}>{progress}%</span>
+                        {progress === 100 && <Check color="#22c55e" size={20} />}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Course Details - Collapsible */}
                 {!isCollapsed && (
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-lg font-bold text-gray-900">#{course.id}</span>
-                        <h3 className="text-lg font-semibold text-gray-900">{course.name}</h3>
-                        <span className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold border ${getPriorityColor(course.priority)}`}>
-                          {course.priority}
-                        </span>
-                      </div>
-                      <a
-                        href={course.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-indigo-600 hover:text-indigo-800 underline"
-                      >
-                        Acessar curso →
-                      </a>
+                  <div className="course-tracker__course-details">
+                    <div className="course-tracker__course-details-header">
+                        <a href={course.link} target="_blank" rel="noopener noreferrer" className="course-tracker__course-link">
+                            Acessar curso →
+                        </a>
                     </div>
-                  </div>
 
-                  {/* Progress and Hours */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div>
-                      <label className="text-xs text-gray-600 mb-1 block">Total de Horas</label>
-                      <div className="text-2xl font-bold text-gray-900">{course.hours}h</div>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-600 mb-1 block">Horas Concluídas</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max={course.hours}
-                        step="0.5"
-                        value={course.completed}
-                        onChange={(e) => updateCompleted(course.id, e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-lg font-semibold focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-600 mb-1 block">Progresso</label>
-                      <div className="flex items-center gap-3">
-                        <div className="flex-1 bg-gray-200 rounded-full h-3">
-                          <div 
-                            className={`h-3 rounded-full transition-all duration-300 ${
-                              progress === 100 ? 'bg-green-500' : 'bg-indigo-500'
-                            }`}
-                            style={{ width: `${progress}%` }}
-                          />
-                        </div>
-                        <span className={`text-xl font-bold ${progress === 100 ? 'text-green-600' : 'text-gray-700'}`}>
-                          {progress}%
-                        </span>
-                        {progress === 100 && <Check className="text-green-500" size={24} />}
+                    <div className="course-tracker__grid course-tracker__grid--3-cols">
+                      <div>
+                        <label className="course-tracker__form-group-label">Total de Horas</label>
+                        <div className="text-2xl font-bold text-gray-900">{course.hours}h</div>
+                      </div>
+                      <div className="course-tracker__form-group">
+                        <label htmlFor={`completed-${course.id}`} className="course-tracker__form-group-label">Horas Concluídas</label>
+                        <input id={`completed-${course.id}`} type="number" min="0" max={course.hours} step="0.5" value={course.completed} onChange={(e) => updateCompleted(course.id, e.target.value)} className="course-tracker__input" />
+                      </div>
+                      <div>
+                        <label className="course-tracker__form-group-label">Progresso</label>
+                        <div className={`course-tracker__course-progress-percent ${progress === 100 ? 'course-tracker__course-progress-percent--complete' : 'course-tracker__course-progress-percent--incomplete'}`}>{progress}%</div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Dates */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <label className="text-xs text-gray-600 mb-1 flex items-center gap-1">
-                        <Calendar size={14} />
-                        Data de Início
-                      </label>
-                      <input
-                        type="date"
-                        value={course.startDate}
-                        onChange={(e) => updateCourse(course.id, 'startDate', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-600 mb-1 flex items-center gap-1">
-                        <Calendar size={14} />
-                        Data de Conclusão (Prevista/Real)
-                      </label>
-                      <input
-                        type="date"
-                        value={course.endDate}
-                        onChange={(e) => updateCourse(course.id, 'endDate', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Notes */}
-                  <div className="mb-4">
-                    <label className="text-xs text-gray-600 mb-1 flex items-center gap-1">
-                      <FileText size={14} />
-                      Notas Gerais do Curso
-                    </label>
-                    <textarea
-                      value={course.notes}
-                      onChange={(e) => updateCourse(course.id, 'notes', e.target.value)}
-                      placeholder="Adicione suas anotações sobre o curso, pontos importantes, projetos realizados, etc."
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 min-h-[80px]"
-                    />
-                  </div>
-
-                  {/* Lessons Section */}
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between items-center mb-3">
-                      <h4 className="font-semibold text-gray-900">Aulas ({course.lessons.length})</h4>
-                      <button
-                        onClick={() => setExpandedCourse(isExpanded ? null : course.id)}
-                        className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
-                      >
-                        {isExpanded ? 'Ocultar aulas' : 'Mostrar aulas'}
-                      </button>
+                    <div className="course-tracker__grid course-tracker__grid--2-cols">
+                      <div className="course-tracker__form-group">
+                        <label htmlFor={`start-date-${course.id}`}><Calendar size={14} /> Data de Início</label>
+                        <input id={`start-date-${course.id}`} type="date" value={course.startDate} onChange={(e) => updateCourse(course.id, 'startDate', e.target.value)} className="course-tracker__input" />
+                      </div>
+                      <div className="course-tracker__form-group">
+                        <label htmlFor={`end-date-${course.id}`}><Calendar size={14} /> Data de Conclusão</label>
+                        <input id={`end-date-${course.id}`} type="date" value={course.endDate} onChange={(e) => updateCourse(course.id, 'endDate', e.target.value)} className="course-tracker__input" />
+                      </div>
                     </div>
 
-                    {isExpanded && (
-                      <div className="space-y-3">
-                        {course.lessons.map((lesson) => (
-                          <div key={lesson.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                            <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-2">
-                              <div className="md:col-span-5">
-                                <input
-                                  type="text"
-                                  value={lesson.title}
-                                  onChange={(e) => updateLesson(course.id, lesson.id, 'title', e.target.value)}
-                                  placeholder="Título da aula"
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
-                                />
-                              </div>
-                              <div className="md:col-span-2">
-                                <input
-                                  type="number"
-                                  value={lesson.duration}
-                                  onChange={(e) => updateLesson(course.id, lesson.id, 'duration', parseFloat(e.target.value) || 0)}
-                                  placeholder="Min"
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
-                                />
-                              </div>
-                              <div className="md:col-span-2 flex items-center">
-                                <label className="flex items-center gap-2 cursor-pointer">
-                                  <input
-                                    type="checkbox"
-                                    checked={lesson.completed}
-                                    onChange={(e) => updateLesson(course.id, lesson.id, 'completed', e.target.checked)}
-                                    className="w-5 h-5 text-indigo-600 rounded focus:ring-2 focus:ring-indigo-500"
-                                  />
-                                  <span className="text-sm text-gray-700">Concluída</span>
-                                </label>
-                              </div>
-                              <div className="md:col-span-3 flex items-center justify-end">
-                                <button
-                                  onClick={() => deleteLesson(course.id, lesson.id)}
-                                  className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50"
-                                >
-                                  <Trash2 size={18} />
-                                </button>
-                              </div>
-                            </div>
-                            <textarea
-                              value={lesson.notes}
-                              onChange={(e) => updateLesson(course.id, lesson.id, 'notes', e.target.value)}
-                              placeholder="Anotações da aula..."
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 min-h-[60px]"
-                            />
-                          </div>
-                        ))}
-                        
-                        <button
-                          onClick={() => addLesson(course.id)}
-                          className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-indigo-400 hover:text-indigo-600 transition-colors"
-                        >
-                          <Plus size={18} />
-                          Adicionar Aula
+                    <div className="course-tracker__form-group">
+                      <label htmlFor={`notes-${course.id}`}><FileText size={14} /> Notas Gerais do Curso</label>
+                      <textarea id={`notes-${course.id}`} value={course.notes} onChange={(e) => updateCourse(course.id, 'notes', e.target.value)} placeholder="Adicione suas anotações..." className="course-tracker__textarea" />
+                    </div>
+
+                    <div className="course-tracker__lessons-section">
+                      <div className="course-tracker__lessons-header">
+                        <h4>Aulas ({course.lessons.length})</h4>
+                        <button onClick={() => setExpandedCourse(isExpanded ? null : course.id)} className="course-tracker__lessons-toggle">
+                          {isExpanded ? 'Ocultar aulas' : 'Mostrar aulas'}
                         </button>
                       </div>
-                    )}
+
+                      {isExpanded && (
+                        <div className="course-tracker__lessons-list">
+                          {course.lessons.map((lesson) => (
+                            <div key={lesson.id} className="course-tracker__lesson-card">
+                              <div className="course-tracker__lesson-grid">
+                                <div className="md-col-span-5"><input type="text" value={lesson.title} onChange={(e) => updateLesson(course.id, lesson.id, 'title', e.target.value)} placeholder="Título da aula" className="course-tracker__lesson-input" /></div>
+                                <div className="md-col-span-2"><input type="number" value={lesson.duration} onChange={(e) => updateLesson(course.id, lesson.id, 'duration', parseFloat(e.target.value) || 0)} placeholder="Min" className="course-tracker__lesson-input" /></div>
+                                <div className="md-col-span-2">
+                                  <label className="course-tracker__lesson-checkbox-group">
+                                    <input type="checkbox" checked={lesson.completed} onChange={(e) => updateLesson(course.id, lesson.id, 'completed', e.target.checked)} className="course-tracker__lesson-checkbox" />
+                                    <span>Concluída</span>
+                                  </label>
+                                </div>
+                                <div className="md-col-span-3 flex items-center justify-end">
+                                  <button onClick={() => deleteLesson(course.id, lesson.id)} className="course-tracker__lesson-delete-btn"><Trash2 size={18} /></button>
+                                </div>
+                              </div>
+                              <textarea value={lesson.notes} onChange={(e) => updateLesson(course.id, lesson.id, 'notes', e.target.value)} placeholder="Anotações da aula..." className="course-tracker__textarea" />
+                            </div>
+                          ))}
+                          <button onClick={() => addLesson(course.id)} className="course-tracker__add-lesson-btn"><Plus size={18} /> Adicionar Aula</button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
                 )}
               </div>
             );
           })}
         </div>
 
-        {/* Summary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
+        <div className="dashboard-grid">
+          <div className="course-tracker__stat-card">
+            <div className="course-tracker__stat-card-content">
               <div>
-                <p className="text-gray-600 text-sm mb-1">Total de Cursos</p>
-                <p className="text-3xl font-bold text-gray-900">{courses.length}</p>
+                <p className="course-tracker__stat-card-label">Total de Cursos</p>
+                <p className="course-tracker__stat-card-value">{courses.length}</p>
               </div>
-              <div className="bg-indigo-100 rounded-full p-3">
-                <AlertCircle className="text-indigo-600" size={24} />
+              <div className="course-tracker__stat-card-icon-wrapper course-tracker__stat-card-icon-wrapper--indigo">
+                <AlertCircle className="course-tracker__stat-card-icon--indigo" size={24} />
               </div>
             </div>
           </div>
-
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
+          <div className="course-tracker__stat-card">
+            <div className="course-tracker__stat-card-content">
               <div>
-                <p className="text-gray-600 text-sm mb-1">Cursos Concluídos</p>
-                <p className="text-3xl font-bold text-green-600">
-                  {courses.filter(c => getProgress(c.completed, c.hours) === 100).length}
-                </p>
+                <p className="course-tracker__stat-card-label">Cursos Concluídos</p>
+                <p className="course-tracker__stat-card-value course-tracker__stat-card-value--green">{courses.filter(c => getProgress(c.completed, c.hours) === 100).length}</p>
               </div>
-              <div className="bg-green-100 rounded-full p-3">
-                <Check className="text-green-600" size={24} />
+              <div className="course-tracker__stat-card-icon-wrapper course-tracker__stat-card-icon-wrapper--green">
+                <Check className="course-tracker__stat-card-icon--green" size={24} />
               </div>
             </div>
           </div>
-
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
+          <div className="course-tracker__stat-card">
+            <div className="course-tracker__stat-card-content">
               <div>
-                <p className="text-gray-600 text-sm mb-1">Horas Restantes</p>
-                <p className="text-3xl font-bold text-orange-600">
-                  {(totalHours - completedHours).toFixed(1)}h
-                </p>
+                <p className="course-tracker__stat-card-label">Horas Restantes</p>
+                <p className="course-tracker__stat-card-value course-tracker__stat-card-value--orange">{(totalHours - completedHours).toFixed(1)}h</p>
               </div>
-              <div className="bg-orange-100 rounded-full p-3">
-                <X className="text-orange-600" size={24} />
+              <div className="course-tracker__stat-card-icon-wrapper course-tracker__stat-card-icon-wrapper--orange">
+                <X className="course-tracker__stat-card-icon--orange" size={24} />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer Note */}
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <p className="text-sm text-blue-800 mb-2">
-            <strong>💡 Recursos:</strong>
-          </p>
-          <ul className="text-sm text-blue-700 space-y-1 ml-4">
+        <div className="course-tracker__footer-note">
+          <p><strong>💡 Recursos:</strong></p>
+          <ul>
             <li>• Seus dados são salvos automaticamente no navegador</li>
             <li>• Adicione aulas individuais com notas para cada curso</li>
             <li>• Exporte para CSV/Excel ou JSON para backup</li>
