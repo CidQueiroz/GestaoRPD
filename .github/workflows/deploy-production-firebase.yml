@@ -41,11 +41,13 @@ jobs:
 
       - name: 5. Install Dependencies
         run: npm install
+        working-directory: ./frontend
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
       - name: 6. Build Project
         run: npm run build
+        working-directory: ./frontend
 
       - name: 7. Deploy to Firebase Production
         uses: FirebaseExtended/action-hosting-deploy@v0
