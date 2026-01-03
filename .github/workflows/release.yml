@@ -23,8 +23,8 @@ jobs:
         with:
           repository: CidQueiroz/cdkteck-ui
           path: cdkteck-ui
-          token: ${{ secrets.NODE_AUTH_TOKEN }} # Assuming this token has access, otherwise ASSETS_REPO_TOKEN if it's the same.
-
+          token: ${{ secrets.GH_PAT }} 
+          
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -34,7 +34,7 @@ jobs:
         run: npm install
         working-directory: ./frontend
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Run Frontend Build Check
         run: npm run build
