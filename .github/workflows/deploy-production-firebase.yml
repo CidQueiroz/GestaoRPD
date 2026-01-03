@@ -50,7 +50,7 @@ jobs:
         run: npm install
         working-directory: ./frontend
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: 6. Build Project
         run: npm run build
@@ -61,6 +61,6 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CDKTECK_HUB }}'
-          projectId: senseidb-rebranding
-          target: gestaorpd
-          channelId: live # Faz o deploy para o canal de produção 'live'
+          projectId: cdkteck-hub
+          target: gestaorpd-app
+          channelId: live
