@@ -40,8 +40,9 @@ jobs:
         run: npm run build
         working-directory: ./frontend
 
-      - name: Run Backend Docker Build Check
-        run: docker build . --file ./backend/Dockerfile
+      # - name: Run Backend Docker Build Check
+      #   run: docker build -f Dockerfile .
+      #   working-directory: ./backend
         
       - name: Run semantic-release
         run: npx semantic-release

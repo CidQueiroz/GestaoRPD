@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import { Header, Footer } from '@cidqueiroz/cdkteck-ui';
+import { Header, Footer, CDKFavicon } from '@cidqueiroz/cdkteck-ui';
 
 // Lazy load pages
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -41,6 +41,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <CDKFavicon />
       <Header 
         LinkComponent={ReactRouterLink}
         usePathname={() => location.pathname}
