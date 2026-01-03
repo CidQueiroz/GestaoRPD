@@ -5,13 +5,13 @@ import { getAuth } from "firebase/auth";
 // TODO: Replace with your actual GestaoRPD Firebase configuration.
 // This is a placeholder from another project.
 const firebaseConfig = {
-    apiKey: "AIzaSyAAqeBcWQechliUfEFodQSJWTV3RtvOqGo",
-    authDomain: "cdkteck-hub.firebaseapp.com",
-    projectId: "cdkteck-hub",
-    storageBucket: "cdkteck-hub.firebasestorage.app",
-    messagingSenderId: "402043888600",
-    appId: "1:402043888600:web:c29a42be4ab86a22d748ad",
-    measurementId: "G-HTDZ2S5HFC"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase

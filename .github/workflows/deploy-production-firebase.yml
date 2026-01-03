@@ -13,50 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 1. Checkout GestaoRPD Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # Checkout the same commit that the "Release" workflow ran on
           ref: ${{ github.event.workflow_run.head_sha }}
 
-      - name: 2. Checkout Shared Assets Repository
-        uses: actions/checkout@v3
+      - name: 2. Download Build Artifact
+        uses: actions/download-artifact@v4
         with:
-          repository: CidQueiroz/cdkteck-assets
-          token: ${{ secrets.ASSETS_REPO_TOKEN }}
-          path: ./.temp-assets
+          name: dist
+          path: dist
 
-      - name: NEW - Checkout cdkteck-ui Repository
-        uses: actions/checkout@v3
-        with:
-          repository: CidQueiroz/cdkteck-ui
-          path: cdkteck-ui
-          token: ${{ secrets.ASSETS_REPO_TOKEN }} # Assuming same token can be used
-
-      - name: 3. Copy Shared Assets to Public Folder
-        run: |
-          echo "Copying shared assets..."
-          mkdir -p public/assets
-          mkdir -p public/components
-          cp -r ./.temp-assets/* public/
-          echo "Assets copied successfully."
-          ls -R public/
-
-      - name: 4. Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: 5. Install Dependencies
-        run: npm install
-        working-directory: ./frontend
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_PAT }}
-
-      - name: 6. Build Project
-        run: npm run build
-        working-directory: ./frontend
-
-      - name: 7. Deploy to Firebase Production
+      - name: 3. Deploy to Firebase Production
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
