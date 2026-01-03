@@ -46,5 +46,6 @@ jobs:
         
       - name: Run semantic-release
         run: npx semantic-release
+        working-directory: ./frontend
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
