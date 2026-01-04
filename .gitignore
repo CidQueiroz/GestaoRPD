@@ -37,3 +37,4 @@ instance/
 *.sql
 README_backup.md
 REMOCOES_PENDENTES.txt
+**/*:Zone.Identifier
