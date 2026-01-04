@@ -22,13 +22,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
-          path: dist
+          path: frontend/dist
+          run-id: ${{github.event.workflow_run.id }}
 
       - name: 3. Deploy to Firebase Production
         uses: FirebaseExtended/action-hosting-deploy@v0
+        working-directory: ./frontend
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CDKTECK_HUB }}'
           projectId: cdkteck-hub
           target: gestaorpd-app
           channelId: live
+        
