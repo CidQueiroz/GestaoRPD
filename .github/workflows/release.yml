@@ -47,6 +47,7 @@ jobs:
         with:
           name: dist
           path: frontend/dist
+          retention-days: 1
 
       # - name: Run Backend Docker Build Check
       #   run: docker build -f Dockerfile .
