@@ -16,7 +16,7 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 frontend/pnpm-debug.log*
 frontend/lerna-debug.log*
-frontend/package-lock.json
+# frontend/package-lock.json
 
 # Backend (Python/Django)
 __pycache__/
