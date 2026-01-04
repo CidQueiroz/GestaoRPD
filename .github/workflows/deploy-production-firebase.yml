@@ -18,12 +18,13 @@ jobs:
           # Checkout the same commit that the "Release" workflow ran on
           ref: ${{ github.event.workflow_run.head_sha }}
 
-      - name: 2. Download Build Artifact
-        uses: actions/download-artifact@v4
+      - name: 2. Download Build Artifact from Release Workflow
+        uses: dawidd6/action-download-artifact@v3
         with:
+          workflow: release.yml
           name: dist
           path: frontend/dist
-          run-id: ${{github.event.workflow_run.id }}
+          run_id: ${{ github.event.workflow_run.id }}
 
       - name: 3. Deploy to Firebase Production
         uses: FirebaseExtended/action-hosting-deploy@v0
@@ -33,5 +34,4 @@ jobs:
           projectId: cdkteck-hub
           target: gestaorpd-app
           channelId: live
-          cwd: frontend
-        
+          # cwd: frontend
