@@ -34,4 +34,4 @@ jobs:
           projectId: cdkteck-hub
           target: gestaorpd-app
           channelId: live
-          # cwd: frontend
+          entryPoint: frontend
