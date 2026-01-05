@@ -4,7 +4,7 @@
 *.swo
 *.swp
 .firebase/
-.firebaserc
+
 
 # Frontend (React/Vite)
 frontend/node_modules/

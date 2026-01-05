@@ -1,0 +1,25 @@
+{
+  "projects": {
+    "default": "cdkteck-hub"
+  },
+  "targets": {
+    "senseidb-rebranding": {
+      "hosting": {
+        "gestaorpd-app": [
+          "gestaorpd-app"
+        ],
+        "senseidb-agent": [
+          "senseidb-agent"
+        ]
+      }
+    },
+    "cdkteck-hub": {
+      "hosting": {
+        "gestaorpd-app": [
+          "gestaorpd-app"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
