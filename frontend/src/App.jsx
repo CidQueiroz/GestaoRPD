@@ -15,6 +15,7 @@ const CursoTracker = lazy(() => import('./pages/curso_tracker'));
 const LogPODDiarioPage = lazy(() => import('./pages/LogPODDiarioPage'));
 const Privacidade = lazy(() => import('./pages/Privacidade'));
 const Termos = lazy(() => import('./pages/Termos'));
+const WarRoom = lazy(() => import('./pages/war-room'));
 
 const PrivateRoute = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -63,6 +64,7 @@ function App() {
             <Route path="/rpd/diario_bordo" element={<PrivateRoute><DiarioBordoPage /></PrivateRoute>} />
             <Route path="/rpd/rpd" element={<PrivateRoute><RPDPage /></PrivateRoute>} />
             <Route path="/rpd/log_pod_diario" element={<PrivateRoute><LogPODDiarioPage /></PrivateRoute>} />
+            <Route path="/rpd/war-room" element={<PrivateRoute><WarRoom /></PrivateRoute>} />
           </Routes>
         </Suspense>
       </main>

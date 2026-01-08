@@ -3,46 +3,95 @@ import { Check, X, AlertCircle, Download, Calendar, FileText, Plus, Trash2 } fro
 
 const CourseTracker = () => {
   const [courses, setCourses] = useState([
-    // === ONDA 1: Vibe Coding & Velocidade (JAN - MAR) ===
-    // Foco: Produtividade imediata e primeiros agentes funcionais.
+    // === ONDA 1: Ignição, Fundamentos & Velocidade (JAN - MAR) ===
+    // Foco: Mira estratégica, base científica e build acelerado.
+
     {
       id: 1,
-      name: "Google Antigravity for Beginners: AI Coding Crash Course",
-      hours: 12.5,
+      name: "Goal Mastery: 21 Days to Transform Your Life",
+      hours: 2,
       completed: 0,
-      priority: "Máxima",
-      link: "https://www.udemy.com/course/google-antigravity-for-beginners-ai-coding-crash-course/learn/lecture/54111807?start=0#overview",
+      priority: "Crítica",
+      link: "https://www.udemy.com/course/the-complete-guide-for-goal-achievement-in-21-days-challenge/learn/lecture/24219142",
       startDate: "2026-01-01",
       endDate: "",
-      notes: "Prioridade 01: Instalar Cursor/Windsurf e dominar Vibe Coding.",
+      notes: "O Protocolo de Ignição. Definir o GPSAI para os 133 agentes.",
       lessons: []
     },
     {
       id: 2,
+      name: "Machine Learning Foundations: Build Expert-Level AI Models",
+      hours: 20,
+      completed: 0,
+      priority: "Crítica",
+      link: "https://www.udemy.com/course/machine-learning-foundations-build-expert-level-ai-models/learn/lecture/48712641",
+      startDate: "2026-01-05",
+      endDate: "",
+      notes: "A base de tudo. Sem entender o motor, não há soberania no asfalto.",
+      lessons: []
+    },
+    {
+      id: 3,
+      name: "From Prompt Engineering to Agent Engineering",
+      hours: 31.5,
+      completed: 0,
+      priority: "Máxima",
+      link: "https://www.udemy.com/course/from-prompt-engineering-to-agent-engineering/learn/lecture/49618381",
+      startDate: "2026-01-10",
+      endDate: "",
+      notes: "O Manual do Piloto. Transição de prompts simples para agentes autônomos complexos.",
+      lessons: []
+    },
+    {
+      id: 4,
+      name: "Google Antigravity for Beginners: AI Coding Crash Course",
+      hours: 12.5,
+      completed: 0,
+      priority: "Máxima",
+      link: "https://www.udemy.com/course/google-antigravity-for-beginners-ai-coding-crash-course/",
+      startDate: "2026-01-20",
+      endDate: "",
+      notes: "Velocidade máxima no ecossistema Google. Cursor/Windsurf dominance.",
+      lessons: []
+    },
+    {
+      id: 5,
       name: "AI-Powered Microservices with Vibe Coding",
       hours: 2,
       completed: 0,
       priority: "Máxima",
       link: "https://www.udemy.com/course/ai_powered_microservices_with_vibe_coding/",
-      startDate: "2026-01-01",
+      startDate: "2026-02-01",
       endDate: "",
-      notes: "Base de arquitetura para os agentes.",
+      notes: "Arquitetura técnica para sustentar o exército de agentes.",
       lessons: []
     },
     {
-      id: 3,
+      id: 6,
+      name: "Build 8 Python Apps Games and Web Application Python Master",
+      hours: 7,
+      completed: 0,
+      priority: "Alta",
+      link: "https://www.udemy.com/course/build-8-python-apps-games-and-web-application-python-master/",
+      startDate: "2026-02-10",
+      endDate: "",
+      notes: "Aquecimento de portfólio e domínio da linguagem base.",
+      lessons: []
+    },
+    {
+      id: 7,
       name: "Complete AI Agent Practical Course C| AIPC",
       hours: 8,
       completed: 0,
       priority: "Máxima",
-      link: "https://www.udemy.com/course/complete-ai-agent-practical-course-c-aipc/learn/lecture/52990311?start=0#overview",
-      startDate: "2026-02-01",
+      link: "https://www.udemy.com/course/complete-ai-agent-practical-course-c-aipc/",
+      startDate: "2026-02-20",
       endDate: "",
-      notes: "Foco em automação mobile e n8n para Minsait.",
+      notes: "Foco prático em automação mobile e n8n para demandas Minsait.",
       lessons: []
     },
     {
-      id: 4,
+      id: 8,
       name: "DeepSeek R1 AI: 25 Real World Projects",
       hours: 6,
       completed: 0,
@@ -50,13 +99,25 @@ const CourseTracker = () => {
       link: "https://www.udemy.com/course/deepseek-r1-real-world-projects/",
       startDate: "2026-03-01",
       endDate: "",
-      notes: "Construção de volume para o portfólio (25 projetos).",
+      notes: "Volume de projetos de raciocínio (Reasoning) para o portfólio.",
+      lessons: []
+    },
+    {
+      id: 9,
+      name: "100 AI Agents in 100 Days 2026",
+      hours: 8,
+      completed: 0,
+      priority: "Alta",
+      link: "https://www.udemy.com/course/100-ai-agents/",
+      startDate: "2026-03-10",
+      endDate: "",
+      notes: "O desafio de consistência para fechar os primeiros 100 do exército.",
       lessons: []
     },
     // === ONDA 2: Inteligência e Dados (ABR - JUN) ===
-    // Foco: RAG, Grafos e Otimização para Hardware Limitado.
+    // Foco: RAG, Otimização e Conhecimento Estruturado.
     {
-      id: 5,
+      id: 10,
       name: "Complete RAG Bootcamp: Build & Deploy AI Apps",
       hours: 28,
       completed: 0,
@@ -64,11 +125,11 @@ const CourseTracker = () => {
       link: "https://www.udemy.com/course/complete-rag-bootcamp-build-optimize-and-deploy-ai-apps/",
       startDate: "2026-04-01",
       endDate: "",
-      notes: "O curso mais denso. Vital para lidar com docs da Petrobras.",
+      notes: "Vital para lidar com a densidade de documentos da Petrobras.",
       lessons: []
     },
     {
-      id: 6,
+      id: 11,
       name: "Quantization for GenAI Models",
       hours: 2,
       completed: 0,
@@ -76,11 +137,11 @@ const CourseTracker = () => {
       link: "https://www.udemy.com/course/quantization",
       startDate: "2026-05-01",
       endDate: "",
-      notes: "Essencial para rodar modelos no Dell 8GB.",
+      notes: "Otimização extrema para o hardware Dell 8GB.",
       lessons: []
     },
     {
-      id: 7,
+      id: 12,
       name: "Mastering Agentic Design Patterns",
       hours: 3,
       completed: 0,
@@ -88,11 +149,11 @@ const CourseTracker = () => {
       link: "https://www.udemy.com/course/mastering-agentic-design-patterns",
       startDate: "2026-05-15",
       endDate: "",
-      notes: "Teoria avançada de agentes autônomos.",
+      notes: "Padronização de arquitetura de agentes autônomos.",
       lessons: []
     },
     {
-      id: 8,
+      id: 13,
       name: "Certified Generative AI Architect with Knowledge Graphs",
       hours: 8,
       completed: 0,
@@ -100,37 +161,37 @@ const CourseTracker = () => {
       link: "https://www.udemy.com/course/certified_generative_ai_architect_with_knowledge_graphs",
       startDate: "2026-06-01",
       endDate: "",
-      notes: "Estruturação de dados complexos.",
+      notes: "Nível Sênior: conectando dados de forma relacional inteligente.",
       lessons: []
     },
     // === ONDA 3: Automação Enterprise e Workflows (JUL - SET) ===
     // Foco: Governança, Integração e MLOps.
     {
-      id: 9,
+      id: 14,
       name: "AI Agents: From Foundations to Enterprise Systems",
       hours: 13,
       completed: 0,
       priority: "Média",
-      link: "https://www.udemy.com/course/ai-agents-from-foundations-to-enterprise-systems/learn/lecture/54061297?start=0#overview",
+      link: "https://www.udemy.com/course/ai-agents-from-foundations-to-enterprise-systems/",
       startDate: "2026-07-01",
       endDate: "",
-      notes: "Governança e orquestração em larga escala.",
+      notes: "Escalando de agentes locais para sistemas industriais.",
       lessons: []
     },
     {
-      id: 10,
+      id: 15,
       name: "Base44 Mastery: Build Enterprise AI Workflow Automations",
       hours: 7,
       completed: 0,
       priority: "Média",
-      link: "https://www.udemy.com/course/base44-mastery-build-enterprise-ai-workflow-automations/learn/lecture/53868305?start=0#overview",
+      link: "https://www.udemy.com/course/base44-mastery-build-enterprise-ai-workflow-automations/",
       startDate: "2026-08-01",
       endDate: "",
-      notes: "Integração com Slack, Notion e Google Workspace.",
+      notes: "Integração total: Slack, Notion e Workspace.",
       lessons: []
     },
     {
-      id: 11,
+      id: 16,
       name: "Ultimate DevOps to MLOps Bootcamp",
       hours: 9,
       completed: 0,
@@ -138,11 +199,11 @@ const CourseTracker = () => {
       link: "https://www.udemy.com/course/devops-to-mlops-bootcamp/",
       startDate: "2026-08-15",
       endDate: "",
-      notes: "CI/CD para seus agentes.",
+      notes: "Pipeline de produção para o portfólio.",
       lessons: []
     },
     {
-      id: 12,
+      id: 17,
       name: "Build On-Device AI",
       hours: 4,
       completed: 0,
@@ -150,13 +211,13 @@ const CourseTracker = () => {
       link: "https://www.udemy.com/course/build-on-device-ai/",
       startDate: "2026-09-01",
       endDate: "",
-      notes: "Execução local e privacidade de dados.",
+      notes: "Privacidade e execução local para segurança máxima.",
       lessons: []
     },
-    // === ONDA 4: Liderança e Governança (OUT - DEZ) ===
-    // Foco: Estratégia, Compliance e Finalização do Portfólio.
+    // === ONDA 4: Liderança, Governança e Soberania (OUT - DEZ) ===
+    // Foco: Estratégia, Compliance e Finalização.
     {
-      id: 13,
+      id: 18,
       name: "Certified Chief AI Officer Program",
       hours: 12,
       completed: 0,
@@ -164,11 +225,11 @@ const CourseTracker = () => {
       link: "https://www.udemy.com/course/chief-ai-officer-program-lead-ai-strategy-governance",
       startDate: "2026-10-01",
       endDate: "",
-      notes: "Visão executiva para cargo de liderança.",
+      notes: "Visão executiva. Preparação para cargos C-Level em IA.",
       lessons: []
     },
     {
-      id: 14,
+      id: 19,
       name: "CAIXA - Inteligência Artificial na Prática (DIO)",
       hours: 16,
       completed: 0,
@@ -176,23 +237,23 @@ const CourseTracker = () => {
       link: "https://web.dio.me/track/31b3e5fd-262e-4d2f-8b7c-f614da085c46",
       startDate: "2026-10-15",
       endDate: "",
-      notes: "Validação no mercado nacional.",
+      notes: "Selo de qualidade para o mercado nacional.",
       lessons: []
     },
     {
-      id: 15,
+      id: 20,
       name: "AI for Risk Management & Compliance Excellence",
       hours: 5,
       completed: 0,
       priority: "Baixa",
-      link: "https://www.udemy.com/course/ai-for-risk-management-compliance-excellence/learn/lecture/50961515",
+      link: "https://www.udemy.com/course/ai-for-risk-management-compliance-excellence/",
       startDate: "2026-11-01",
       endDate: "",
-      notes: "Segurança e ética para Enterprise.",
+      notes: "Garantindo que seu império de agentes seja seguro e ético.",
       lessons: []
     },
     {
-      id: 16,
+      id: 21,
       name: "Generative AI for Personal Productivity: Get More Done",
       hours: 23,
       completed: 0,
@@ -200,19 +261,7 @@ const CourseTracker = () => {
       link: "https://www.udemy.com/course/generative-ai-for-personal-productivity",
       startDate: "2026-12-01",
       endDate: "",
-      notes: "O fechar do ciclo: Automatizar a vida pessoal, saúde e finanças para colher os frutos da SOBERANIA 2026.",
-      lessons: []
-    }, 
-    {
-      id: 15,
-      name: "100 AI Agents in 100 Days 2026",
-      hours: 8,
-      completed: 0,
-      priority: "Alta",
-      link: "https://www.udemy.com/course/100-ai-agents/learn/lecture/54073525?start=0#overview",
-      startDate: "",
-      endDate: "",
-      notes: "",
+      notes: "O fechamento: Automatizar tudo para colher os frutos da Soberania.",
       lessons: []
     },
     {
@@ -222,9 +271,9 @@ const CourseTracker = () => {
       completed: 0,
       priority: "Alta",
       link: "https://github.com/ComposioHQ/awesome-claude-skills",
-      startDate: "",
+      startDate: "Contínuo",
       endDate: "",
-      notes: "",
+      notes: "Referência técnica contínua para skills avançadas com Claude.",
       lessons: []
     }
   ]);

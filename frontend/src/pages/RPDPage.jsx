@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Card, Input } from '@cidqueiroz/cdkteck-ui';
@@ -82,6 +83,15 @@ const RPDPage = () => {
       <h1 className="dashboard-title">Registro de Pensamentos Disfuncionais (RPD)</h1>
       
       <div className="dashboard-grid">
+        <Card className="dashboard-card">
+          <div className="card-header">
+            <h3>War Room</h3>
+          </div>
+          <div className="form-actions" style={{ marginTop: '1rem' }}>
+            <Link to="/rpd/war-room" className="card-action-btn">Acessar War Room</Link>
+          </div>
+        </Card>
+
         <Card className="dashboard-card">
           <div className="card-header">
             <h3>Adicionar Nova Entrada</h3>
