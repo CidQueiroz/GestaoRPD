@@ -5,6 +5,20 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3002,
-    open: true
+    open: true,
+    watch: {
+      ignored: [
+        '!**/node_modules/@cidqueiroz/cdkteck-ui/dist/**'
+      ]
+    },
+    fs: {
+      allow: ['..'] 
+    }
+  },
+  optimizeDeps: {
+    exclude: ['@cidqueiroz/cdkteck-ui']
+  },
+  resolve: {
+    preserveSymlinks: true 
   }
 });

@@ -1,0 +1,1 @@
+{"version":3,"file":"PageHeader.d.ts","sourceRoot":"","sources":["../../src/components/PageHeader.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAE1B,UAAU,eAAe;IACvB,KAAK,EAAE,MAAM,CAAC;IACd,WAAW,EAAE,KAAK,CAAC,SAAS,CAAC;CAC9B;AAED,MAAM,CAAC,OAAO,UAAU,UAAU,CAAC,EAAE,KAAK,EAAE,WAAW,EAAE,EAAE,eAAe,2CAiCzE"}

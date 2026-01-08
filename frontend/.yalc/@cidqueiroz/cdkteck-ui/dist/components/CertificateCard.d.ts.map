@@ -1,0 +1,1 @@
+{"version":3,"file":"CertificateCard.d.ts","sourceRoot":"","sources":["../../src/components/CertificateCard.tsx"],"names":[],"mappings":"AAEA,UAAU,oBAAoB;IAC5B,KAAK,EAAE,MAAM,CAAC;IACd,QAAQ,EAAE,MAAM,CAAC;IACjB,OAAO,EAAE,MAAM,IAAI,CAAC;CACrB;AAED,QAAA,MAAM,eAAe,EAAE,KAAK,CAAC,EAAE,CAAC,oBAAoB,CAsBnD,CAAC;AAEF,eAAe,eAAe,CAAC"}

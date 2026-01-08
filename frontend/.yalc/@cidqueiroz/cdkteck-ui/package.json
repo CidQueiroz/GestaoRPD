@@ -1,0 +1,55 @@
+{
+  "name": "@cidqueiroz/cdkteck-ui",
+  "version": "2.6.0",
+  "description": "",
+  "type": "module",
+  "main": "./dist/cdkteck-ui.umd.js",
+  "module": "./dist/cdkteck-ui.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src/global.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/cdkteck-ui.es.js",
+      "require": "./dist/cdkteck-ui.umd.js"
+    },
+    "./global.css": "./dist/cdkteck-ui.css"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "watch": "vite build --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CidQueiroz/cdkteck-ui.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CidQueiroz/cdkteck-ui/issues"
+  },
+  "homepage": "https://github.com/CidQueiroz/cdkteck-ui#readme",
+  "peerDependencies": {
+    "next": ">=13.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "react-router-dom": ">=6.0.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "lucide-react": "^0.562.0"
+  },
+  "yalcSig": "d4897ab657ee7dae9f96633d5d9a3d25"
+}

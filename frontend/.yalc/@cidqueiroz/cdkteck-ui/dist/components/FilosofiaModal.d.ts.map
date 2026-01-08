@@ -1,0 +1,1 @@
+{"version":3,"file":"FilosofiaModal.d.ts","sourceRoot":"","sources":["../../src/components/FilosofiaModal.tsx"],"names":[],"mappings":"AAEA,OAAO,KAAK,MAAM,OAAO,CAAC;AAG1B,UAAU,mBAAmB;IAC3B,MAAM,EAAE,OAAO,CAAC;IAChB,OAAO,EAAE,MAAM,IAAI,CAAC;CACrB;AAGD,QAAA,MAAM,cAAc,EAAE,KAAK,CAAC,EAAE,CAAC,mBAAmB,CAkDjD,CAAC;AAEF,eAAe,cAAc,CAAC"}
