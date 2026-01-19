@@ -6,10 +6,15 @@ on:
       version:
         description: 'The git tag to deploy (e.g., v1.2.3)'
         required: true
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }} # Manual approval for production
 
     steps:
       - name: Checkout code
@@ -25,34 +30,41 @@ jobs:
 
       - name: Deploy to Production Server
         env:
-          ORACLE_USER: ${{ secrets.ORACLE_USER }}
-          ORACLE_PASSWORD: ${{ secrets.ORACLE_PASSWORD }}
-          ORACLE_DSN: "cdkteckdb_medium" # Or use a secret: ${{ secrets.ORACLE_DSN }}
-          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          ORACLE_PROD_USER: ${{ secrets.ORACLE_PROD_USER }}
+          ORACLE_PROD_PASSWORD: ${{ secrets.ORACLE_PROD_PASSWORD }}
+          ORACLE_PROD_DSN: ${{ secrets.ORACLE_PROD_DSN }} # Ensure this secret holds the full DSN for production
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           ALLOWED_HOSTS: ${{ secrets.OCI_PRODUCTION_HOST }}
-          CORS_ALLOWED_ORIGINS: "https://gestaorpd.cdkteck.com.br,https://gestaorpd.web.app"
+          CORS_ALLOWED_ORIGINS: "https://gestaorpd.cdkteck.com.br,https://gestaorpd.web.app,https://${{ secrets.OCI_PRODUCTION_HOST }}" # Added production host for CORS
         run: |
           ssh ${{ secrets.OCI_PRODUCTION_USERNAME }}@${{ secrets.OCI_PRODUCTION_HOST }} '
             set -e
             echo "--- Iniciando deploy da versão ${{ github.event.inputs.version }} para PRODUÇÃO ---"
-            cd ${{ secrets.PROJECT_PATH }}
+            
+            # Change directory to the project's backend folder
+            cd ${{ secrets.PROJECT_PATH_PROD }}/backend
             
             echo "1. Baixando código da nova versão..."
+            # Ensure the correct repository is cloned on the VM if it's not already there
+            # Or ensure the code is copied first (like in staging workflow)
+            # For simplicity here, assuming git clone happens on the VM on setup,
+            # and we are just checking out a tag.
             git fetch origin --tags
             git checkout ${{ github.event.inputs.version }}
 
             echo "2. Criando arquivo .env para o Docker Compose..."
-            echo "ORACLE_USER=${ORACLE_USER}" > .env
-            echo "ORACLE_PASSWORD=${ORACLE_PASSWORD}" >> .env
-            echo "ORACLE_DSN=${ORACLE_DSN}" >> .env
-            echo "SECRET_KEY=${SECRET_KEY}" >> .env
+            echo "ORACLE_PROD_USER=${ORACLE_PROD_USER}" > .env
+            echo "ORACLE_PROD_PASSWORD=${ORACLE_PROD_PASSWORD}" >> .env
+            echo "ORACLE_PROD_DSN=${ORACLE_PROD_DSN}" >> .env
+            echo "SECRET_KEY=${DJANGO_SECRET_KEY}" >> .env
             echo "DEBUG=False" >> .env
             echo "ALLOWED_HOSTS=${ALLOWED_HOSTS}" >> .env
             echo "CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}" >> .env
-            
+            echo "TNS_ADMIN=${{ secrets.PROJECT_PATH_PROD }}/backend/Wallet_CDKTECKDB" >> .env # Add TNS_ADMIN
+
             echo "3. Construindo e iniciando os containers com Docker Compose..."
-            docker compose down
-            docker compose up --build -d
+            docker compose down --remove-orphans # Add --remove-orphans for cleanup
+            docker compose up --build -d --force-recreate
             
             echo "4. Limpando imagens Docker não utilizadas..."
             docker image prune -f

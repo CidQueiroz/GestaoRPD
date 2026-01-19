@@ -1,24 +1,19 @@
 name: Deploy Backend to OCI Staging
 
 on:
-  workflow_run:
-    workflows: ["Release"]
-    types:
-      - completed
+  push: # Changed trigger to push
+    branches:
+      - main
 
 jobs:
   deploy:
-    # Only run this job if the Release workflow was successful
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # Removed 'if:' condition as it's no longer triggered by workflow_run
     runs-on: ubuntu-latest
 
     steps:
-      # This step is needed to get the code, as workflow_run runs in a different context
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          # Checkout the same commit that the "Release" workflow ran on
-          ref: ${{ github.event.workflow_run.head_sha }}
+        # Removed 'with: ref:' as it's not needed for push trigger
 
       - name: Setup SSH Key
         uses: webfactory/ssh-agent@v0.9.0
@@ -30,51 +25,56 @@ jobs:
 
       - name: Deploy to Staging Server
         env:
-          ORACLE_USER: ${{ secrets.ORACLE_USER }}
-          ORACLE_PASSWORD: ${{ secrets.ORACLE_PASSWORD }}
-          ORACLE_DSN: "cdkteckdb_medium" # Or use a secret: ${{ secrets.ORACLE_DSN }}
-          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          ORACLE_STAGE_USER: ${{ secrets.ORACLE_STAGE_USER }}
+          ORACLE_STAGE_PASSWORD: ${{ secrets.ORACLE_STAGE_PASSWORD }}
+          ORACLE_STAGE_DSN: ${{ secrets.ORACLE_STAGE_DSN }} # Ensure this secret holds the full DSN for staging
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           ALLOWED_HOSTS: ${{ secrets.OCI_STAGING_HOST }}
-          CORS_ALLOWED_ORIGINS: "https://gestaorpd.web.app"
+          CORS_ALLOWED_ORIGINS: "https://gestaorpd.web.app,https://${{ secrets.OCI_STAGING_HOST }}" # Added staging host for CORS
         run: |
-          # We need to copy the source code to the VM
-          echo "--- Copying source code to staging VM ---"
-          scp -r $GITHUB_WORKSPACE ${{ secrets.OCI_STAGING_USERNAME }}@${{ secrets.OCI_STAGING_HOST }}:${{ secrets.PROJECT_PATH_STAGING }}_temp
+          echo "--- Copying GestaoRPD project to staging VM ---"
+          # Copy the specific GestaoRPD project folder
+          scp -r $GITHUB_WORKSPACE/GestaoRPD ${{ secrets.OCI_STAGING_USERNAME }}@${{ secrets.OCI_STAGING_HOST }}:${{ secrets.PROJECT_PATH_STAGING }}_temp
 
           ssh ${{ secrets.OCI_STAGING_USERNAME }}@${{ secrets.OCI_STAGING_HOST }} '
             set -e
             echo "--- Iniciando deploy para STAGING ---"
             
-            # Move the new code into the project path, overwriting old files
-            # This is safer than doing a git pull in the project directory
-            # First, remove the old directory if it exists
+            # Remove old directory if it exists and move new code
             if [ -d "${{ secrets.PROJECT_PATH_STAGING }}" ]; then
               rm -rf ${{ secrets.PROJECT_PATH_STAGING }}
             fi
             mv ${{ secrets.PROJECT_PATH_STAGING }}_temp ${{ secrets.PROJECT_PATH_STAGING }}
-            cd ${{ secrets.PROJECT_PATH_STAGING }}
+
+            # CD into the backend directory for Docker operations
+            cd ${{ secrets.PROJECT_PATH_STAGING }}/backend
 
             echo "--- DIAGNOSTICS START ---"
             echo ">>> Localização atual (pwd):"
             pwd
-            echo ">>> Conteúdo da pasta 'backend':"
-            ls -lR backend/
+            echo ">>> Conteúdo da pasta atual (backend):"
+            ls -lR .
             echo ">>> Conteúdo do docker-compose.yml:"
             cat docker-compose.yml
             echo "--- DIAGNOSTICS END ---"
 
             echo "2. Criando arquivo .env para o Docker Compose..."
-            echo "ORACLE_USER=${ORACLE_USER}" > .env
-            echo "ORACLE_PASSWORD=${ORACLE_PASSWORD}" >> .env
-            echo "ORACLE_DSN=${ORACLE_DSN}" >> .env
-            echo "SECRET_KEY=${SECRET_KEY}" >> .env
+            # Ensure these match settings.py's os.getenv calls for staging DB
+            echo "ORACLE_PROD_USER=${ORACLE_STAGE_USER}" > .env # Use PROD_USER env var in settings, but STAGE secret here
+            echo "ORACLE_PROD_PASSWORD=${ORACLE_STAGE_PASSWORD}" >> .env # Use PROD_PASSWORD env var in settings, but STAGE secret here
+            echo "ORACLE_PROD_DSN=${ORACLE_STAGE_DSN}" >> .env # Use PROD_DSN env var in settings, but STAGE secret here
+            echo "SECRET_KEY=${DJANGO_SECRET_KEY}" >> .env
             echo "DEBUG=False" >> .env
             echo "ALLOWED_HOSTS=${ALLOWED_HOSTS}" >> .env
             echo "CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}" >> .env
-            
+            echo "TNS_ADMIN=${{ secrets.PROJECT_PATH_STAGING }}/backend/Wallet_CDKTECKDB" >> .env # Add TNS_ADMIN
+
             echo "3. Construindo e iniciando os containers com Docker Compose..."
-            docker compose down
-            docker compose up --build -d
+            # For OCI, we need to ensure docker and docker-compose is installed
+            # and that the user has permissions to run docker commands.
+            # (Assumed already set up on the VM)
+            docker compose down --remove-orphans # Add --remove-orphans to clean up old services
+            docker compose up --build -d --force-recreate
             
             echo "4. Limpando imagens Docker não utilizadas..."
             docker image prune -f

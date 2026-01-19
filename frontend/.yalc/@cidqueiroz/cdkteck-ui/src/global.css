@@ -640,6 +640,7 @@ _______________PADRÃO__________________
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 html {
@@ -709,7 +710,7 @@ main {
 /* 2. Background para Vitrine (Login/Landing) */
 .bg-vitrine {
     position: relative;
-    width: 100%;
+    width: 110%;
     /* min-height: 100vh; */
     overflow: hidden;
     background-color: var(--cor-fundo);
@@ -719,7 +720,7 @@ main {
 .bg-vitrine::before {
     content: "";
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0; left: 0; width: 110%; height: 110%;
     z-index: 0; /* Fica atrás do conteúdo */
     
     /* Configuração da Imagem Padrão (Dark Mode) */
@@ -2205,7 +2206,7 @@ body[data-theme='light'] .legal-highlight-box {
     flex-direction: column;
     align-items: center; 
     justify-content: flex-start;
-    padding-top: 10px !important; 
+    padding-top: 110px !important; 
     padding-bottom: 20px;
     background-color: transparent;
     font-family: var(--fonte-secundaria);
@@ -2387,7 +2388,7 @@ body[data-theme='light'] .login-page-header {
   background: rgba(0, 0, 0, 0.2); /* Fundo input mais escuro */
   color: var(--cor-texto-secundario);
   font-size: 0.9rem;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 
 .login-page-input:focus {
@@ -2406,7 +2407,7 @@ body[data-theme='light'] .login-page-header {
   color: #fff;
   font-size: 0.95rem;
   transition: transform 0.3s, background-color 0.3s;
-  margin-top: 5px;
+  /* margin-top: 5px; */
 }
 
 .login-page-button:hover:not(:disabled) {
@@ -2472,7 +2473,7 @@ body[data-theme='light'] .login-page-header {
 /* Container de Alternância (Login <-> Cadastro) */
 .toggle-mode-container {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 5px;
     font-size: 0.9rem;
     color: var(--cor-texto-primario);
 }
@@ -2504,7 +2505,7 @@ body[data-theme='light'] .toggle-mode-btn {
 
 /* --- LOGIN SOCIAL (V3 - SVGs Embutidos) --- */
 .social-login-section {
-    margin-top: 10px;
+    /* margin-top: 10px; */
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -2565,16 +2566,16 @@ body[data-theme='light'] .toggle-mode-btn {
     fill: #ffffff;
 }
 
-/* LinkedIn (Fica Azul Escuro e Ícone Branco) */
-.social-btn.linkedin:hover {
-    background-color: #0A66C2;
-    border-color: #0A66C2;
+/* github (Fica Azul Escuro e Ícone Branco) */
+.social-btn.github:hover {
+    background-color: #ffffff;
+    border-color: #000000;
     box-shadow: 0 0 15px rgba(10, 102, 194, 0.5);
     transform: translateY(-3px) scale(1.1);
 }
 /* Muda a cor de preenchimento do SVG para branco no hover */
-.social-btn.linkedin:hover svg {
-    fill: #ffffff;
+.social-btn.github:hover svg {
+    fill: #000000;
 }
 
 /* Ajuste Tema Claro */

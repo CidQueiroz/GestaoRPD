@@ -21,9 +21,17 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.conf import settings # Import settings
+from django.conf.urls.static import static # Import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+
+    # Local Development API
+    path("api/", include("api.urls")),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
     # Production API for GestaoRPD
     path("gestaorpd/api/", include("api.urls")),
     path('gestaorpd/api/token/', TokenObtainPairView.as_view(), name='gestaorpd_token_obtain_pair'),
@@ -33,3 +41,8 @@ urlpatterns = [
     path('staging/gestaorpd/api/token/', TokenObtainPairView.as_view(), name='staging_gestaorpd_token_obtain_pair'),
     path('staging/gestaorpd/api/token/refresh/', TokenRefreshView.as_view(), name='staging_gestaorpd_token_refresh'),
 ]
+
+# ONLY serve static and media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

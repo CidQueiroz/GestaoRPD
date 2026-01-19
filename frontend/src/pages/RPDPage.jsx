@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect, useCallback } from 'react';
+import api from '../api';
+import PageLayout from '../components/PageLayout';
+import { Card, Input, Button } from '@cidqueiroz/cdkteck-ui'; // Importe os componentes da CDKTECK-UI
 import { useAuth } from '../context/AuthContext';
-import { Card, Input } from '@cidqueiroz/cdkteck-ui';
 
 const RPDPage = () => {
-  const { authTokens, logout } = useAuth();
+  const { logout } = useAuth();
   const [rpdEntries, setRpdEntries] = useState([]);
   const [formData, setFormData] = useState({
     data: new Date().toISOString().slice(0, 10),
@@ -18,29 +18,35 @@ const RPDPage = () => {
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(''); // 'success' or 'error'
 
-  const api = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${authTokens?.access}`,
-    },
-  });
+  // Estados para Paginação
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Deve corresponder ao backend
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    fetchRpdEntries();
-  }, []);
-
-  const fetchRpdEntries = async () => {
+  const fetchRpdEntries = useCallback(async (page = currentPage, pageSize = itemsPerPage) => {
     try {
-      const response = await api.get('/rpd/');
-      setRpdEntries(response.data);
+      // Adiciona parâmetros de paginação na requisição
+      const response = await api.get(`/rpd/?page=${page}&page_size=${pageSize}`);
+      setRpdEntries(response.data.results);
+      setTotalItems(response.data.count);
+      setTotalPages(Math.ceil(response.data.count / pageSize));
+      setMessage('');
+      setMessageType('');
     } catch (error) {
       console.error("Erro ao buscar entradas de RPD:", error);
       if (error.response && error.response.status === 401) {
-        logout();
+        logout(); // Token expirado ou inválido
+      } else {
+        setMessage('Erro ao buscar entradas de RPD. Verifique o console.');
+        setMessageType('error');
       }
     }
-  };
+  }, [currentPage, itemsPerPage, logout]); // Dependências para useCallback
+
+  useEffect(() => {
+    fetchRpdEntries(currentPage, itemsPerPage);
+  }, [currentPage, itemsPerPage, fetchRpdEntries]); // Redraw on page/itemsPerPage change
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,9 +70,9 @@ const RPDPage = () => {
         resposta_adaptativa: '',
         resultado: '',
       });
-      fetchRpdEntries();
       setMessage('Entrada de RPD adicionada com sucesso!');
       setMessageType('success');
+      fetchRpdEntries(currentPage, itemsPerPage); // Recarrega a lista
     } catch (error) {
       console.error("Erro ao adicionar entrada de RPD:", error);
       if (error.response && error.response.status === 401) {
@@ -78,20 +84,15 @@ const RPDPage = () => {
     }
   };
 
-  return (
-    <div className="dashboard-container contexto-rpd">
-      <h1 className="dashboard-title">Registro de Pensamentos Disfuncionais (RPD)</h1>
-      
-      <div className="dashboard-grid">
-        <Card className="dashboard-card">
-          <div className="card-header">
-            <h3>War Room</h3>
-          </div>
-          <div className="form-actions" style={{ marginTop: '1rem' }}>
-            <Link to="/rpd/war-room" className="card-action-btn">Acessar War Room</Link>
-          </div>
-        </Card>
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
+  return (
+    <PageLayout title="Registro de Pensamentos Disfuncionais (RPD)" backTo="/rpd">
+      <div className="dashboard-grid">
         <Card className="dashboard-card">
           <div className="card-header">
             <h3>Adicionar Nova Entrada</h3>
@@ -104,11 +105,11 @@ const RPDPage = () => {
             </div>
             <div className="form-group">
               <label htmlFor="situacao">Situação:</label>
-              <textarea id="situacao" name="situacao" value={formData.situacao} onChange={handleChange} required />
+              <textarea id="situacao" name="situacao" value={formData.situacao} onChange={handleChange} required className="cdkteck-textarea" /> {/* Adicionei classe para estilização */}
             </div>
             <div className="form-group">
               <label htmlFor="pensamento_automatico">Pensamento Automático:</label>
-              <textarea id="pensamento_automatico" name="pensamento_automatico" value={formData.pensamento_automatico} onChange={handleChange} required />
+              <textarea id="pensamento_automatico" name="pensamento_automatico" value={formData.pensamento_automatico} onChange={handleChange} required className="cdkteck-textarea" />
             </div>
             <div className="form-group">
               <label htmlFor="emocao">Emoção:</label>
@@ -116,14 +117,14 @@ const RPDPage = () => {
             </div>
             <div className="form-group">
               <label htmlFor="resposta_adaptativa">Resposta Adaptativa:</label>
-              <textarea id="resposta_adaptativa" name="resposta_adaptativa" value={formData.resposta_adaptativa} onChange={handleChange} required />
+              <textarea id="resposta_adaptativa" name="resposta_adaptativa" value={formData.resposta_adaptativa} onChange={handleChange} required className="cdkteck-textarea" />
             </div>
             <div className="form-group">
               <label htmlFor="resultado">Resultado:</label>
-              <textarea id="resultado" name="resultado" value={formData.resultado} onChange={handleChange} required />
+              <textarea id="resultado" name="resultado" value={formData.resultado} onChange={handleChange} required className="cdkteck-textarea" />
             </div>
             <div className="form-actions" style={{ marginTop: '1rem' }}>
-              <button type="submit" className="card-action-btn">Salvar Entrada</button>
+              <Button type="submit" variant="primary">Salvar Entrada</Button> {/* Usando Button da CDKTECK-UI */}
             </div>
           </form>
         </Card>
@@ -135,32 +136,44 @@ const RPDPage = () => {
           {rpdEntries.length === 0 ? (
             <p>Nenhuma entrada de RPD.</p>
           ) : (
-            <div className="table-responsive">
-              <table className="product-table">
-                <thead>
-                  <tr>
-                    <th>Data</th>
-                    <th>Situação</th>
-                    <th>Pensamento Automático</th>
-                    <th>Emoção</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rpdEntries.map((entry) => (
-                    <tr key={entry.id}>
-                      <td>{new Date(entry.data).toLocaleDateString()}</td>
-                      <td>{entry.situacao}</td>
-                      <td>{entry.pensamento_automatico}</td>
-                      <td>{entry.emocao}</td>
+            <>
+              <div className="table-responsive">
+                <table className="product-table">
+                  <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Situação</th>
+                      <th>Pensamento Automático</th>
+                      <th>Emoção</th>
+                      <th>Resposta Adaptativa</th>
+                      <th>Resultado</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {rpdEntries.map((entry) => (
+                      <tr key={entry.id}>
+                        <td>{new Date(entry.data).toLocaleDateString()}</td>
+                        <td>{entry.situacao}</td>
+                        <td>{entry.pensamento_automatico}</td>
+                        <td>{entry.emocao}</td>
+                        <td>{entry.resposta_adaptativa}</td>
+                        <td>{entry.resultado}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {/* Controles de Paginação */}
+              <div className="pagination-controls" style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
+                <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} variant="secondary">Anterior</Button>
+                <span>Página {currentPage} de {totalPages}</span>
+                <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} variant="secondary">Próxima</Button>
+              </div>
+            </>
           )}
         </Card>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

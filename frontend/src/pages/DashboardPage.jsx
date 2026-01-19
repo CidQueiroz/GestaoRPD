@@ -69,6 +69,14 @@ const DashboardPage = () => {
         </div>
         <Link to="/rpd/log_pod_diario" className="card-action-btn">Ver Log</Link>
       </Card>
+
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h3>War Room</h3>
+          <p>Visualize e analise os dados de forma integrada.</p>
+        </div>
+        <Link to="/war-room" className="card-action-btn">Entrar na Sala</Link>
+      </Card>
     </>
   );
 

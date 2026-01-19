@@ -10,7 +10,7 @@ interface LoginPageProps {
     }) => void;
     onGoogleLogin?: () => void;
     onFacebookLogin?: () => void;
-    onLinkedInLogin?: () => void;
+    onGitHubLogin?: () => void;
     recoveryPath?: string;
     imageSrc?: string;
     title?: string;

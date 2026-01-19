@@ -1,327 +1,139 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Check, X, AlertCircle, Download, Calendar, FileText, Plus, Trash2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext'; // Import useAuth
+import api from '../api'; // Import your API client
+
+import PageLayout from '../components/PageLayout';
+import { Card, Input, Button } from '@cidqueiroz/cdkteck-ui'; // Import CDKTECK-UI components
 
 const CourseTracker = () => {
-  const [courses, setCourses] = useState([
-    // === ONDA 1: Ignição, Fundamentos & Velocidade (JAN - MAR) ===
-    // Foco: Mira estratégica, base científica e build acelerado.
-
-    {
-      id: 1,
-      name: "Goal Mastery: 21 Days to Transform Your Life",
-      hours: 2,
-      completed: 0,
-      priority: "Crítica",
-      link: "https://www.udemy.com/course/the-complete-guide-for-goal-achievement-in-21-days-challenge/learn/lecture/24219142",
-      startDate: "2026-01-01",
-      endDate: "",
-      notes: "O Protocolo de Ignição. Definir o GPSAI para os 133 agentes.",
-      lessons: []
-    },
-    {
-      id: 2,
-      name: "Machine Learning Foundations: Build Expert-Level AI Models",
-      hours: 20,
-      completed: 0,
-      priority: "Crítica",
-      link: "https://www.udemy.com/course/machine-learning-foundations-build-expert-level-ai-models/learn/lecture/48712641",
-      startDate: "2026-01-05",
-      endDate: "",
-      notes: "A base de tudo. Sem entender o motor, não há soberania no asfalto.",
-      lessons: []
-    },
-    {
-      id: 3,
-      name: "From Prompt Engineering to Agent Engineering",
-      hours: 31.5,
-      completed: 0,
-      priority: "Máxima",
-      link: "https://www.udemy.com/course/from-prompt-engineering-to-agent-engineering/learn/lecture/49618381",
-      startDate: "2026-01-10",
-      endDate: "",
-      notes: "O Manual do Piloto. Transição de prompts simples para agentes autônomos complexos.",
-      lessons: []
-    },
-    {
-      id: 4,
-      name: "Google Antigravity for Beginners: AI Coding Crash Course",
-      hours: 12.5,
-      completed: 0,
-      priority: "Máxima",
-      link: "https://www.udemy.com/course/google-antigravity-for-beginners-ai-coding-crash-course/",
-      startDate: "2026-01-20",
-      endDate: "",
-      notes: "Velocidade máxima no ecossistema Google. Cursor/Windsurf dominance.",
-      lessons: []
-    },
-    {
-      id: 5,
-      name: "AI-Powered Microservices with Vibe Coding",
-      hours: 2,
-      completed: 0,
-      priority: "Máxima",
-      link: "https://www.udemy.com/course/ai_powered_microservices_with_vibe_coding/",
-      startDate: "2026-02-01",
-      endDate: "",
-      notes: "Arquitetura técnica para sustentar o exército de agentes.",
-      lessons: []
-    },
-    {
-      id: 6,
-      name: "Build 8 Python Apps Games and Web Application Python Master",
-      hours: 7,
-      completed: 0,
-      priority: "Alta",
-      link: "https://www.udemy.com/course/build-8-python-apps-games-and-web-application-python-master/",
-      startDate: "2026-02-10",
-      endDate: "",
-      notes: "Aquecimento de portfólio e domínio da linguagem base.",
-      lessons: []
-    },
-    {
-      id: 7,
-      name: "Complete AI Agent Practical Course C| AIPC",
-      hours: 8,
-      completed: 0,
-      priority: "Máxima",
-      link: "https://www.udemy.com/course/complete-ai-agent-practical-course-c-aipc/",
-      startDate: "2026-02-20",
-      endDate: "",
-      notes: "Foco prático em automação mobile e n8n para demandas Minsait.",
-      lessons: []
-    },
-    {
-      id: 8,
-      name: "DeepSeek R1 AI: 25 Real World Projects",
-      hours: 6,
-      completed: 0,
-      priority: "Máxima",
-      link: "https://www.udemy.com/course/deepseek-r1-real-world-projects/",
-      startDate: "2026-03-01",
-      endDate: "",
-      notes: "Volume de projetos de raciocínio (Reasoning) para o portfólio.",
-      lessons: []
-    },
-    {
-      id: 9,
-      name: "100 AI Agents in 100 Days 2026",
-      hours: 8,
-      completed: 0,
-      priority: "Alta",
-      link: "https://www.udemy.com/course/100-ai-agents/",
-      startDate: "2026-03-10",
-      endDate: "",
-      notes: "O desafio de consistência para fechar os primeiros 100 do exército.",
-      lessons: []
-    },
-    // === ONDA 2: Inteligência e Dados (ABR - JUN) ===
-    // Foco: RAG, Otimização e Conhecimento Estruturado.
-    {
-      id: 10,
-      name: "Complete RAG Bootcamp: Build & Deploy AI Apps",
-      hours: 28,
-      completed: 0,
-      priority: "Alta",
-      link: "https://www.udemy.com/course/complete-rag-bootcamp-build-optimize-and-deploy-ai-apps/",
-      startDate: "2026-04-01",
-      endDate: "",
-      notes: "Vital para lidar com a densidade de documentos da Petrobras.",
-      lessons: []
-    },
-    {
-      id: 11,
-      name: "Quantization for GenAI Models",
-      hours: 2,
-      completed: 0,
-      priority: "Alta",
-      link: "https://www.udemy.com/course/quantization",
-      startDate: "2026-05-01",
-      endDate: "",
-      notes: "Otimização extrema para o hardware Dell 8GB.",
-      lessons: []
-    },
-    {
-      id: 12,
-      name: "Mastering Agentic Design Patterns",
-      hours: 3,
-      completed: 0,
-      priority: "Alta",
-      link: "https://www.udemy.com/course/mastering-agentic-design-patterns",
-      startDate: "2026-05-15",
-      endDate: "",
-      notes: "Padronização de arquitetura de agentes autônomos.",
-      lessons: []
-    },
-    {
-      id: 13,
-      name: "Certified Generative AI Architect with Knowledge Graphs",
-      hours: 8,
-      completed: 0,
-      priority: "Alta",
-      link: "https://www.udemy.com/course/certified_generative_ai_architect_with_knowledge_graphs",
-      startDate: "2026-06-01",
-      endDate: "",
-      notes: "Nível Sênior: conectando dados de forma relacional inteligente.",
-      lessons: []
-    },
-    // === ONDA 3: Automação Enterprise e Workflows (JUL - SET) ===
-    // Foco: Governança, Integração e MLOps.
-    {
-      id: 14,
-      name: "AI Agents: From Foundations to Enterprise Systems",
-      hours: 13,
-      completed: 0,
-      priority: "Média",
-      link: "https://www.udemy.com/course/ai-agents-from-foundations-to-enterprise-systems/",
-      startDate: "2026-07-01",
-      endDate: "",
-      notes: "Escalando de agentes locais para sistemas industriais.",
-      lessons: []
-    },
-    {
-      id: 15,
-      name: "Base44 Mastery: Build Enterprise AI Workflow Automations",
-      hours: 7,
-      completed: 0,
-      priority: "Média",
-      link: "https://www.udemy.com/course/base44-mastery-build-enterprise-ai-workflow-automations/",
-      startDate: "2026-08-01",
-      endDate: "",
-      notes: "Integração total: Slack, Notion e Workspace.",
-      lessons: []
-    },
-    {
-      id: 16,
-      name: "Ultimate DevOps to MLOps Bootcamp",
-      hours: 9,
-      completed: 0,
-      priority: "Média",
-      link: "https://www.udemy.com/course/devops-to-mlops-bootcamp/",
-      startDate: "2026-08-15",
-      endDate: "",
-      notes: "Pipeline de produção para o portfólio.",
-      lessons: []
-    },
-    {
-      id: 17,
-      name: "Build On-Device AI",
-      hours: 4,
-      completed: 0,
-      priority: "Média",
-      link: "https://www.udemy.com/course/build-on-device-ai/",
-      startDate: "2026-09-01",
-      endDate: "",
-      notes: "Privacidade e execução local para segurança máxima.",
-      lessons: []
-    },
-    // === ONDA 4: Liderança, Governança e Soberania (OUT - DEZ) ===
-    // Foco: Estratégia, Compliance e Finalização.
-    {
-      id: 18,
-      name: "Certified Chief AI Officer Program",
-      hours: 12,
-      completed: 0,
-      priority: "Baixa",
-      link: "https://www.udemy.com/course/chief-ai-officer-program-lead-ai-strategy-governance",
-      startDate: "2026-10-01",
-      endDate: "",
-      notes: "Visão executiva. Preparação para cargos C-Level em IA.",
-      lessons: []
-    },
-    {
-      id: 19,
-      name: "CAIXA - Inteligência Artificial na Prática (DIO)",
-      hours: 16,
-      completed: 0,
-      priority: "Baixa",
-      link: "https://web.dio.me/track/31b3e5fd-262e-4d2f-8b7c-f614da085c46",
-      startDate: "2026-10-15",
-      endDate: "",
-      notes: "Selo de qualidade para o mercado nacional.",
-      lessons: []
-    },
-    {
-      id: 20,
-      name: "AI for Risk Management & Compliance Excellence",
-      hours: 5,
-      completed: 0,
-      priority: "Baixa",
-      link: "https://www.udemy.com/course/ai-for-risk-management-compliance-excellence/",
-      startDate: "2026-11-01",
-      endDate: "",
-      notes: "Garantindo que seu império de agentes seja seguro e ético.",
-      lessons: []
-    },
-    {
-      id: 21,
-      name: "Generative AI for Personal Productivity: Get More Done",
-      hours: 23,
-      completed: 0,
-      priority: "Baixa",
-      link: "https://www.udemy.com/course/generative-ai-for-personal-productivity",
-      startDate: "2026-12-01",
-      endDate: "",
-      notes: "O fechamento: Automatizar tudo para colher os frutos da Soberania.",
-      lessons: []
-    },
-    {
-      id: 0,
-      name: "Awesome Claude Skills",
-      hours: 0,
-      completed: 0,
-      priority: "Alta",
-      link: "https://github.com/ComposioHQ/awesome-claude-skills",
-      startDate: "Contínuo",
-      endDate: "",
-      notes: "Referência técnica contínua para skills avançadas com Claude.",
-      lessons: []
-    }
-  ]);
-
+  const { logout } = useAuth();
+  const [courses, setCourses] = useState([]);
   const [expandedCourse, setExpandedCourse] = useState(null);
-  const [showExportMenu, setShowExportMenu] = useState(false);
   const [collapsedCourses, setCollapsedCourses] = useState({});
+  const [showExportMenu, setShowExportMenu] = useState(false);
 
   // State for new course form
-  const [newCourseName, setNewCourseName] = useState('');
-  const [newCourseHours, setNewCourseHours] = useState('');
-  const [newCoursePriority, setNewCoursePriority] = useState('Média'); // Default priority
-  const [newCourseLink, setNewCourseLink] = useState('');
+  const [newCourseForm, setNewCourseForm] = useState({
+    nome: '',
+    priority: 'Média', // This priority was not in backend, now it will be
+    link: '',
+    descricao: '',
+    data_inicio: '',
+    data_conclusao_prevista: '',
+    status: 'Pendente',
+    quantidade_horas: 0, // New field for total hours
+  });
   const [showAddCourseForm, setShowAddCourseForm] = useState(false);
 
-  // State for new course form                                                                                                             │
+  // State for current lesson being added
+  const [newLessonForm, setNewLessonForm] = useState({
+    courseId: null,
+    data_aula: new Date().toISOString().slice(0, 16), // ISO format for datetime-local input
+    topicos_abordados: '',
+    observacoes: '',
+    concluida: false,
+  });
+  const [showAddLessonModal, setShowAddLessonModal] = useState(null);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('courseTrackerData');
-    if (saved) {
-      setCourses(JSON.parse(saved));
+  // State for messages
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
+
+  // State for calculated statistics
+  const [totalCoursesCount, setTotalCoursesCount] = useState(0);
+  const [coursesInProgressCount, setCoursesInProgressCount] = useState(0);
+  const [coursesCompletedCount, setCoursesCompletedCount] = useState(0);
+  const [priorityCoursesCount, setPriorityCoursesCount] = useState(0);
+  const [overallProgressPercent, setOverallProgressPercent] = useState(0);
+  const [remainingHours, setRemainingHours] = useState(0);
+
+  // --- API CALLS ---
+  const fetchCourses = useCallback(async () => {
+    try {
+      const response = await api.get(`/courses/`);
+      setCourses(response.data || []); // Directly use response.data, ensure it's an array
+      setMessage('');
+      setMessageType('');
+    } catch (error) {
+      console.error("Erro ao buscar cursos:", error);
+      if (error.response && error.response.status === 401) {
+        logout();
+      } else {
+        setMessage('Erro ao buscar cursos. Verifique o console.');
+        setMessageType('error');
+      }
     }
-    const savedCollapsed = localStorage.getItem('collapsedCourses');
-    if (savedCollapsed) {
-      setCollapsedCourses(JSON.parse(savedCollapsed));
+  }, [logout]);
+
+  const fetchLessonsForCourse = useCallback(async (courseId) => {
+    try {
+      const response = await api.get(`/lessons/?course=${courseId}&page_size=1000`); // Fetch all lessons for a course for now
+      // Update the specific course's lessons in the courses state
+      setCourses(prevCourses => prevCourses.map(course =>
+        course.id === courseId ? { ...course, lessons: response.data.results } : course
+      ));
+    } catch (error) {
+      console.error(`Erro ao buscar aulas para o curso ${courseId}:`, error);
+      // Handle error
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('courseTrackerData', JSON.stringify(courses));
-  }, [courses]);
+    fetchCourses(); // Call without pagination parameters
+    // Initial collapse state from local storage or default to collapsed
+    const savedCollapsed = localStorage.getItem('collapsedCourses');
+    if (savedCollapsed) {
+      setCollapsedCourses(JSON.parse(savedCollapsed));
+    }
+  }, [fetchCourses]);
 
+  // Persist collapsed state to local storage
   useEffect(() => {
     localStorage.setItem('collapsedCourses', JSON.stringify(collapsedCourses));
   }, [collapsedCourses]);
 
-
-  const getPriorityClass = (priority) => {
-    switch (priority) {
-      case "Máxima": return "priority-maxima";
-      case "Alta": return "priority-alta";
-      case "Média": return "priority-media";
-      case "Baixa": return "priority-baixa";
-      default: return "priority-baixa";
-    }
+  const PRIORITY_VALUE_MAP = {
+    "Estratégica": 0, // Adding Estratégica as highest priority
+    "Máxima": 1,
+    "Alta": 2,
+    "Média": 3,
+    "Baixa": 4,
   };
-  
-  // ... (all other functions remain the same)
+
+  useEffect(() => {
+    if (courses && courses.length > 0) {
+      // Calculate counts
+      const total = courses.length;
+      const inProgress = courses.filter(c => c.status === 'Em Andamento').length;
+      const completed = courses.filter(c => c.status === 'Concluído').length;
+      const priority = courses.filter(c => c.priority === 'Máxima' || c.priority === 'Alta' || c.priority === 'Estratégica').length;
+
+      // Calculate overall progress based on minutes
+      const totalMinutesStudied = courses.reduce((sum, course) => sum + (course.progresso || 0), 0);
+      const totalPossibleMinutes = courses.reduce((sum, course) => sum + ((course.quantidade_horas || 0) * 60), 0);
+      const overallAvgProgress = totalPossibleMinutes > 0 ? Math.round((totalMinutesStudied / totalPossibleMinutes) * 100) : 0;
+
+      const remainingMinutes = totalPossibleMinutes - totalMinutesStudied;
+      const remainingHoursCalc = totalPossibleMinutes > 0 ? (remainingMinutes / 60).toFixed(1) : 0;
+
+      setTotalCoursesCount(total);
+      setCoursesInProgressCount(inProgress);
+      setCoursesCompletedCount(completed);
+      setPriorityCoursesCount(priority);
+      setOverallProgressPercent(overallAvgProgress);
+      setRemainingHours(remainingHoursCalc);
+    } else {
+      setTotalCoursesCount(0);
+      setCoursesInProgressCount(0);
+      setCoursesCompletedCount(0);
+      setPriorityCoursesCount(0);
+      setOverallProgressPercent(0);
+      setRemainingHours(0);
+    }
+  }, [courses]); // Dependency array: re-run when courses change
+
+  // --- UI & Helper Functions ---
   const toggleCollapse = (courseId) => {
     setCollapsedCourses(prev => ({
       ...prev,
@@ -329,80 +141,168 @@ const CourseTracker = () => {
     }));
   };
 
-  const updateCourse = (id, field, value) => {
-    setCourses(courses.map(course => 
-      course.id === id ? { ...course, [field]: value } : course
-    ));
+  const getProgress = (progressInMinutes, totalHours) => {
+    if (!totalHours || totalHours <= 0) return 0;
+    const totalMinutes = totalHours * 60;
+    if (totalMinutes === 0) return 0;
+    const percentage = (progressInMinutes / totalMinutes) * 100;
+    return Math.round(Math.min(percentage, 100)); // Cap at 100% to handle overflow
   };
 
-  const updateCompleted = (id, value) => {
-    const numValue = Math.max(0, parseFloat(value) || 0);
-    setCourses(courses.map(course => {
-      if (course.id === id) {
-        const newValue = Math.min(course.hours, numValue);
-        return { ...course, completed: newValue };
+  const updateCourseTimeoutRef = useRef(null); // Add this useRef declaration here
+
+  // --- CRUD Operations ---
+  const handleAddCourse = async (e) => {
+    e.preventDefault();
+    setMessage('');
+    setMessageType('');
+    try {
+      // Adjust form data to match backend model fields
+      const courseData = {
+        nome: newCourseForm.nome,
+        descricao: newCourseForm.descricao,
+        progresso: parseFloat(newCourseForm.progresso || 0), // Default to 0 if not set
+        status: newCourseForm.status,
+        data_inicio: newCourseForm.data_inicio || null,
+        data_conclusao_prevista: newCourseForm.data_conclusao_prevista || null,
+        link: newCourseForm.link,
+        quantidade_horas: newCourseForm.quantidade_horas, // Add this line
+      };
+      
+      await api.post('/courses/', courseData);
+      setNewCourseForm({
+        nome: '', hours: '', priority: 'Média', link: '', descricao: '',
+        data_inicio: '', data_conclusao_prevista: '', status: 'Pendente', quantidade_horas: 0, // Add this line
+      });
+      setShowAddCourseForm(false);
+      setMessage('Curso adicionado com sucesso!');
+      setMessageType('success');
+      fetchCourses(); // Re-fetch courses
+    } catch (error) {
+      console.error("Erro ao adicionar curso:", error);
+      setMessage('Erro ao adicionar curso. Verifique o console.');
+      setMessageType('error');
+    }
+  };
+
+  const handleUpdateCourse = useCallback((courseId, field, value) => {
+    setMessage('');
+    setMessageType('');
+
+    // Update local state immediately for a responsive UI
+    setCourses(prevCourses =>
+      prevCourses.map(course =>
+        course.id === courseId ? { ...course, [field]: value } : course
+      )
+    );
+
+    if (updateCourseTimeoutRef.current) {
+      clearTimeout(updateCourseTimeoutRef.current);
+    }
+
+    updateCourseTimeoutRef.current = setTimeout(async () => {
+      try {
+        await api.patch(`/courses/${courseId}/`, { [field]: value });
+        setMessage('Curso atualizado com sucesso!');
+        setMessageType('success');
+        // No need to fetch all courses, as local state is already updated
+        // fetchCourses(); // We can remove this for better performance and rely on local state
+      } catch (error) {
+        console.error("Erro ao atualizar curso:", error);
+        setMessage('Erro ao atualizar curso. Verifique o console.');
+        setMessageType('error');
+        // Potentially revert local state or show specific error for this course
       }
-      return course;
-    }));
-  };
+    }, 500); // Debounce for 500ms
+  }, [logout, setCourses]); // Add setCourses to useCallback dependencies
 
-  const addLesson = (courseId) => {
-    setCourses(courses.map(course => {
-      if (course.id === courseId) {
-        return {
-          ...course,
-          lessons: [...course.lessons, { id: Date.now(), title: "", duration: 0, completed: false, notes: "" }]
-        };
+
+  const handleDeleteCourse = async (courseId) => {
+    if (window.confirm("Tem certeza que deseja deletar este curso e todas as suas aulas?")) {
+      try {
+        await api.delete(`/courses/${courseId}/`);
+        setMessage('Curso deletado com sucesso!');
+        setMessageType('success');
+        fetchCourses(); // Re-fetch courses
+      } catch (error) {
+        console.error("Erro ao deletar curso:", error);
+        setMessage('Erro ao deletar curso. Verifique o console.');
+        setMessageType('error');
       }
-      return course;
-    }));
+    }
   };
 
-  const updateLesson = (courseId, lessonId, field, value) => {
-    setCourses(courses.map(course => {
-      if (course.id === courseId) {
-        return {
-          ...course,
-          lessons: course.lessons.map(lesson =>
-            lesson.id === lessonId ? { ...lesson, [field]: value } : lesson
-          )
-        };
+  const handleAddLesson = async (courseId) => {
+    setMessage('');
+    setMessageType('');
+    try {
+      const lessonData = {
+        course: courseId, // Link to the parent course
+        data_aula: newLessonForm.data_aula,
+        topicos_abordados: newLessonForm.topicos_abordados,
+        observacoes: newLessonForm.observacoes,
+        concluida: newLessonForm.concluida,
+      };
+      await api.post('/lessons/', lessonData);
+      setMessage('Aula adicionada com sucesso!');
+      setMessageType('success');
+      setNewLessonForm(prev => ({ ...prev, courseId: null, data_aula: new Date().toISOString().slice(0, 16), topicos_abordados: '', observacoes: '', concluida: false })); // Reset form
+      fetchLessonsForCourse(courseId); // Re-fetch lessons for the specific course
+    } catch (error) {
+      console.error("Erro ao adicionar aula:", error);
+      setMessage('Erro ao adicionar aula. Verifique o console.');
+      setMessageType('error');
+    }
+  };
+
+  const handleUpdateLesson = async (lessonId, field, value) => {
+    setMessage('');
+    setMessageType('');
+    try {
+      await api.patch(`/lessons/${lessonId}/`, { [field]: value });
+      setMessage('Aula atualizada com sucesso!');
+      setMessageType('success');
+      // No need to fetch all courses, just update the specific course's lessons
+      const courseId = courses.find(course => course.lessons?.some(lesson => lesson.id === lessonId))?.id;
+      if (courseId) fetchLessonsForCourse(courseId);
+    } catch (error) {
+      console.error("Erro ao atualizar aula:", error);
+      setMessage('Erro ao atualizar aula. Verifique o console.');
+      setMessageType('error');
+    }
+  };
+
+  const handleDeleteLesson = async (lessonId, courseId) => {
+    if (window.confirm("Tem certeza que deseja deletar esta aula?")) {
+      try {
+        await api.delete(`/lessons/${lessonId}/`);
+        setMessage('Aula deletada com sucesso!');
+        setMessageType('success');
+        fetchLessonsForCourse(courseId); // Re-fetch lessons for the specific course
+      } catch (error) {
+        console.error("Erro ao deletar aula:", error);
+        setMessage('Erro ao deletar aula. Verifique o console.');
+        setMessageType('error');
       }
-      return course;
-    }));
+    }
   };
 
-  const deleteLesson = (courseId, lessonId) => {
-    setCourses(courses.map(course => {
-      if (course.id === courseId) {
-        return {
-          ...course,
-          lessons: course.lessons.filter(lesson => lesson.id !== lessonId)
-        };
-      }
-      return course;
-    }));
-  };
 
-  const getProgress = (completed, total) => {
-    if (total === 0) return 0;
-    return Math.round((completed / total) * 100);
-  };
-  
+  // --- Export Functions ---
   const exportToCSV = () => {
-    let csv = "ID,Curso,Prioridade,Total (h),Concluído (h),Progresso (%),Data Início,Data Fim,Notas,Link\n";
+    let csv = "ID,Curso,Prioridade,Total (h),Concluído (h),Progresso (%),Data Início,Data Fim,Notas,Link,Status\n";
     
     courses.forEach(course => {
-      const progress = getProgress(course.completed, course.hours);
-      const notes = (course.notes || "").replace(/"/g, '""').replace(/\n/g, ' ');
-      csv += `${course.id},"${course.name}",${course.priority},${course.hours},${course.completed},${progress},"${course.startDate || ''}","${course.endDate || ''}","${notes}","${course.link}"\n`;
+      const progress = getProgress(course.progresso, course.total_horas || course.hours); // Use model fields
+      const notes = (course.descricao || "").replace(/"/g, '""').replace(/\n/g, ' ');
+      csv += `${course.id},"${course.nome}",${course.priority || ''},${course.total_horas || course.hours || ''},${course.progresso || 0},${progress},"${course.data_inicio || ''}","${course.data_conclusao_real || ''}","${notes}","${course.link || ''}","${course.status || ''}"\n`;
       
-      if (course.lessons.length > 0) {
+      if (course.lessons && course.lessons.length > 0) {
         csv += "\n,Aulas:\n";
-        csv += ",ID Aula,Título,Duração (min),Concluída,Notas Aula\n";
+        csv += ",ID Aula,Data Aula,Tópicos,Observações,Concluída\n";
         course.lessons.forEach(lesson => {
-          const lessonNotes = (lesson.notes || "").replace(/"/g, '""').replace(/\n/g, ' ');
-          csv += `,${lesson.id},"${lesson.title}",${lesson.duration},${lesson.completed ? 'Sim' : 'Não'},"${lessonNotes}"\n`;
+          const lessonNotes = (lesson.observacoes || "").replace(/"/g, '""').replace(/\n/g, ' ');
+          csv += `,,${lesson.id},"${lesson.data_aula || ''}","${lesson.topicos_abordados || ''}","${lessonNotes}",${lesson.concluida ? 'Sim' : 'Não'}\n`;
         });
         csv += "\n";
       }
@@ -424,56 +324,28 @@ const CourseTracker = () => {
     link.click();
   };
 
-  const handleAddCourse = (e) => {
-    e.preventDefault();
-    if (!newCourseName || !newCourseHours) return; // Basic validation
-
-    const newId = courses.length > 0 ? Math.max(...courses.map(c => c.id)) + 1 : 1;
-    const newCourse = {
-      id: newId,
-      name: newCourseName,
-      hours: parseFloat(newCourseHours),
-      completed: 0,
-      priority: newCoursePriority,
-      link: newCourseLink,
-      startDate: "",
-      endDate: "",
-      notes: "",
-      lessons: []
-    };
-    setCourses([...courses, newCourse]);
-    setNewCourseName('');
-    setNewCourseHours('');
-    setNewCoursePriority('Média');
-    setNewCourseLink('');
-    setShowAddCourseForm(false); // Hide form after adding
-  };
-
-  const totalHours = courses.reduce((sum, course) => sum + course.hours, 0);
-  const completedHours = courses.reduce((sum, course) => sum + course.completed, 0);
-  const overallProgress = getProgress(completedHours, totalHours);
-
-  const priorityCourses = courses
-    .filter(c => c.priority === "Máxima" || c.priority === "Alta")
-    .sort((a, b) => {
-      const priorityOrder = { "Máxima": 0, "Alta": 1 };
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
-    });
-
+  // --- Render ---
   return (
-    <div className="dashboard-container" style={{paddingTop: '2rem'}}>
+    <PageLayout title="Plano de Estudos - Engenharia de IA" backTo="/rpd">
       <div className="course-tracker__container">
-        <div className="course-tracker__main-header">
-          <div className="course-tracker__header-top">
-            <div>
-              <h1 className="course-tracker__title">Plano de Estudos - Engenharia de IA</h1>
-              <p className="course-tracker__subtitle">CDK TECK</p>
-            </div>
+        {message && <p className={`message-${messageType}`}>{message}</p>}
+
+        {/* Header Section */}
+        <header className="war-room-header"> {/* Reusing war-room header class for consistent look */}
+          <div className="header-info">
+            <h1 className="war-room-title">Plano de Estudos - Engenharia de IA</h1>
+            <p className="header-subtitle">CDK TECK</p>
+          </div>
+          <div className="header-actions">
+            <Button onClick={() => setShowAddCourseForm(!showAddCourseForm)} variant="primary">
+              <Plus size={18} />
+              {showAddCourseForm ? 'Ocultar' : 'Adicionar Curso'}
+            </Button>
             <div className="course-tracker__export-container">
-              <button onClick={() => setShowExportMenu(!showExportMenu)} className="course-tracker__export-btn">
+              <Button onClick={() => setShowExportMenu(!showExportMenu)} variant="secondary">
                 <Download size={18} />
                 Exportar
-              </button>
+              </Button>
               {showExportMenu && (
                 <div className="course-tracker__export-menu">
                   <button onClick={() => { exportToCSV(); setShowExportMenu(false); }} className="course-tracker__export-item">
@@ -486,239 +358,382 @@ const CourseTracker = () => {
               )}
             </div>
           </div>
-          <div className="course-tracker__overall-progress">
-            <div className="course-tracker__progress-header">
-              <span className="course-tracker__progress-label">Progresso Geral</span>
-              <span className="course-tracker__progress-percent">{overallProgress}%</span>
-            </div>
-            <div className="course-tracker__progress-bar-bg">
-              <div className="course-tracker__progress-bar-fg" style={{ width: `${overallProgress}%` }} />
-            </div>
-            <p className="course-tracker__progress-caption">{completedHours.toFixed(1)}h de {totalHours}h concluídas</p>
-          </div>
-        </div>
-
-        <div className="course-tracker__priority-alert">
-          <AlertCircle className="course-tracker__priority-alert-icon" size={20} />
-          <div>
-            <h3>Cursos Prioritários (60 dias)</h3>
-            <p>Foque primeiro nos {priorityCourses.length} cursos de prioridade Máxima e Alta para maximizar suas chances de recolocação.</p>
-          </div>
-        </div>
+        </header>
 
         {/* Add New Course Form */}
-        <button onClick={() => setShowAddCourseForm(!showAddCourseForm)} className="course-tracker__add-course-toggle-btn">
-          {showAddCourseForm ? 'Ocultar Formulário' : 'Adicionar Novo Curso'}
-        </button>
-
         {showAddCourseForm && (
           <Card className="dashboard-card course-tracker__add-course-form-card">
+            
             <h2>Adicionar Novo Curso</h2>
+            
             <form onSubmit={handleAddCourse} className="course-tracker__form">
-              <div className="course-tracker__form-group">
-                <label htmlFor="newCourseName">Nome do Curso:</label>
-                <Input
-                  id="newCourseName"
-                  type="text"
-                  value={newCourseName}
-                  onChange={(e) => setNewCourseName(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="course-tracker__form-group">
-                <label htmlFor="newCourseHours">Total de Horas:</label>
-                <Input
-                  id="newCourseHours"
-                  type="number"
-                  value={newCourseHours}
-                  onChange={(e) => setNewCourseHours(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="course-tracker__form-group">
-                <label htmlFor="newCoursePriority">Prioridade:</label>
+              
+              <div className="form-group">
+                <label>Status</label>
                 <select
-                  id="newCoursePriority"
-                  value={newCoursePriority}
-                  onChange={(e) => setNewCoursePriority(e.target.value)}
-                  className="course-tracker__select"
-                >
+                  value={course.status}
+                  onChange={(e) => handleUpdateCourse(course.id, 'status', e.target.value)}
+                  className="cdkteck-input"
+                  // Removido o estilo inline para melhor compatibilidade com temas
+                  >
+                  <option value="Pendente">Pendente</option>
+                  <option value="Em Andamento">Em Andamento</option>
+                  <option value="Concluído">Concluído</option>
+                  <option value="Cancelado">Cancelado</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                
+                <label>Prioridade</label>
+                
+                <select
+                  value={course.priority}
+                  onChange={(e) => handleUpdateCourse(course.id, 'priority', e.target.value)}
+                  className="cdkteck-input"
+                  // Removido o estilo inline para melhor compatibilidade com temas
+                  >
+                  <option value="Estratégica">Estratégica</option>
                   <option value="Máxima">Máxima</option>
                   <option value="Alta">Alta</option>
                   <option value="Média">Média</option>
                   <option value="Baixa">Baixa</option>
                 </select>
+
               </div>
+
               <div className="course-tracker__form-group">
+                
+                <label htmlFor="newCourseStartDate">Data de Início:</label>
+                
+                <Input
+                  id="newCourseStartDate"
+                  type="date"
+                  name="data_inicio"
+                  value={newCourseForm.data_inicio}
+                  onChange={(e) => setNewCourseForm({...newCourseForm, data_inicio: e.target.value})}
+                />
+
+              </div>
+
+              <div className="course-tracker__form-group">
+
+                <label htmlFor="newCourseEndDate">Data de Conclusão Prevista:</label>
+
+                <Input
+                  id="newCourseEndDate"
+                  type="date"
+                  name="data_conclusao_prevista"
+                  value={newCourseForm.data_conclusao_prevista}
+                  onChange={(e) => setNewCourseForm({...newCourseForm, data_conclusao_prevista: e.target.value})}
+                />
+
+              </div>
+
+              <div className="course-tracker__form-group">
+
                 <label htmlFor="newCourseLink">Link do Curso:</label>
+                
                 <Input
                   id="newCourseLink"
                   type="url"
-                  value={newCourseLink}
-                  onChange={(e) => setNewCourseLink(e.target.value)}
+                  name="link"
+                  value={newCourseForm.link}
+                  onChange={(e) => setNewCourseForm({...newCourseForm, link: e.target.value})}
                 />
+
               </div>
+
               <Button type="submit" variant="primary">Adicionar Curso</Button>
+
             </form>
+
           </Card>
+
         )}
 
-        <div className="course-tracker__list">
-          {courses.map((course) => {
-            const progress = getProgress(course.completed, course.hours);
-            const isExpanded = expandedCourse === course.id;
-            const isCollapsed = collapsedCourses[course.id] || false;
-            return (
-              <div key={course.id} className="course-tracker__course-card">
-                <div className="course-tracker__course-header" onClick={() => toggleCollapse(course.id)}>
-                  <div className="course-tracker__course-header-content">
-                    <div className="course-tracker__course-header-main">
-                      <button>
+        {/* Overall Stats Cards */}
+        <div className="dashboard-grid stats-grid">
+          {/* Overall Progress */}
+          <Card className="stat-card">
+            <div className="status-card-header">
+              <span className="status-label">Progresso Geral</span>
+            </div>
+            <div className="status-value">{overallProgressPercent}%</div> 
+            <div className="status-subtitle">Média de Progresso</div>
+          </Card>
+          {/* Courses in Progress */}
+          <Card className="stat-card">
+            <div className="status-card-header">
+              <span className="status-label">Cursos em Andamento</span>
+            </div>
+            <div className="status-value">{coursesInProgressCount}</div>
+            <div className="status-subtitle">Atualmente estudando</div>
+          </Card>
+           {/* Priority Courses */}
+          <Card className="stat-card">
+            <div className="status-card-header">
+              <span className="status-label">Cursos Prioritários</span>
+            </div>
+            <div className="status-value">{priorityCoursesCount}</div>
+            <div className="status-subtitle">Foco principal</div>
+          </Card>
+          {/* Total Courses */}
+          <Card className="stat-card">
+            <div className="status-card-header">
+              <span className="status-label">Total de Cursos</span>
+            </div>
+            <div className="status-value">{totalCoursesCount}</div>
+            <div className="status-subtitle">Na sua lista</div>
+          </Card>
+        </div>
+
+
+        {/* Course List */}
+        <div className="section-card"> {/* Reusing section-card class */}
+          <h2 className="section-title">Meus Cursos</h2>
+          {courses.length === 0 ? (
+            <p>Nenhum curso cadastrado.</p>
+          ) : (
+            
+            <div className="course-list-grid"> {/* Grid for course cards */}
+              {/* Sort courses by explicit priority before mapping */}
+              {courses.slice().sort((a, b) => {
+                const priorityA = PRIORITY_VALUE_MAP[a.priority] || 99; // Use PRIORITY_VALUE_MAP for sorting
+                const priorityB = PRIORITY_VALUE_MAP[b.priority] || 99;
+                return priorityA - priorityB;
+              }).map((course) => {
+                const progress = getProgress(course.progresso, course.quantidade_horas); // Updated progress calculation
+                const isCollapsed = collapsedCourses[course.id] !== false; // Default to collapsed
+
+                return (
+                  <Card key={course.id} className="course-card-item"> {/* Use Card for individual course */}
+                    <div className="course-card-header" onClick={() => toggleCollapse(course.id)}>
+                      <button className="course-card-toggle-btn">
                         {isCollapsed ? (
                           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                         ) : (
                           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                         )}
                       </button>
-                      <span className="course-tracker__course-id">#{course.id}</span>
-                      <h3 className="course-tracker__course-name">{course.name}</h3>
-                      <span className={`course-tracker__priority-badge ${getPriorityClass(course.priority)}`}>{course.priority}</span>
-                      <div className="course-tracker__course-progress">
-                        <div className="course-tracker__course-progress-bar-bg">
-                          <div className={`course-tracker__course-progress-bar-fg ${progress === 100 ? 'course-tracker__course-progress-bar-fg--complete' : 'course-tracker__course-progress-bar-fg--incomplete'}`} style={{ width: `${progress}%` }} />
+                      <h3 className="course-card-name">
+                        <span className="course-id-display">ID: {course.id} - </span>
+                        {course.nome}
+                      </h3>
+                      {/* Display explicit priority badge */}
+                      <span className={`course-card-status-badge priority-${course.priority.toLowerCase().replace(' ', '-')}`}>
+                        {course.priority}
+                      </span>
+                      {/* Display status badge */}
+                      <span className={`course-card-status-badge status-${course.status.toLowerCase().replace(' ', '-')}`}>
+                        ({course.status})
+                      </span>
+                      <div className="course-card-progress">
+                        <div className="course-card-progress-bar-bg">
+                          <div className={`course-card-progress-bar-fg progress-${course.status.toLowerCase().replace(' ', '-')}`} style={{ width: `${progress}%` }} />
                         </div>
-                        <span className={`course-tracker__course-progress-percent ${progress === 100 ? 'course-tracker__course-progress-percent--complete' : 'course-tracker__course-progress-percent--incomplete'}`}>{progress}%</span>
-                        {progress === 100 && <Check color="#22c55e" size={20} />}
+                        <span className="course-card-progress-percent">{progress}%</span>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                {!isCollapsed && (
-                  <div className="course-tracker__course-details">
-                    <div className="course-tracker__course-details-header">
-                        <a href={course.link} target="_blank" rel="noopener noreferrer" className="course-tracker__course-link">
+                    {!isCollapsed && (
+                      <div className="course-card-details">
+                        <div className="course-card-actions">
+                          <a href={course.link} target="_blank" rel="noopener noreferrer" className="course-card-link">
                             Acessar curso →
-                        </a>
-                    </div>
+                          </a>
+                          <Button onClick={() => handleDeleteCourse(course.id)} variant="danger" size="small">
+                            <Trash2 size={16} /> Deletar Curso
+                          </Button>
+                        </div>
+                        <div className="form-grid form-grid-2"> {/* Using a generic grid */}
+                          <div className="form-group">
+                            <label>Progresso (minutos)</label>
+                            <Input
+                              type="number"
+                              value={course.progresso || 0}
+                              onChange={(e) => handleUpdateCourse(course.id, 'progresso', parseInt(e.target.value, 10) || 0)}
+                              min="0"
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Total de Horas</label>
+                            <Input
+                              type="number"
+                              value={course.quantidade_horas || 0}
+                              onChange={(e) => handleUpdateCourse(course.id, 'quantidade_horas', parseInt(e.target.value, 10) || 0)}
+                              min="0"
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Status</label>
+                            <select
+                              value={course.status}
+                              onChange={(e) => handleUpdateCourse(course.id, 'status', e.target.value)}
+                              className="cdkteck-input"
+                              style={{ backgroundColor: '#2d3748', color: 'white' }}
+                            >
+                              <option value="Pendente">Pendente</option>
+                              <option value="Em Andamento">Em Andamento</option>
+                              <option value="Concluído">Concluído</option>
+                              <option value="Cancelado">Cancelado</option>
+                            </select>
+                          </div>
+                          <div className="form-group">
+                            <label>Prioridade</label>
+                            <select
+                              value={course.priority}
+                              onChange={(e) => handleUpdateCourse(course.id, 'priority', e.target.value)}
+                              className="cdkteck-input"
+                              style={{ backgroundColor: '#2d3748', color: 'white' }}
+                            >
+                              <option value="Máxima">Máxima</option>
+                              <option value="Alta">Alta</option>
+                              <option value="Média">Média</option>
+                              <option value="Baixa">Baixa</option>
+                            </select>
+                          </div>
+                          <div className="form-group">
+                            <label>Data de Início</label>
+                            <Input
+                              type="date"
+                              value={course.data_inicio || ''}
+                              onChange={(e) => handleUpdateCourse(course.id, 'data_inicio', e.target.value)}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Data de Conclusão Prevista</label>
+                            <Input
+                              type="date"
+                              value={course.data_conclusao_prevista || ''}
+                              onChange={(e) => handleUpdateCourse(course.id, 'data_conclusao_prevista', e.target.value)}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Data de Conclusão Real</label>
+                            <Input
+                              type="date"
+                              value={course.data_conclusao_real || ''}
+                              onChange={(e) => handleUpdateCourse(course.id, 'data_conclusao_real', e.target.value)}
+                            />
+                          </div>
+                        </div>
 
-                    <div className="course-tracker__grid course-tracker__grid--3-cols">
-                      <div>
-                        <label className="course-tracker__form-group-label">Total de Horas</label>
-                        <div className="text-2xl font-bold text-gray-900">{course.hours}h</div>
-                      </div>
-                      <div className="course-tracker__form-group">
-                        <label htmlFor={`completed-${course.id}`} className="course-tracker__form-group-label">Horas Concluídas</label>
-                        <input id={`completed-${course.id}`} type="number" min="0" max={course.hours} step="0.5" value={course.completed} onChange={(e) => updateCompleted(course.id, e.target.value)} className="course-tracker__input" />
-                      </div>
-                      <div>
-                        <label className="course-tracker__form-group-label">Progresso</label>
-                        <div className={`course-tracker__course-progress-percent ${progress === 100 ? 'course-tracker__course-progress-percent--complete' : 'course-tracker__course-progress-percent--incomplete'}`}>{progress}%</div>
-                      </div>
-                    </div>
+                        <div className="form-group">
+                          <label>Descrição</label>
+                          <textarea
+                            value={course.descricao || ''}
+                            onChange={(e) => handleUpdateCourse(course.id, 'descricao', e.target.value)}
+                            placeholder="Descrição do curso..."
+                            className="cdkteck-textarea"
+                          />
+                        </div>
 
-                    <div className="course-tracker__grid course-tracker__grid--2-cols">
-                      <div className="course-tracker__form-group">
-                        <label htmlFor={`start-date-${course.id}`}><Calendar size={14} /> Data de Início</label>
-                        <input id={`start-date-${course.id}`} type="date" value={course.startDate} onChange={(e) => updateCourse(course.id, 'startDate', e.target.value)} className="course-tracker__input" />
-                      </div>
-                      <div className="course-tracker__form-group">
-                        <label htmlFor={`end-date-${course.id}`}><Calendar size={14} /> Data de Conclusão</label>
-                        <input id={`end-date-${course.id}`} type="date" value={course.endDate} onChange={(e) => updateCourse(course.id, 'endDate', e.target.value)} className="course-tracker__input" />
-                      </div>
-                    </div>
-
-                    <div className="course-tracker__form-group">
-                      <label htmlFor={`notes-${course.id}`}><FileText size={14} /> Notas Gerais do Curso</label>
-                      <textarea id={`notes-${course.id}`} value={course.notes} onChange={(e) => updateCourse(course.id, 'notes', e.target.value)} placeholder="Adicione suas anotações..." className="course-tracker__textarea" />
-                    </div>
-
-                    <div className="course-tracker__lessons-section">
-                      <div className="course-tracker__lessons-header">
-                        <h4>Aulas ({course.lessons.length})</h4>
-                        <button onClick={() => setExpandedCourse(isExpanded ? null : course.id)} className="course-tracker__lessons-toggle">
-                          {isExpanded ? 'Ocultar aulas' : 'Mostrar aulas'}
-                        </button>
-                      </div>
-
-                      {isExpanded && (
-                        <div className="course-tracker__lessons-list">
-                          {course.lessons.map((lesson) => (
-                            <div key={lesson.id} className="course-tracker__lesson-card">
-                              <div className="course-tracker__lesson-grid">
-                                <div className="md-col-span-5"><input type="text" value={lesson.title} onChange={(e) => updateLesson(course.id, lesson.id, 'title', e.target.value)} placeholder="Título da aula" className="course-tracker__lesson-input" /></div>
-                                <div className="md-col-span-2"><input type="number" value={lesson.duration} onChange={(e) => updateLesson(course.id, lesson.id, 'duration', parseFloat(e.target.value) || 0)} placeholder="Min" className="course-tracker__lesson-input" /></div>
-                                <div className="md-col-span-2">
-                                  <label className="course-tracker__lesson-checkbox-group">
-                                    <input type="checkbox" checked={lesson.completed} onChange={(e) => updateLesson(course.id, lesson.id, 'completed', e.target.checked)} className="course-tracker__lesson-checkbox" />
-                                    <span>Concluída</span>
+                        {/* Lessons Section */}
+                        <div className="lessons-section">
+                          <div className="lessons-header">
+                            <h4>Aulas ({course.lessons?.length || 0})</h4>
+                            <Button onClick={() => setShowAddLessonModal(course.id)} variant="primary" size="small">
+                              <Plus size={16} /> Adicionar Aula
+                            </Button>
+                          </div>
+                          {/* Add Lesson Modal */}
+                          {showAddLessonModal === course.id && (
+                            <Card className="dashboard-card add-lesson-form-card">
+                              <h3>Adicionar Nova Aula</h3>
+                              <form onSubmit={(e) => { e.preventDefault(); handleAddLesson(course.id); }}>
+                                <div className="form-group">
+                                  <label>Data da Aula:</label>
+                                  <Input type="datetime-local" value={newLessonForm.data_aula} onChange={(e) => setNewLessonForm({...newLessonForm, data_aula: e.target.value})} required />
+                                </div>
+                                <div className="form-group">
+                                  <label>Tópicos Abordados:</label>
+                                  <textarea value={newLessonForm.topicos_abordados} onChange={(e) => setNewLessonForm({...newLessonForm, topicos_abordados: e.target.value})} placeholder="Tópicos..." className="cdkteck-textarea" required />
+                                </div>
+                                <div className="form-group">
+                                  <label>Observações:</label>
+                                  <textarea value={newLessonForm.observacoes} onChange={(e) => setNewLessonForm({...newLessonForm, observacoes: e.target.value})} placeholder="Observações..." className="cdkteck-textarea" />
+                                </div>
+                                <div className="form-group">
+                                  <label>
+                                    <input type="checkbox" checked={newLessonForm.concluida} onChange={(e) => setNewLessonForm({...newLessonForm, concluida: e.target.checked})} />
+                                    Concluída
                                   </label>
                                 </div>
-                                <div className="md-col-span-3 flex items-center justify-end">
-                                  <button onClick={() => deleteLesson(course.id, lesson.id)} className="course-tracker__lesson-delete-btn"><Trash2 size={18} /></button>
+                                <div className="form-actions">
+                                  <Button type="submit" variant="primary">Salvar Aula</Button>
+                                  <Button type="button" variant="secondary" onClick={() => setShowAddLessonModal(null)}>Cancelar</Button>
                                 </div>
-                              </div>
-                              <textarea value={lesson.notes} onChange={(e) => updateLesson(course.id, lesson.id, 'notes', e.target.value)} placeholder="Anotações da aula..." className="course-tracker__textarea" />
+                              </form>
+                            </Card>
+                          )}
+                          {/* Lessons List */}
+                          {course.lessons?.length > 0 ? (
+                            <div className="lessons-list-table">
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>Data</th>
+                                    <th>Tópicos</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {course.lessons.map((lesson) => (
+                                    <tr key={lesson.id}>
+                                      <td>{new Date(lesson.data_aula).toLocaleString()}</td>
+                                      <td>{lesson.topicos_abordados}</td>
+                                      <td>
+                                        <input type="checkbox" checked={lesson.concluida} onChange={(e) => handleUpdateLesson(lesson.id, 'concluida', e.target.checked)} />
+                                        {lesson.concluida ? ' Concluída' : ' Pendente'}
+                                      </td>
+                                      <td>
+                                        <Button onClick={() => handleDeleteLesson(lesson.id, course.id)} variant="danger" size="small">
+                                          <Trash2 size={16} />
+                                        </Button>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
                             </div>
-                          ))}
-                          <button onClick={() => addLesson(course.id)} className="course-tracker__add-lesson-btn"><Plus size={18} /> Adicionar Aula</button>
+                          ) : (
+                            <p>Nenhuma aula registrada para este curso.</p>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                      </div>
+                    )}
+                  </Card>
+                );
+              })}
+            </div>
+          )}
+          {/* Pagination Controls for Courses - REMOVED */}
         </div>
 
-        <div className="dashboard-grid">
-          <div className="course-tracker__stat-card">
-            <div className="course-tracker__stat-card-content">
-              <div>
-                <p className="course-tracker__stat-card-label">Total de Cursos</p>
-                <p className="course-tracker__stat-card-value">{courses.length}</p>
-              </div>
-              <div className="course-tracker__stat-card-icon-wrapper course-tracker__stat-card-icon-wrapper--indigo">
-                <AlertCircle className="course-tracker__stat-card-icon--indigo" size={24} />
-              </div>
-            </div>
-          </div>
-          <div className="course-tracker__stat-card">
-            <div className="course-tracker__stat-card-content">
-              <div>
-                <p className="course-tracker__stat-card-label">Cursos Concluídos</p>
-                <p className="course-tracker__stat-card-value course-tracker__stat-card-value--green">{courses.filter(c => getProgress(c.completed, c.hours) === 100).length}</p>
-              </div>
-              <div className="course-tracker__stat-card-icon-wrapper course-tracker__stat-card-icon-wrapper--green">
-                <Check className="course-tracker__stat-card-icon--green" size={24} />
-              </div>
-            </div>
-          </div>
-          <div className="course-tracker__stat-card">
-            <div className="course-tracker__stat-card-content">
-              <div>
-                <p className="course-tracker__stat-card-label">Horas Restantes</p>
-                <p className="course-tracker__stat-card-value course-tracker__stat-card-value--orange">{(totalHours - completedHours).toFixed(1)}h</p>
-              </div>
-              <div className="course-tracker__stat-card-icon-wrapper course-tracker__stat-card-icon-wrapper--orange">
-                <X className="course-tracker__stat-card-icon--orange" size={24} />
-              </div>
-            </div>
-          </div>
+        {/* Overall Stats Cards */}
+        <div className="dashboard-grid stats-grid">
+          <Card className="stat-card">
+            <h3>Total de Cursos</h3>
+            <p>{courses.length}</p>
+          </Card>
+          <Card className="stat-card">
+            <h3>Cursos Concluídos</h3>
+            <p>{courses.filter(c => c.status === 'Concluído').length}</p>
+          </Card>
+          <Card className="stat-card">
+            <h3>Horas Restantes</h3>
+            <p>{remainingHours}h</p> 
+          </Card>
         </div>
 
+        {/* Footer Notes */}
         <div className="course-tracker__footer-note">
-          <p><strong>💡 Recursos:</strong></p>
-          <ul>
-            <li>• Seus dados são salvos automaticamente no navegador</li>
-            <li>• Adicione aulas individuais com notas para cada curso</li>
-            <li>• Exporte para CSV/Excel ou JSON para backup</li>
-            <li>• Defina datas de início e fim para planejamento</li>
-          </ul>
+          <p><strong>💡 Recursos:</strong> Seus dados são salvos no banco de dados.</p>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

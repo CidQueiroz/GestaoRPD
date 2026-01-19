@@ -1,10 +1,7 @@
-main {
-  /* padding-top: 6.5rem; Espaçamento para o header fixo */
-}
-
 /* =========================================
-   VARIÁVEIS DE CONTEXTO (Dinâmicas)
-   ========================================= */
+VARIÁVEIS DE CONTEXTO (Dinâmicas)
+========================================= */
+
 .contexto-gestao {
     --cor-destaque: #F7931E; /* Laranja da CDK */
     --cor-destaque-glow: rgba(247, 147, 30, 0.4);
@@ -48,10 +45,9 @@ body[data-theme='dark'] .contexto-rpd .card-action-btn:hover {
    CONTAINER E TABS
    ========================================= */
 .dashboard-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    animation: fadeIn 0.5s ease-in-out;
+  max-width: 1400px;
+  padding: 6rem 2rem 0rem 2rem ;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Estilização das Abas (Toggle) */
@@ -88,6 +84,7 @@ body[data-theme='dark'] .contexto-rpd .card-action-btn:hover {
    ========================================= */
 .dashboard-grid {
     display: grid;
+    margin-top: 2rem;
     /* Responsivo automático: cria colunas de min 300px */
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem;
@@ -712,4 +709,1499 @@ body[data-theme='dark'] .contexto-rpd .card-action-btn:hover {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+}
+
+/* ========================================
+   WAR ROOM - ESTILOS PRINCIPAIS
+   ======================================== */
+
+/* Container Principal */
+.war-room-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #020617 100%);
+  color: #f1f5f9;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+.war-room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #1e293b;
+  padding-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-info {
+  flex: 1;
+  min-width: 300px;
+}
+
+.war-room-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(to right, var(--cor-acao-primaria), var(--cor-acao-secundaria));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.05em;
+}
+
+.header-subtitle {
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ========================================
+   BOTÕES
+   ======================================== */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.btn-primary {
+  background: #06b6d4;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #0891b2;
+}
+
+.btn-success {
+  background: #10b981;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.btn-block {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ========================================
+   MODAL
+   ======================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 1rem;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #334155;
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #06b6d4;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #334155;
+}
+
+/* ========================================
+   FORMULÁRIOS
+   ======================================== */
+.form-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.form-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.form-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  color: #f1f5f9;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* ========================================
+   GRIDS DE CARDS
+   ======================================== */
+.cards-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.cards-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.cards-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.cards-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* ========================================
+   STATUS CARDS
+   ======================================== */
+.status-card {
+  background: rgba(15, 23, 42, 0.8);
+  border-bottom: 2px solid var(--cor-borda);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+body[data-theme='light'] .status-card {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(139, 92, 246, 0.05));
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.status-card:hover {
+  border-color: #10b981;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.status-card-adiantado {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.status-card-atrasado {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.status-card-no-prazo {
+  border-color: rgba(234, 179, 8, 0.5);
+  background: rgba(234, 179, 8, 0.05);
+}
+
+.status-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.status-icon {
+  flex-shrink: 0;
+}
+
+.icon-purple { color: #a855f7; }
+.icon-blue { color: #3b82f6; }
+.icon-yellow { color: #eab308; }
+.icon-green { color: #10b981; }
+.icon-success { color: #10b981; }
+.icon-danger { color: #ef4444; }
+.icon-warning { color: #eab308; }
+
+.status-label {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.status-value {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+
+.status-subtitle {
+  color: #64748b;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* ========================================
+   PROGRESS BAR
+   ======================================== */
+.progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background: #1e293b;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin: 0.75rem 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #06b6d4, #10b981);
+  border-radius: 1rem;
+  transition: width 0.5s ease;
+}
+
+.progress-bar-ritmo {
+  height: 0.75rem;
+}
+
+/* ========================================
+   RITMO CARDS
+   ======================================== */
+.ritmo-card {
+  background: rgba(15, 23, 42, 0.8);
+  border: 2px solid #1e293b;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ritmo-card-adiantado {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.ritmo-card-atrasado {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.ritmo-card-no-prazo {
+  border-color: #eab308;
+  background: rgba(234, 179, 8, 0.05);
+}
+
+.ritmo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.ritmo-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ritmo-title h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.ritmo-status-icon {
+  flex-shrink: 0;
+}
+
+.ritmo-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ritmo-stat {
+  text-align: center;
+}
+
+.ritmo-stat-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.ritmo-stat-value {
+  font-size: 1.75rem;
+  font-weight: 900;
+}
+
+.ritmo-stat-expected {
+  color: #06b6d4;
+}
+
+.ritmo-stat-goal {
+  color: #10b981;
+}
+
+.ritmo-difference {
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+.ritmo-difference-positive {
+  color: #10b981;
+}
+
+.ritmo-difference-negative {
+  color: #ef4444;
+}
+
+/* ========================================
+   SECTION CARDS
+   ======================================== */
+/* .section-card {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid #1e293b;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+} */
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  color: #10b981;
+}
+
+/* ========================================
+   ONDAS
+   ======================================== */
+.onda-card {
+  background: rgba(30, 41, 59, 0.5);
+  border: 2px solid #334155;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.onda-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.onda-card-active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.onda-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.onda-nome {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.onda-badge {
+  background: #10b981;
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  letter-spacing: 0.05em;
+}
+
+.onda-dates {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+}
+
+.onda-metas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.onda-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.onda-meta span {
+  color: #94a3b8;
+}
+
+.onda-meta strong {
+  font-weight: 700;
+}
+
+/* ========================================
+   GRÁFICOS
+   ======================================== */
+.chart-card {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid #1e293b;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chart-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+}
+
+.chart-container {
+  height: 320px;
+}
+
+.chart-empty {
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 1rem;
+}
+
+/* ========================================
+   HISTÓRICO
+   ======================================== */
+.historico-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.historico-item {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.historico-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.historico-date {
+  font-weight: 700;
+  color: #06b6d4;
+  font-size: 1rem;
+}
+
+.historico-stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  flex-wrap: wrap;
+}
+
+.historico-notas {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ========================================
+   SUMMARY CARDS
+   ======================================== */
+.summary-card {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid #1e293b;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.summary-label {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.summary-value {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 0.25rem;
+}
+
+.summary-value-cyan {
+  color: #06b6d4;
+}
+
+.summary-value-purple {
+  color: #a855f7;
+}
+
+.summary-value-green {
+  color: #10b981;
+}
+
+.summary-subtitle {
+  color: #64748b;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+@media (max-width: 768px) {
+  .war-room-container {
+    padding: 1rem;
+  }
+
+  .war-room-title {
+    font-size: 1.75rem;
+  }
+
+  .war-room-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cards-grid-2,
+  .cards-grid-3,
+  .cards-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid-2,
+  .form-grid-3,
+  .form-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .historico-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .historico-stats {
+    gap: 0.5rem;
+  }
+
+  .ritmo-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .ritmo-stat-value {
+    font-size: 1.25rem;
+  }
+
+  .status-value {
+    font-size: 1.5rem;
+  }
+
+  .summary-value {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .war-room-title {
+    font-size: 1.5rem;
+  }
+
+  .modal-content {
+    margin: 1rem;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+
+  .chart-empty {
+    height: 250px;
+  }
+}
+
+/* Layout Padrão de Página */
+.page-header-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.btn-back {
+  background: transparent;
+  border: 1px solid var(--cor-borda);
+  color: var(--cor-texto-primario);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-back:hover {
+  background-color: var(--cor-superficie-neutra);
+  color: var(--cor-texto-secundario);
+}
+
+/* Ajustes no título dentro do novo layout */
+.page-header-controls .dashboard-title {
+    margin: 0;
+}
+
+/* ========================================
+   COURSE TRACKER - ESTILOS PRINCIPAIS
+   Usa as variáveis do global.css
+   ======================================== */
+
+/* Container Principal */
+.course-tracker__container {
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: var(--fonte-secundaria);
+}
+
+/* ========================================
+   MENSAGENS
+   ======================================== */
+.message-success {
+  background: rgba(40, 167, 69, 0.1);
+  border: 1px solid var(--cor-sucesso);
+  color: var(--cor-sucesso);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.message-error {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid var(--cor-perigo);
+  color: var(--cor-perigo);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* ========================================
+   HEADER (Reusa do War Room)
+   ======================================== */
+.course-tracker__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  border-bottom: 2px solid var(--cor-borda);
+  padding-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.course-tracker__header .header-info h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(to right, var(--cor-acao-primaria), var(--cor-terciaria));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.05em;
+}
+
+.course-tracker__header .header-info p {
+  color: var(--cor-texto-primario);
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+/* ========================================
+   BOTÕES DE AÇÃO
+   ======================================== */
+.course-tracker__export-container {
+  position: relative;
+}
+
+.course-tracker__export-menu {
+  position: absolute;
+  right: 0;
+  margin-top: 0.5rem;
+  width: 12rem;
+  background: var(--cor-container);
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  box-shadow: var(--sombra-padrao);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.course-tracker__export-item {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  display: block;
+}
+
+.course-tracker__export-item:hover {
+  background: var(--cor-superficie-neutra);
+  color: var(--cor-terciaria);
+}
+
+body[data-theme='light'] .course-tracker__export-item:hover {
+  background: var(--cor-superficie-neutra);
+  color: var(--cor-acao-primaria);
+}
+
+/* ========================================
+   FORMULÁRIO DE ADICIONAR CURSO
+   ======================================== */
+.course-tracker__add-course-form-card {
+  background: var(--cor-card-fundo);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--cor-borda);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--sombra-padrao);
+}
+
+.course-tracker__add-course-form-card h2 {
+  color: var(--cor-titulo);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.course-tracker__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.course-tracker__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.course-tracker__form-group label {
+  font-size: 0.875rem;
+  color: var(--cor-texto-primario);
+  font-weight: 600;
+}
+
+.cdkteck-textarea,
+.cdkteck-input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  color: var(--cor-texto-secundario);
+  font-size: 1rem;
+  font-family: var(--fonte-secundaria);
+  transition: all 0.3s;
+  width: 100%;
+}
+
+body[data-theme='light'] .cdkteck-textarea,
+body[data-theme='light'] .cdkteck-input {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: var(--cor-borda);
+}
+
+.cdkteck-textarea:focus,
+.cdkteck-input:focus {
+  outline: none;
+  border-color: var(--cor-terciaria);
+  box-shadow: var(--borda-form-shadow);
+}
+
+body[data-theme='light'] .cdkteck-textarea:focus,
+body[data-theme='light'] .cdkteck-input:focus {
+  border-color: var(--cor-acao-primaria);
+}
+
+.cdkteck-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ========================================
+   CARDS DE STATUS (Grid Superior)
+   ======================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--cor-card-fundo);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--cor-borda);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--sombra-padrao);
+  text-align: center;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-hover);
+  border-color: var(--cor-terciaria);
+}
+
+body[data-theme='light'] .stat-card:hover {
+  border-color: var(--cor-acao-primaria);
+}
+
+.stat-card h3 {
+  font-size: 0.875rem;
+  color: var(--cor-texto-primario);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.stat-card p {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--cor-terciaria);
+  margin: 0;
+}
+
+body[data-theme='light'] .stat-card p {
+  color: var(--cor-acao-primaria);
+}
+
+/* ========================================
+   LISTA DE CURSOS
+   ======================================== */
+.course-list-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Changed to a single column */
+  gap: 1.5rem;
+}
+
+/* Card Individual de Curso */
+.course-card-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--cor-borda);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem; /* Espaço entre cards */
+}
+
+/* Hover com Glow baseado no tema */
+body[data-theme='dark'] .course-card-item:hover {
+    border-color: rgba(0, 174, 239, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 174, 239, 0.15);
+    transform: translateY(-2px);
+}
+
+body[data-theme='light'] .course-card-item:hover {
+    border-color: rgba(236, 72, 153, 0.4);
+    box-shadow: 0 4px 20px rgba(236, 72, 153, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Header Limpo (Sem degradê pesado) */
+.course-card-header {
+    padding: 1.25rem;
+    background: transparent; /* Removemos o fundo colorido */
+    border: 1px solid var(--cor-borda); /* Sem borda inferior */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative; /* Para a barra de progresso absoluta */
+}
+
+/* Nome do Curso (Destaque total) */
+.course-card-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cor-texto-primario);
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Para colocar o ID embaixo */
+    gap: 0.2rem;
+}
+
+body[data-theme='light'] .course-card-header {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(139, 92, 246, 0.05));
+}
+
+.course-card-header:hover {
+  background: linear-gradient(135deg, rgba(0, 174, 239, 0.1), rgba(0, 229, 255, 0.1));
+}
+
+body[data-theme='light'] .course-card-header:hover {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(139, 92, 246, 0.1));
+}
+
+/* Botão de Toggle (Seta) */
+.course-card-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--cor-texto-primario);
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.course-card-toggle-btn:hover {
+  color: var(--cor-terciaria);
+}
+
+body[data-theme='light'] .course-card-toggle-btn:hover {
+  color: var(--cor-acao-primaria);
+}
+
+.course-card-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ID Discreto (Badge Cinza) */
+.course-id-badge {
+    font-size: 0.7rem;
+    color: var(--cor-texto-terciario); /* Cinza escuro */
+    background: rgba(128, 128, 128, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    width: fit-content;
+    font-family: monospace;
+}
+
+/* ============================================================
+   BARRA DE PROGRESSO NA LISTA (HEADER DO CARD)
+   ============================================================ */
+
+/* O container que segura a barra e o texto % */
+.course-card-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espaço entre a barra e o número */
+    min-width: 140px; /* Garante espaço para a barra não sumir */
+    margin-left: auto; /* Empurra para a direita se estiver usando flex no pai */
+}
+
+/* O fundo cinza da barra (o trilho) */
+.course-card-progress-bar-bg {
+    flex: 1; /* Ocupa todo o espaço disponível no container */
+    height: 8px; /* Altura da barra */
+    background-color: rgba(255, 255, 255, 0.1); /* Fundo sutil no dark */
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Ajuste do fundo da barra no tema claro */
+body[data-theme='light'] .course-card-progress-bar-bg {
+    background-color: var(--cor-destaque);
+    border-color: #cbd5e1;
+}
+
+/* A parte colorida que enche (Foreground) */
+.course-card-progress-bar-fg {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Cores da barra baseadas no status */
+.progress-pendente { background-color: #64748b; }
+.progress-em-andamento { 
+    background: linear-gradient(90deg, #06b6d4, #3b82f6); 
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.4); /* Brilho neon no dark */
+}
+.progress-concluído, .progress-concluido { background-color: #10b981; }
+
+/* O texto da porcentagem */
+.course-card-progress-percent {
+    font-size: 0.85rem;
+    font-weight: 700;
+    min-width: 35px; /* Evita que pule linha quando muda de 9% para 10% */
+    text-align: right;
+    color: var(--cor-texto-secundario);
+}
+
+.course-card-status-badge.status-cancelado {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+/* Badge de Prioridade Melhorada */
+.priority-badge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+}
+
+/* Cores específicas de prioridade */
+.course-card-status-badge.priority-maxima { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+.course-card-status-badge.priority-alta { background: rgba(249, 115, 22, 0.1); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.2); }
+.course-card-status-badge.priority-media { background: rgba(234, 179, 8, 0.1); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.2); }
+.course-card-status-badge.priority-baixa { background-color: #f3f4f6; color: #374151; border-color: #d1d5db; }
+
+/* ============================================================
+   CORREÇÃO DE CORES - TEMA CLARO (Badges de Status e Prioridade)
+   ============================================================ */
+
+/* Forçar cores de texto mais escuras e fundos mais suaves no Light Mode */
+
+/* PRIORIDADES */
+body[data-theme='light'] .course-card-status-badge.priority-maxima,
+body[data-theme='light'] .course-card-status-badge.priority-máxima { 
+    background-color: #fee2e2; color: #b91c1c; border-color: #fca5a5; 
+}
+
+body[data-theme='light'] .course-card-status-badge.priority-alta { 
+    background-color: #ffedd5; color: #c2410c; border-color: #fdba74; 
+}
+
+body[data-theme='light'] .course-card-status-badge.priority-media,
+body[data-theme='light'] .course-card-status-badge.priority-média { 
+    background-color: #fef9c3; color: #a16207; border-color: #fde047; 
+}
+
+body[data-theme='light'] .course-card-status-badge.priority-estrategica,
+body[data-theme='light'] .course-card-status-badge.priority-estratégica { 
+    background-color: #f3e8ff; color: #7e22ce; border-color: #d8b4fe; 
+}
+
+body[data-theme='light'] .course-card-status-badge.priority-baixa { 
+    background-color: #f3f4f6; color: #4b5563; border-color: #d1d5db; 
+}
+
+/* STATUS */
+body[data-theme='light'] .course-card-status-badge.status-pendente { 
+    background-color: #f1f5f9; color: #64748b; border-color: #cbd5e1; 
+}
+
+body[data-theme='light'] .course-card-status-badge.status-em-andamento { 
+    background-color: #ecfeff; color: #0891b2; border-color: #67e8f9; 
+}
+
+body[data-theme='light'] .course-card-status-badge.status-concluido,
+body[data-theme='light'] .course-card-status-badge.status-concluído { 
+    background-color: #f0fdf4; color: #15803d; border-color: #86efac; 
+}
+
+/* ========================================
+   DETALHES DO CURSO (Expandido)
+   ======================================== */
+.course-card-details {
+  padding: 1.5rem;
+}
+
+.course-card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.course-card-link {
+  color: var(--cor-terciaria);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.course-card-link:hover {
+  color: var(--cor-acao-primaria);
+  text-decoration: underline;
+}
+
+body[data-theme='light'] .course-card-link {
+  color: var(--cor-acao-primaria);
+}
+
+body[data-theme='light'] .course-card-link:hover {
+  color: var(--cor-hover);
+}
+
+/* ========================================
+   SEÇÃO DE AULAS
+   ======================================== */
+.lessons-section {
+  border-top: 1px solid var(--cor-borda);
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.lessons-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.lessons-header h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cor-texto-secundario);
+  margin: 0;
+}
+
+/* Modal/Card de Adicionar Aula */
+.add-lesson-form-card {
+  background: var(--cor-superficie-neutra);
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.add-lesson-form-card h3 {
+  color: var(--cor-titulo);
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Lista de Aulas - Tabela */
+.lessons-list-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.lessons-list-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.lessons-list-table thead {
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid var(--cor-borda);
+}
+
+body[data-theme='light'] .lessons-list-table thead {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.lessons-list-table th {
+  padding: 0.75rem;
+  text-align: left;
+  color: var(--cor-texto-primario);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.lessons-list-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--cor-borda);
+  color: var(--cor-texto-secundario);
+}
+
+.lessons-list-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body[data-theme='light'] .lessons-list-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* ========================================
+   FOOTER NOTE
+   ======================================== */
+.course-tracker__footer-note {
+  margin-top: 2rem;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid var(--cor-terciaria);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+body[data-theme='light'] .course-tracker__footer-note {
+  background: rgba(236, 72, 153, 0.1);
+  border-color: var(--cor-acao-primaria);
+}
+
+.course-tracker__footer-note p {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: 0.875rem;
+}
+
+.course-tracker__footer-note strong {
+  color: var(--cor-terciaria);
+}
+
+body[data-theme='light'] .course-tracker__footer-note strong {
+  color: var(--cor-acao-primaria);
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+@media (max-width: 768px) {
+  .course-tracker__container {
+    padding: 1rem;
+  }
+
+  .course-tracker__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .course-list-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .course-card-header {
+    flex-wrap: wrap;
+  }
+
+  .course-card-progress {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .course-card-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lessons-list-table {
+    font-size: 0.75rem;
+  }
+
+  .lessons-list-table th,
+  .lessons-list-table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-tracker__header .header-info h1 {
+    font-size: 1.75rem;
+  }
+
+  .stat-card p {
+    font-size: 2rem;
+  }
+
+  .course-card-name {
+    font-size: 1rem;
+  }
+}
+
+/* ========================================
+   BOTÕES CUSTOMIZADOS (Variantes)
+   ======================================== */
+.btn-variant-primary {
+  background: var(--cor-acao-primaria);
+  color: white;
+}
+
+.btn-variant-primary:hover {
+  background: var(--cor-hover);
+}
+
+.btn-variant-secondary {
+  background: var(--cor-acao-secundaria);
+  color: white;
+}
+
+.btn-variant-secondary:hover {
+  background: var(--cor-hover);
+}
+
+.btn-variant-danger {
+  background: var(--cor-perigo);
+  color: white;
+}
+
+.btn-variant-danger:hover {
+  background: #c82333;
+}
+
+.btn-size-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+/* ========================================
+   INTEGRAÇÃO COM PAGELAYOUT
+   ======================================== */
+.page-layout-content .course-tracker__container {
+  padding-top: 0; /* PageLayout já adiciona padding superior */
 }

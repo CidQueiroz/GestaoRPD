@@ -21,6 +21,33 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Explicitly load .env file from the project's base directory
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
+# Adicionado para compatibilidade com o driver oracledb
+import oracledb
+# Ajustado para usar o TNS_ADMIN do .env
+# oracledb.init_oracle_client() # Removido para evitar inicialização dupla se TNS_ADMIN for configurado via env.
+# A inicialização via variável de ambiente TNS_ADMIN é preferível.
+# Se o TNS_ADMIN não for suficiente, o parâmetro lib_dir pode ser usado:
+# oracledb.init_oracle_client(lib_dir=os.environ.get('ORACLE_CLIENT_LIB_DIR'))
+
+# Firebase Admin SDK Imports
+import firebase_admin
+from firebase_admin import credentials
+
+# Firebase Admin SDK Initialization
+FIREBASE_SERVICE_ACCOUNT_KEY = os.environ.get(
+    'FIREBASE_SERVICE_ACCOUNT_KEY',
+    '/home/cidquei/CDKTECK/GestaoRPD/backend/cdkteck-hub-firebase-adminsdk-fbsvc-19bf225f30.json' # User provided path
+)
+
+if os.path.exists(FIREBASE_SERVICE_ACCOUNT_KEY):
+    cred = credentials.Certificate(FIREBASE_SERVICE_ACCOUNT_KEY)
+    if not firebase_admin._apps: # Check if app is already initialized
+        firebase_admin.initialize_app(cred)
+    print("Firebase Admin SDK inicializado com sucesso!")
+else:
+    print("WARNING: Chave da conta de serviço Firebase não encontrada. A autenticação Firebase pode falhar.")
+    print(f"Esperado em: {FIREBASE_SERVICE_ACCOUNT_KEY}")
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -88,14 +115,21 @@ CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': os.environ.get('ORACLE_DSN', 'cdkteckdb_medium'),
-        'USER': os.environ.get('ORACLE_USER'),
-        'PASSWORD': os.environ.get('ORACLE_PASSWORD'),
+        'NAME': os.getenv('ORACLE_PROD_DSN'),
+        'USER': os.getenv('ORACLE_PROD_USER'),
+        'PASSWORD': os.getenv('ORACLE_PROD_PASSWORD'),
+    },
+    'staging': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': os.getenv('ORACLE_STAGE_DSN'),
+        'USER': os.getenv('ORACLE_STAGE_USER'),
+        'PASSWORD': os.getenv('ORACLE_STAGE_PASSWORD'),
     }
 }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'api.authentication.FirebaseAuthentication', # Nossa nova classe
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
@@ -132,6 +166,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/topics/files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles' # Adicionado: Caminho para onde os arquivos estáticos serão coletados
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

@@ -1,23 +1,24 @@
+// GestaoRPD/frontend/src/api.js
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/api';
-
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: 'http://127.0.0.1:8000/api/'
 });
 
-export const loginUser = async (email, password) => {
-  try {
-    const response = await api.post('/token/', {
-      email,
-      password,
-    });
-    return response.data;
-  } catch (error) {
-    // Handle or throw error
-    console.error("Login failed:", error);
-    throw error;
+api.interceptors.request.use(
+  config => {
+    // Agora busca o Firebase ID Token diretamente
+    const firebaseIdToken = localStorage.getItem('firebaseIdToken');
+    if (firebaseIdToken) {
+      // O token é armazenado como string JSON, então precisamos fazer parse
+      const parsedToken = JSON.parse(firebaseIdToken);
+      config.headers['Authorization'] = `Bearer ${parsedToken}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
   }
-};
+);
 
 export default api;

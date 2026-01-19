@@ -5,3 +5,6 @@ django-cors-headers
 oracledb
 python-dotenv
 gunicorn
+
+oracledb
+firebase_admin

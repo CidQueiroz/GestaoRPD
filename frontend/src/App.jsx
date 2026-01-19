@@ -64,7 +64,7 @@ function App() {
             <Route path="/rpd/diario_bordo" element={<PrivateRoute><DiarioBordoPage /></PrivateRoute>} />
             <Route path="/rpd/rpd" element={<PrivateRoute><RPDPage /></PrivateRoute>} />
             <Route path="/rpd/log_pod_diario" element={<PrivateRoute><LogPODDiarioPage /></PrivateRoute>} />
-            <Route path="/rpd/war-room" element={<PrivateRoute><WarRoom /></PrivateRoute>} />
+            <Route path="/war-room" element={<PrivateRoute><WarRoom /></PrivateRoute>} />
           </Routes>
         </Suspense>
       </main>

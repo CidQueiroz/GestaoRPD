@@ -1,6 +1,6 @@
 {
   "name": "@cidqueiroz/cdkteck-ui",
-  "version": "2.6.0",
+  "version": "2.6.2",
   "description": "",
   "type": "module",
   "main": "./dist/cdkteck-ui.umd.js",
@@ -51,5 +51,5 @@
   "dependencies": {
     "lucide-react": "^0.562.0"
   },
-  "yalcSig": "d4897ab657ee7dae9f96633d5d9a3d25"
+  "yalcSig": "a6752f3ab675198fb2b3a5b9693e3edd"
 }

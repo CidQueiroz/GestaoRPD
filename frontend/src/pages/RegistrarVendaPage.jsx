@@ -3,22 +3,18 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+import PageLayout from '../components/PageLayout';
+
+import api from '../api';
+
 const RegistrarVendaPage = () => {
-  const { authTokens, logout } = useAuth();
+  const { logout } = useAuth();
   const [estoqueItems, setEstoqueItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState('');
   const [quantidadeVendida, setQuantidadeVendida] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(''); // 'success' or 'error'
   const navigate = useNavigate();
-
-  const api = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${authTokens?.access}`,
-    },
-  });
 
   useEffect(() => {
     fetchEstoqueItems();
@@ -88,9 +84,7 @@ const RegistrarVendaPage = () => {
   };
 
   return (
-    <>
-      <h1 className="dashboard-title">Registrar Venda</h1>
-
+    <PageLayout title="Registrar Venda" backTo="/gestao">
       <div className="form-container">
         <h2>Nova Venda</h2>
         {message && <p className={`message-${messageType}`}>{message}</p>}
@@ -127,7 +121,7 @@ const RegistrarVendaPage = () => {
           </div>
         </form>
       </div>
-    </>
+    </PageLayout>
   );
 };
 

@@ -2,9 +2,9 @@
   "version": "v1",
   "packages": {
     "@cidqueiroz/cdkteck-ui": {
-      "signature": "d4897ab657ee7dae9f96633d5d9a3d25",
+      "signature": "a6752f3ab675198fb2b3a5b9693e3edd",
       "file": true,
-      "replaced": "^2.5.1"
+      "replaced": "^2.6.0"
     }
   }
 }

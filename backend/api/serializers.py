@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Usuario, Estoque, Venda, Atividade, DiarioBordo, RPD, LogPODDiario
+from .models import Usuario, Estoque, Venda, Atividade, DiarioBordo, RPD, LogPODDiario, Course, Lesson # Import Course and Lesson
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,3 +43,19 @@ class LogPODDiarioSerializer(serializers.ModelSerializer):
         model = LogPODDiario
         fields = '__all__'
         read_only_fields = ['usuario', 'data_registro']
+
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = [
+            'id', 'usuario', 'nome', 'descricao', 'progresso', 'quantidade_horas', 
+            'status', 'priority', 'link', 'data_inicio', 'data_conclusao_prevista', 
+            'data_conclusao_real', 'data_criacao', 'ultima_atualizacao'
+        ]
+        read_only_fields = ['usuario', 'data_criacao', 'ultima_atualizacao']
+
+class LessonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = '__all__'
+        read_only_fields = ['data_criacao', 'ultima_atualizacao']

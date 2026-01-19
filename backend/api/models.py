@@ -67,8 +67,15 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+class Empresa(models.Model):
+    nome_empresa = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.nome_empresa
+
 class Estoque(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='estoque_items')
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='estoque_da_empresa', default=1) # Adicionado FK para Empresa
     item = models.CharField(max_length=255)
     variacao = models.CharField(max_length=255, blank=True, null=True)
     quantidade = models.IntegerField(default=0)
@@ -77,7 +84,7 @@ class Estoque(models.Model):
     ultima_atualizacao = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('usuario', 'item', 'variacao') # A user can have only one unique item/variation combination
+        unique_together = ('usuario', 'item', 'variacao')
 
     def __str__(self):
         return f"{self.item} ({self.variacao}) - {self.quantidade} - R${self.preco}"
@@ -85,21 +92,11 @@ class Estoque(models.Model):
 class Venda(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, related_name='vendas')
     estoque_item = models.ForeignKey(Estoque, on_delete=models.PROTECT, related_name='vendas_realizadas')
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='vendas_da_empresa', default=1) # Adicionado FK para Empresa
     quantidade = models.IntegerField()
     preco_unitario = models.DecimalField(max_digits=10, decimal_places=2)
     preco_total = models.DecimalField(max_digits=10, decimal_places=2)
     data_venda = models.DateTimeField(auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        # Ensure preco_unitario is set from estoque_item if not provided
-        if not self.preco_unitario and self.estoque_item:
-            self.preco_unitario = self.estoque_item.preco
-        # Calculate preco_total
-        self.preco_total = self.quantidade * self.preco_unitario
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"Venda de {self.quantidade}x {self.estoque_item.item} por {self.usuario.email}"
 
 class Atividade(models.Model):
     PERIODO_CHOICES = (
@@ -163,3 +160,57 @@ class LogPODDiario(models.Model):
 
     def __str__(self):
         return f"Log de {self.usuario.email} para {self.atividade.nome_atividade} em {self.data.strftime('%d/%m/%Y')}"
+
+# Novos modelos para cursos e aulas
+
+class Course(models.Model):
+    STATUS_CHOICES = (
+        ('Pendente', 'Pendente'),
+        ('Em Andamento', 'Em Andamento'),
+        ('Concluído', 'Concluído'),
+        ('Cancelado', 'Cancelado'),
+    )
+    PRIORITY_CHOICES = (
+        ('Estratégica', 'Estratégica'),
+        ('Máxima', 'Máxima'),
+        ('Alta', 'Alta'),
+        ('Média', 'Média'),
+        ('Baixa', 'Baixa'),
+    )
+
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='courses')
+    nome = models.CharField(max_length=255)
+    descricao = models.TextField(blank=True, null=True)
+    progresso = models.IntegerField(default=0)  # In minutes
+    quantidade_horas = models.IntegerField(default=0)  # Total course hours
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='Pendente')
+    priority = models.CharField(max_length=15, choices=PRIORITY_CHOICES, default='Média') # Updated max_length for 'Estratégica'
+    link = models.URLField(max_length=200, blank=True, null=True) # New link field
+    data_inicio = models.DateField(blank=True, null=True)
+    data_conclusao_prevista = models.DateField(blank=True, null=True)
+    data_conclusao_real = models.DateField(blank=True, null=True) # Added for completeness
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    ultima_atualizacao = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('usuario', 'nome')
+        ordering = ['priority', 'status', 'data_conclusao_prevista'] # Updated ordering
+
+    def __str__(self):
+        return f"{self.nome} ({self.status}) - {self.usuario.email}"
+
+# Renamed from Session to Lesson
+class Lesson(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons') # Changed related_name
+    data_aula = models.DateTimeField() # Renamed from data_sessao
+    topicos_abordados = models.TextField()
+    observacoes = models.TextField(blank=True, null=True)
+    concluida = models.BooleanField(default=False)
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    ultima_atualizacao = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['data_aula'] # Changed ordering field
+
+    def __str__(self):
+        return f"Aula de {self.course.nome} em {self.data_aula.strftime('%d/%m/%Y %H:%M')}"
