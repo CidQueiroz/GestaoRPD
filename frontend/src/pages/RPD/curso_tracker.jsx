@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Check, X, AlertCircle, Download, Calendar, FileText, Plus, Trash2 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext'; // Import useAuth
-import api from '../api'; // Import your API client
+import { Check, X, AlertCircle, Download, Calendar, FileText, Plus, Trash2, Pencil } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext'; // Import useAuth
+import api from '../../api'; // Import your API client
 
-import PageLayout from '../components/PageLayout';
+import PageLayout from '../../components/PageLayout';
 import { Card, Input, Button } from '@cidqueiroz/cdkteck-ui'; // Import CDKTECK-UI components
 
 const CourseTracker = () => {
@@ -33,6 +33,7 @@ const CourseTracker = () => {
     topicos_abordados: '',
     observacoes: '',
     concluida: false,
+    duracao_minutos: 0, // Add duration in minutes
   });
   const [showAddLessonModal, setShowAddLessonModal] = useState(null);
 
@@ -47,6 +48,7 @@ const CourseTracker = () => {
   const [priorityCoursesCount, setPriorityCoursesCount] = useState(0);
   const [overallProgressPercent, setOverallProgressPercent] = useState(0);
   const [remainingHours, setRemainingHours] = useState(0);
+  const [editingCourseId, setEditingCourseId] = useState(null);
 
   // --- API CALLS ---
   const fetchCourses = useCallback(async () => {
@@ -101,6 +103,39 @@ const CourseTracker = () => {
     "Baixa": 4,
   };
 
+  const updateCourseTimeoutRef = useRef(null); // Add this useRef declaration here
+
+  const handleUpdateCourse = useCallback((courseId, field, value) => {
+    setMessage('');
+    setMessageType('');
+
+    // Update local state immediately for a responsive UI
+    setCourses(prevCourses =>
+      prevCourses.map(course =>
+        course.id === courseId ? { ...course, [field]: value } : course
+      )
+    );
+
+    if (updateCourseTimeoutRef.current) {
+      clearTimeout(updateCourseTimeoutRef.current);
+    }
+
+    updateCourseTimeoutRef.current = setTimeout(async () => {
+      try {
+        await api.patch(`/courses/${courseId}/`, { [field]: value });
+        setMessage('Curso atualizado com sucesso!');
+        setMessageType('success');
+        // No need to fetch all courses, as local state is already updated
+        // fetchCourses(); // We can remove this for better performance and rely on local state
+      } catch (error) {
+        console.error("Erro ao atualizar curso:", error);
+        setMessage('Erro ao atualizar curso. Verifique o console.');
+        setMessageType('error');
+        // Potentially revert local state or show specific error for this course
+      }
+    }, 500); // Debounce for 500ms
+  }, [logout, setCourses]); // Add setCourses to useCallback dependencies
+
   useEffect(() => {
     if (courses && courses.length > 0) {
       // Calculate counts
@@ -133,6 +168,64 @@ const CourseTracker = () => {
     }
   }, [courses]); // Dependency array: re-run when courses change
 
+  useEffect(() => {
+    if (courses && courses.length > 0) {
+      courses.forEach(course => {
+        const totalMinutes = (course.quantidade_horas || 0) * 60;
+        const progressMinutes = course.progresso || 0;
+        let newStatus = course.status;
+        let newStartDate = course.data_inicio;
+        let newExpectedDate = course.data_conclusao_prevista;
+        let newRealDate = course.data_conclusao_real;
+
+        // Auto-determine status if not 'Cancelado'
+        if (course.status !== 'Cancelado') {
+          if (progressMinutes >= totalMinutes && totalMinutes > 0) {
+            newStatus = 'Concluído';
+            if (!newRealDate) {
+              newRealDate = new Date().toISOString().split('T')[0];
+            }
+          } else if (progressMinutes > 0) {
+            newStatus = 'Em Andamento';
+          } else {
+            newStatus = 'Pendente';
+          }
+        }
+
+        // Auto-determine start date
+        if (!newStartDate && course.lessons && course.lessons.length > 0) {
+          const firstLesson = course.lessons.reduce((earliest, current) => {
+            return new Date(current.data_aula) < new Date(earliest.data_aula) ? current : earliest;
+          });
+          newStartDate = new Date(firstLesson.data_aula).toISOString().split('T')[0];
+        }
+
+        // Auto-determine expected conclusion date
+        if (newStartDate && course.quantidade_horas > 0) {
+          const startDate = new Date(newStartDate);
+          const expectedDays = Math.ceil(course.quantidade_horas); // Assuming 1hr/day
+          startDate.setDate(startDate.getDate() + expectedDays);
+          newExpectedDate = startDate.toISOString().split('T')[0];
+        }
+
+        // Check if updates are needed and call the API
+        if (newStatus !== course.status) {
+          handleUpdateCourse(course.id, 'status', newStatus);
+        }
+        if (newStartDate !== course.data_inicio) {
+          handleUpdateCourse(course.id, 'data_inicio', newStartDate);
+        }
+        if (newExpectedDate !== course.data_conclusao_prevista) {
+          handleUpdateCourse(course.id, 'data_conclusao_prevista', newExpectedDate);
+        }
+        if (newRealDate !== course.data_conclusao_real) {
+          handleUpdateCourse(course.id, 'data_conclusao_real', newRealDate);
+        }
+      });
+    }
+  }, [courses, handleUpdateCourse]);
+
+
   // --- UI & Helper Functions ---
   const toggleCollapse = (courseId) => {
     setCollapsedCourses(prev => ({
@@ -148,8 +241,6 @@ const CourseTracker = () => {
     const percentage = (progressInMinutes / totalMinutes) * 100;
     return Math.round(Math.min(percentage, 100)); // Cap at 100% to handle overflow
   };
-
-  const updateCourseTimeoutRef = useRef(null); // Add this useRef declaration here
 
   // --- CRUD Operations ---
   const handleAddCourse = async (e) => {
@@ -185,37 +276,6 @@ const CourseTracker = () => {
     }
   };
 
-  const handleUpdateCourse = useCallback((courseId, field, value) => {
-    setMessage('');
-    setMessageType('');
-
-    // Update local state immediately for a responsive UI
-    setCourses(prevCourses =>
-      prevCourses.map(course =>
-        course.id === courseId ? { ...course, [field]: value } : course
-      )
-    );
-
-    if (updateCourseTimeoutRef.current) {
-      clearTimeout(updateCourseTimeoutRef.current);
-    }
-
-    updateCourseTimeoutRef.current = setTimeout(async () => {
-      try {
-        await api.patch(`/courses/${courseId}/`, { [field]: value });
-        setMessage('Curso atualizado com sucesso!');
-        setMessageType('success');
-        // No need to fetch all courses, as local state is already updated
-        // fetchCourses(); // We can remove this for better performance and rely on local state
-      } catch (error) {
-        console.error("Erro ao atualizar curso:", error);
-        setMessage('Erro ao atualizar curso. Verifique o console.');
-        setMessageType('error');
-        // Potentially revert local state or show specific error for this course
-      }
-    }, 500); // Debounce for 500ms
-  }, [logout, setCourses]); // Add setCourses to useCallback dependencies
-
 
   const handleDeleteCourse = async (courseId) => {
     if (window.confirm("Tem certeza que deseja deletar este curso e todas as suas aulas?")) {
@@ -242,12 +302,18 @@ const CourseTracker = () => {
         topicos_abordados: newLessonForm.topicos_abordados,
         observacoes: newLessonForm.observacoes,
         concluida: newLessonForm.concluida,
+        duracao_minutos: newLessonForm.duracao_minutos,
       };
       await api.post('/lessons/', lessonData);
       setMessage('Aula adicionada com sucesso!');
       setMessageType('success');
-      setNewLessonForm(prev => ({ ...prev, courseId: null, data_aula: new Date().toISOString().slice(0, 16), topicos_abordados: '', observacoes: '', concluida: false })); // Reset form
-      fetchLessonsForCourse(courseId); // Re-fetch lessons for the specific course
+      setNewLessonForm(prev => ({ ...prev, courseId: null, data_aula: new Date().toISOString().slice(0, 16), topicos_abordados: '', observacoes: '', concluida: false, duracao_minutos: 0 })); // Reset form
+      
+      // Recalculate progress and refetch
+      await api.post(`/courses/${courseId}/recalculate_progress/`);
+      fetchLessonsForCourse(courseId);
+      fetchCourses();
+      
     } catch (error) {
       console.error("Erro ao adicionar aula:", error);
       setMessage('Erro ao adicionar aula. Verifique o console.');
@@ -255,22 +321,56 @@ const CourseTracker = () => {
     }
   };
 
-  const handleUpdateLesson = async (lessonId, field, value) => {
+  const updateLessonTimeoutRef = useRef(null);
+
+  const handleUpdateLesson = useCallback((lessonId, field, value) => {
     setMessage('');
     setMessageType('');
-    try {
-      await api.patch(`/lessons/${lessonId}/`, { [field]: value });
-      setMessage('Aula atualizada com sucesso!');
-      setMessageType('success');
-      // No need to fetch all courses, just update the specific course's lessons
-      const courseId = courses.find(course => course.lessons?.some(lesson => lesson.id === lessonId))?.id;
-      if (courseId) fetchLessonsForCourse(courseId);
-    } catch (error) {
-      console.error("Erro ao atualizar aula:", error);
-      setMessage('Erro ao atualizar aula. Verifique o console.');
-      setMessageType('error');
+
+    // Optimistic UI update
+    setCourses(prevCourses =>
+      prevCourses.map(course => {
+        if (course.lessons?.some(lesson => lesson.id === lessonId)) {
+          return {
+            ...course,
+            lessons: course.lessons.map(lesson =>
+              lesson.id === lessonId ? { ...lesson, [field]: value } : lesson
+            ),
+          };
+        }
+        return course;
+      })
+    );
+
+    if (updateLessonTimeoutRef.current) {
+      clearTimeout(updateLessonTimeoutRef.current);
     }
-  };
+
+    updateLessonTimeoutRef.current = setTimeout(async () => {
+      try {
+        await api.patch(`/lessons/${lessonId}/`, { [field]: value });
+        setMessage('Aula atualizada com sucesso!');
+        setMessageType('success');
+        
+        // After a successful API call, recalculate progress for the parent course
+        if (field === 'concluida' || field === 'duracao_minutos') {
+          const courseId = courses.find(c => c.lessons?.some(l => l.id === lessonId))?.id;
+          if (courseId) {
+            await api.post(`/courses/${courseId}/recalculate_progress/`);
+            // Then refetch all courses to update the UI with the correct progress
+            fetchCourses();
+          }
+        }
+
+      } catch (error) {
+        console.error("Erro ao atualizar aula:", error);
+        setMessage('Erro ao atualizar aula. Verifique o console e considere recarregar.');
+        setMessageType('error');
+        // Optionally, revert the state on error
+        // fetchCourses(); 
+      }
+    }, 500); // Debounce for 500ms
+  }, [setCourses, fetchCourses, courses]);
 
   const handleDeleteLesson = async (lessonId, courseId) => {
     if (window.confirm("Tem certeza que deseja deletar esta aula?")) {
@@ -278,7 +378,12 @@ const CourseTracker = () => {
         await api.delete(`/lessons/${lessonId}/`);
         setMessage('Aula deletada com sucesso!');
         setMessageType('success');
-        fetchLessonsForCourse(courseId); // Re-fetch lessons for the specific course
+        
+        // Recalculate progress and refetch
+        await api.post(`/courses/${courseId}/recalculate_progress/`);
+        fetchLessonsForCourse(courseId);
+        fetchCourses();
+
       } catch (error) {
         console.error("Erro ao deletar aula:", error);
         setMessage('Erro ao deletar aula. Verifique o console.');
@@ -326,7 +431,7 @@ const CourseTracker = () => {
 
   // --- Render ---
   return (
-    <PageLayout title="Plano de Estudos - Engenharia de IA" backTo="/rpd">
+    <PageLayout backTo="/rpd">
       <div className="course-tracker__container">
         {message && <p className={`message-${messageType}`}>{message}</p>}
 
@@ -542,92 +647,108 @@ const CourseTracker = () => {
                           <a href={course.link} target="_blank" rel="noopener noreferrer" className="course-card-link">
                             Acessar curso →
                           </a>
-                          <Button onClick={() => handleDeleteCourse(course.id)} variant="danger" size="small">
-                            <Trash2 size={16} /> Deletar Curso
-                          </Button>
-                        </div>
-                        <div className="form-grid form-grid-2"> {/* Using a generic grid */}
-                          <div className="form-group">
-                            <label>Progresso (minutos)</label>
-                            <Input
-                              type="number"
-                              value={course.progresso || 0}
-                              onChange={(e) => handleUpdateCourse(course.id, 'progresso', parseInt(e.target.value, 10) || 0)}
-                              min="0"
-                            />
-                          </div>
-                          <div className="form-group">
-                            <label>Total de Horas</label>
-                            <Input
-                              type="number"
-                              value={course.quantidade_horas || 0}
-                              onChange={(e) => handleUpdateCourse(course.id, 'quantidade_horas', parseInt(e.target.value, 10) || 0)}
-                              min="0"
-                            />
-                          </div>
-                          <div className="form-group">
-                            <label>Status</label>
-                            <select
-                              value={course.status}
-                              onChange={(e) => handleUpdateCourse(course.id, 'status', e.target.value)}
-                              className="cdkteck-input"
-                              style={{ backgroundColor: '#2d3748', color: 'white' }}
-                            >
-                              <option value="Pendente">Pendente</option>
-                              <option value="Em Andamento">Em Andamento</option>
-                              <option value="Concluído">Concluído</option>
-                              <option value="Cancelado">Cancelado</option>
-                            </select>
-                          </div>
-                          <div className="form-group">
-                            <label>Prioridade</label>
-                            <select
-                              value={course.priority}
-                              onChange={(e) => handleUpdateCourse(course.id, 'priority', e.target.value)}
-                              className="cdkteck-input"
-                              style={{ backgroundColor: '#2d3748', color: 'white' }}
-                            >
-                              <option value="Máxima">Máxima</option>
-                              <option value="Alta">Alta</option>
-                              <option value="Média">Média</option>
-                              <option value="Baixa">Baixa</option>
-                            </select>
-                          </div>
-                          <div className="form-group">
-                            <label>Data de Início</label>
-                            <Input
-                              type="date"
-                              value={course.data_inicio || ''}
-                              onChange={(e) => handleUpdateCourse(course.id, 'data_inicio', e.target.value)}
-                            />
-                          </div>
-                          <div className="form-group">
-                            <label>Data de Conclusão Prevista</label>
-                            <Input
-                              type="date"
-                              value={course.data_conclusao_prevista || ''}
-                              onChange={(e) => handleUpdateCourse(course.id, 'data_conclusao_prevista', e.target.value)}
-                            />
-                          </div>
-                          <div className="form-group">
-                            <label>Data de Conclusão Real</label>
-                            <Input
-                              type="date"
-                              value={course.data_conclusao_real || ''}
-                              onChange={(e) => handleUpdateCourse(course.id, 'data_conclusao_real', e.target.value)}
-                            />
-                          </div>
+                          {editingCourseId === course.id ? (
+                            <>
+                              <Button onClick={() => setEditingCourseId(null)} variant="secondary" size="small">
+                                <X size={16} /> Cancelar
+                              </Button>
+                              <Button onClick={() => { setEditingCourseId(null); /* Here you might want to trigger a save of all fields */ }} variant="primary" size="small">
+                                <Check size={16} /> Salvar
+                              </Button>
+                            </>
+                          ) : (
+                            <Button onClick={() => setEditingCourseId(course.id)} variant="secondary" size="small">
+                              <Pencil size={16} /> Editar Curso
+                            </Button>
+                          )}
+                          {editingCourseId === course.id && (
+                            <Button onClick={() => handleDeleteCourse(course.id)} variant="danger" size="small">
+                              <Trash2 size={16} /> Deletar Curso
+                            </Button>
+                          )}
                         </div>
 
-                        <div className="form-group">
-                          <label>Descrição</label>
-                          <textarea
-                            value={course.descricao || ''}
-                            onChange={(e) => handleUpdateCourse(course.id, 'descricao', e.target.value)}
-                            placeholder="Descrição do curso..."
-                            className="cdkteck-textarea"
-                          />
-                        </div>
+                        {/* Conditional rendering for form fields */}
+                        {editingCourseId === course.id ? (
+                          <>
+                            {/* Editable Fields */}
+                            <div className="form-grid form-grid-2">
+                              <div className="form-group">
+                                <label>Progresso (minutos)</label>
+                                <p className="cdkteck-input-static">{course.progresso || 0}</p>
+                              </div>
+                              <div className="form-group">
+                                <label>Total de Horas</label>
+                                <Input type="number" value={course.quantidade_horas || 0} onChange={(e) => handleUpdateCourse(course.id, 'quantidade_horas', parseInt(e.target.value, 10) || 0)} min="0" />
+                              </div>
+                              <div className="form-group">
+                                <label>Status</label>
+                                <select value={course.status} onChange={(e) => handleUpdateCourse(course.id, 'status', e.target.value)} className="cdkteck-input">
+                                  <option value="Pendente">Pendente</option>
+                                  <option value="Em Andamento">Em Andamento</option>
+                                  <option value="Concluído">Concluído</option>
+                                  <option value="Cancelado">Cancelado</option>
+                                </select>
+                              </div>
+                              <div className="form-group">
+                                <label>Prioridade</label>
+                                <select value={course.priority} onChange={(e) => handleUpdateCourse(course.id, 'priority', e.target.value)} className="cdkteck-input">
+                                  <option value="Estratégica">Estratégica</option>
+                                  <option value="Máxima">Máxima</option>
+                                  <option value="Alta">Alta</option>
+                                  <option value="Média">Média</option>
+                                  <option value="Baixa">Baixa</option>
+                                </select>
+                              </div>
+                              <div className="form-group">
+                                <label>Data de Início</label>
+                                <Input type="date" value={course.data_inicio || ''} onChange={(e) => handleUpdateCourse(course.id, 'data_inicio', e.target.value)} />
+                              </div>
+                              <div className="form-group">
+                                <label>Data de Conclusão Prevista</label>
+                                <Input type="date" value={course.data_conclusao_prevista || ''} onChange={(e) => handleUpdateCourse(course.id, 'data_conclusao_prevista', e.target.value)} />
+                              </div>
+                            </div>
+                            <div className="form-group">
+                              <label>Descrição</label>
+                              <textarea value={course.descricao || ''} onChange={(e) => handleUpdateCourse(course.id, 'descricao', e.target.value)} placeholder="Descrição do curso..." className="cdkteck-textarea" />
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            {/* Static Fields */}
+                            <div className="form-grid form-grid-2">
+                              <div className="form-group">
+                                <label>Progresso (minutos)</label>
+                                <p className="cdkteck-input-static">{course.progresso || 0}</p>
+                              </div>
+                              <div className="form-group">
+                                <label>Total de Horas</label>
+                                <p className="cdkteck-input-static">{course.quantidade_horas || 0}</p>
+                              </div>
+                              <div className="form-group">
+                                <label>Status</label>
+                                <p className="cdkteck-input-static">{course.status}</p>
+                              </div>
+                              <div className="form-group">
+                                <label>Prioridade</label>
+                                <p className="cdkteck-input-static">{course.priority}</p>
+                              </div>
+                              <div className="form-group">
+                                <label>Data de Início</label>
+                                <p className="cdkteck-input-static">{course.data_inicio || 'N/A'}</p>
+                              </div>
+                              <div className="form-group">
+                                <label>Data de Conclusão Prevista</label>
+                                <p className="cdkteck-input-static">{course.data_conclusao_prevista || 'N/A'}</p>
+                              </div>
+                            </div>
+                            <div className="form-group">
+                              <label>Descrição</label>
+                              <p className="cdkteck-input-static">{course.descricao || 'N/A'}</p>
+                            </div>
+                          </>
+                        )}
 
                         {/* Lessons Section */}
                         <div className="lessons-section">
@@ -645,6 +766,10 @@ const CourseTracker = () => {
                                 <div className="form-group">
                                   <label>Data da Aula:</label>
                                   <Input type="datetime-local" value={newLessonForm.data_aula} onChange={(e) => setNewLessonForm({...newLessonForm, data_aula: e.target.value})} required />
+                                </div>
+                                <div className="form-group">
+                                  <label>Duração (minutos):</label>
+                                  <Input type="number" value={newLessonForm.duracao_minutos} onChange={(e) => setNewLessonForm({...newLessonForm, duracao_minutos: parseInt(e.target.value, 10) || 0})} min="0" required />
                                 </div>
                                 <div className="form-group">
                                   <label>Tópicos Abordados:</label>
@@ -675,6 +800,7 @@ const CourseTracker = () => {
                                   <tr>
                                     <th>Data</th>
                                     <th>Tópicos</th>
+                                    <th>Duração (min)</th>
                                     <th>Status</th>
                                     <th>Ações</th>
                                   </tr>
@@ -684,6 +810,19 @@ const CourseTracker = () => {
                                     <tr key={lesson.id}>
                                       <td>{new Date(lesson.data_aula).toLocaleString()}</td>
                                       <td>{lesson.topicos_abordados}</td>
+                                      <td>
+                                        {editingCourseId === course.id ? (
+                                          <Input
+                                            type="number"
+                                            value={lesson.duracao_minutos}
+                                            onChange={(e) => handleUpdateLesson(lesson.id, 'duracao_minutos', parseInt(e.target.value, 10) || 0)}
+                                            min="0"
+                                            className="cdkteck-input-small" // You might need to style this
+                                          />
+                                        ) : (
+                                          lesson.duracao_minutos
+                                        )}
+                                      </td>
                                       <td>
                                         <input type="checkbox" checked={lesson.concluida} onChange={(e) => handleUpdateLesson(lesson.id, 'concluida', e.target.checked)} />
                                         {lesson.concluida ? ' Concluída' : ' Pendente'}

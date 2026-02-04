@@ -1,0 +1,398 @@
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Check, X, AlertCircle, Download, Calendar, FileText, Plus, Trash2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import api from '../api';
+import PageLayout from '../components/PageLayout';
+import { Card, Input, Button, Modal } from '@cidqueiroz/cdkteck-ui';
+
+const CourseTracker = () => {
+  const { logout, user } = useAuth();
+  const [courses, setCourses] = useState([]);
+  const [collapsedCourses, setCollapsedCourses] = useState({});
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [newCourseForm, setNewCourseForm] = useState({
+    nome: '',
+    priority: 'Média',
+    link: '',
+    descricao: '',
+    data_inicio: '',
+    data_conclusao_prevista: '',
+    status: 'Pendente',
+    quantidade_horas: 0,
+  });
+  const [showAddCourseForm, setShowAddCourseForm] = useState(false);
+  const [newLessonForm, setNewLessonForm] = useState({
+    courseId: null,
+    data_aula: new Date().toISOString().slice(0, 16),
+    topicos_abordados: '',
+    observacoes: '',
+    concluida: false,
+    duracao_minutos: 0,
+  });
+  const [showAddLessonModal, setShowAddLessonModal] = useState(null);
+  const [showDailyLogModal, setShowDailyLogModal] = useState(false);
+  const [newDailyLog, setNewDailyLog] = useState({
+      course: '',
+      date: new Date().toISOString().split('T')[0],
+      horas_estudo_dia: 0,
+      topicos_estudados: '',
+      notas_dia: ''
+  });
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+  const [totalCoursesCount, setTotalCoursesCount] = useState(0);
+  const [coursesInProgressCount, setCoursesInProgressCount] = useState(0);
+  const [coursesCompletedCount, setCoursesCompletedCount] = useState(0);
+  const [priorityCoursesCount, setPriorityCoursesCount] = useState(0);
+  const [overallProgressPercent, setOverallProgressPercent] = useState(0);
+  const [remainingHours, setRemainingHours] = useState(0);
+  const updateCourseTimeoutRef = useRef(null);
+
+  const fetchCourses = useCallback(async () => {
+    try {
+      const response = await api.get('/courses/?page_size=1000');
+      const coursesData = response.data.results || response.data || [];
+      setCourses(coursesData.map(c => ({...c, lessons: c.lessons || [], daily_activities: c.daily_activities || [] })));
+      setMessage('');
+      setMessageType('');
+    } catch (error) {
+      console.error("Erro ao buscar cursos:", error);
+      if (error.response && error.response.status === 401) {
+        logout();
+      } else {
+        setMessage('Erro ao buscar cursos. Verifique o console.');
+        setMessageType('error');
+      }
+    }
+  }, [logout]);
+
+  const fetchCourseDetails = useCallback(async (courseId) => {
+    try {
+        const [lessonsRes, activitiesRes] = await Promise.all([
+            api.get(`/lessons/?course=${courseId}&page_size=1000`),
+            api.get(`/daily-course-activities/?course=${courseId}&page_size=1000`)
+        ]);
+        setCourses(prevCourses => prevCourses.map(course =>
+            course.id === courseId ? { 
+                ...course, 
+                lessons: lessonsRes.data.results || [], 
+                daily_activities: activitiesRes.data.results || [] 
+            } : course
+        ));
+    } catch (error) {
+        console.error(`Erro ao buscar detalhes para o curso ${courseId}:`, error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCourses();
+    const savedCollapsed = localStorage.getItem('collapsedCourses');
+    if (savedCollapsed) {
+      setCollapsedCourses(JSON.parse(savedCollapsed));
+    }
+  }, [fetchCourses]);
+
+  useEffect(() => {
+    localStorage.setItem('collapsedCourses', JSON.stringify(collapsedCourses));
+  }, [collapsedCourses]);
+
+  const PRIORITY_VALUE_MAP = { "Estratégica": 0, "Máxima": 1, "Alta": 2, "Média": 3, "Baixa": 4 };
+
+  useEffect(() => {
+    if (courses && courses.length > 0) {
+      const total = courses.length;
+      const inProgress = courses.filter(c => c.status === 'Em Andamento').length;
+      const completed = courses.filter(c => c.status === 'Concluído').length;
+      const priority = courses.filter(c => ['Estratégica', 'Máxima', 'Alta'].includes(c.priority)).length;
+      const totalMinutesStudied = courses.reduce((sum, course) => sum + (course.progresso || 0), 0);
+      const totalPossibleMinutes = courses.reduce((sum, course) => sum + ((course.quantidade_horas || 0) * 60), 0);
+      const overallAvgProgress = totalPossibleMinutes > 0 ? Math.round((totalMinutesStudied / totalPossibleMinutes) * 100) : 0;
+      const remainingMinutes = totalPossibleMinutes - totalMinutesStudied;
+      const remainingHoursCalc = totalPossibleMinutes > 0 ? (remainingMinutes / 60).toFixed(1) : 0;
+      setTotalCoursesCount(total);
+      setCoursesInProgressCount(inProgress);
+      setCoursesCompletedCount(completed);
+      setPriorityCoursesCount(priority);
+      setOverallProgressPercent(overallAvgProgress);
+      setRemainingHours(remainingHoursCalc);
+    }
+  }, [courses]);
+
+  const toggleCollapse = (courseId) => {
+    const isCurrentlyCollapsed = collapsedCourses[courseId] !== false;
+    if (isCurrentlyCollapsed) {
+        fetchCourseDetails(courseId);
+    }
+    setCollapsedCourses(prev => ({ ...prev, [courseId]: !isCurrentlyCollapsed }));
+  };
+  
+  const getProgress = (progressInMinutes, totalHours) => {
+    if (!totalHours || totalHours <= 0) return 0;
+    const totalMinutes = totalHours * 60;
+    if (totalMinutes === 0) return 0;
+    const percentage = (progressInMinutes / totalMinutes) * 100;
+    return Math.round(Math.min(percentage, 100));
+  };
+  
+  const handleAddCourse = async (e) => {
+    e.preventDefault();
+    setMessage('');
+    setMessageType('');
+    try {
+      const courseData = {
+        nome: newCourseForm.nome,
+        descricao: newCourseForm.descricao,
+        progresso: parseFloat(newCourseForm.progresso || 0),
+        status: newCourseForm.status,
+        data_inicio: newCourseForm.data_inicio || null,
+        data_conclusao_prevista: newCourseForm.data_conclusao_prevista || null,
+        link: newCourseForm.link,
+        quantidade_horas: newCourseForm.quantidade_horas,
+        priority: newCourseForm.priority,
+      };
+      
+      await api.post('/courses/', courseData);
+      setNewCourseForm({
+        nome: '', priority: 'Média', link: '', descricao: '',
+        data_inicio: '', data_conclusao_prevista: '', status: 'Pendente', quantidade_horas: 0,
+      });
+      setShowAddCourseForm(false);
+      setMessage('Curso adicionado com sucesso!');
+      setMessageType('success');
+      fetchCourses();
+    } catch (error) {
+      console.error("Erro ao adicionar curso:", error);
+      setMessage('Erro ao adicionar curso. Verifique o console.');
+      setMessageType('error');
+    }
+  };
+
+  const handleUpdateCourse = useCallback((courseId, field, value) => {
+    setCourses(prevCourses =>
+      prevCourses.map(course =>
+        course.id === courseId ? { ...course, [field]: value } : course
+      )
+    );
+    if (updateCourseTimeoutRef.current) clearTimeout(updateCourseTimeoutRef.current);
+    updateCourseTimeoutRef.current = setTimeout(async () => {
+      try {
+        await api.patch(`/courses/${courseId}/`, { [field]: value });
+        setMessage('Curso atualizado com sucesso!');
+        setMessageType('success');
+      } catch (error) {
+        console.error("Erro ao atualizar curso:", error);
+        setMessage('Erro ao atualizar curso.');
+        setMessageType('error');
+      }
+    }, 500);
+  }, [logout, setCourses]);
+
+  const handleDeleteCourse = async (courseId) => {
+    if (window.confirm("Tem certeza que deseja deletar este curso e todas as suas aulas?")) {
+      try {
+        await api.delete(`/courses/${courseId}/`);
+        setMessage('Curso deletado com sucesso!');
+        setMessageType('success');
+        fetchCourses();
+      } catch (error) {
+        console.error("Erro ao deletar curso:", error);
+        setMessage('Erro ao deletar curso.');
+        setMessageType('error');
+      }
+    }
+  };
+
+  const handleAddDailyLog = async (e) => {
+    e.preventDefault();
+    if (!newDailyLog.course) {
+        setMessage('Por favor, selecione um curso.');
+        setMessageType('error');
+        return;
+    }
+    try {
+        await api.post('/daily-course-activities/', newDailyLog);
+        setShowDailyLogModal(false);
+        setNewDailyLog({
+            course: '', date: new Date().toISOString().split('T')[0], horas_estudo_dia: 0,
+            topicos_estudados: '', notas_dia: ''
+        });
+        setMessage('Registro diário salvo com sucesso!');
+        setMessageType('success');
+        fetchCourseDetails(newDailyLog.course);
+    } catch (error) {
+        console.error("Erro ao salvar registro diário:", error);
+        setMessage('Erro ao salvar registro diário.');
+        setMessageType('error');
+    }
+  };
+
+  const handleAddLesson = async (courseId) => {
+    try {
+      const lessonData = { ...newLessonForm, course: courseId };
+      await api.post('/lessons/', lessonData);
+      setMessage('Aula adicionada com sucesso!');
+      setMessageType('success');
+      setNewLessonForm({
+        courseId: null, data_aula: new Date().toISOString().slice(0, 16), topicos_abordados: '',
+        observacoes: '', concluida: false, duracao_minutos: 0
+      });
+      fetchCourseDetails(courseId);
+    } catch (error) {
+      console.error("Erro ao adicionar aula:", error);
+      setMessage('Erro ao adicionar aula.');
+      setMessageType('error');
+    }
+  };
+
+  const handleUpdateLesson = async (lessonId, field, value, courseId) => {
+      try {
+        await api.patch(`/lessons/${lessonId}/`, { [field]: value });
+        setMessage('Aula atualizada com sucesso!');
+        setMessageType('success');
+        fetchCourseDetails(courseId);
+      } catch (error) {
+        console.error("Erro ao atualizar aula:", error);
+        setMessage('Erro ao atualizar aula.');
+        setMessageType('error');
+      }
+  };
+
+  const handleDeleteLesson = async (lessonId, courseId) => {
+      if (window.confirm("Tem certeza que deseja deletar esta aula?")) {
+          try {
+            await api.delete(`/lessons/${lessonId}/`);
+            setMessage('Aula deletada com sucesso!');
+            setMessageType('success');
+            fetchCourseDetails(courseId);
+          } catch (error) {
+            console.error("Erro ao deletar aula:", error);
+            setMessage('Erro ao deletar aula.');
+            setMessageType('error');
+          }
+      }
+  };
+
+  return (
+    <PageLayout title="Plano de Estudos - Engenharia de IA" backTo="/rpd">
+        <div className="course-list-grid">
+            {courses.slice().sort((a, b) => (PRIORITY_VALUE_MAP[a.priority] || 99) - (PRIORITY_VALUE_MAP[b.priority] || 99)).map((course) => {
+              const progress = getProgress(course.progresso, course.quantidade_horas);
+              const isCollapsed = collapsedCourses[course.id] !== false;
+              return (
+                <Card key={course.id} className="course-card-item">
+                  <div className="course-card-header" onClick={() => toggleCollapse(course.id)}>
+                      <button className="course-card-toggle-btn">
+                        {isCollapsed ? <Plus size={20} /> : <X size={20} />}
+                      </button>
+                      <h3 className="course-card-name">
+                        <span className="course-id-badge">ID: {course.id}</span>
+                        {course.nome}
+                      </h3>
+                      <span className={`course-card-status-badge priority-${course.priority?.toLowerCase().replace(' ', '-')}`}>
+                        {course.priority}
+                      </span>
+                      <span className={`course-card-status-badge status-${course.status?.toLowerCase().replace(' ', '-')}`}>
+                        ({course.status})
+                      </span>
+                      <div className="course-card-progress">
+                        <div className="course-card-progress-bar-bg">
+                          <div className={`course-card-progress-bar-fg progress-${course.status?.toLowerCase().replace(' ', '-')}`} style={{ width: `${progress}%` }} />
+                        </div>
+                        <span className="course-card-progress-percent">{progress}%</span>
+                      </div>
+                  </div>
+
+                  {!isCollapsed && (
+                    <div className="course-card-details">
+                        <div className="course-card-actions">
+                          <a href={course.link} target="_blank" rel="noopener noreferrer" className="course-card-link">
+                            Acessar curso →
+                          </a>
+                          <Button onClick={() => handleDeleteCourse(course.id)} variant="danger" size="small">
+                            <Trash2 size={16} /> Deletar Curso
+                          </Button>
+                        </div>
+                        
+                        <div className="lessons-section">
+                            <div className="lessons-header">
+                                <h4>Aulas ({course.lessons?.length || 0})</h4>
+                            </div>
+                            {course.lessons && course.lessons.length > 0 ? (
+                                <div className="lessons-list-table">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>Data</th>
+                                          <th>Tópicos</th>
+                                          <th>Duração (min)</th>
+                                          <th>Status</th>
+                                          <th>Ações</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {course.lessons.sort((a, b) => new Date(b.data_aula) - new Date(a.data_aula)).map(lesson => (
+                                          <tr key={lesson.id}>
+                                            <td>{new Date(lesson.data_aula).toLocaleDateString('pt-BR')}</td>
+                                            <td>{lesson.topicos_abordados}</td>
+                                            <td>{lesson.duracao_minutos}</td>
+                                            <td>
+                                              <input
+                                                type="checkbox"
+                                                className="cdkteck-checkbox"
+                                                checked={lesson.concluida}
+                                                onChange={(e) => handleUpdateLesson(lesson.id, 'concluida', e.target.checked, course.id)}
+                                              />
+                                            </td>
+                                            <td>
+                                              <Button variant="danger" size="small" onClick={() => handleDeleteLesson(lesson.id, course.id)}>
+                                                <Trash2 size={14} />
+                                              </Button>
+                                            </td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                </div>
+                            ) : (<p>Nenhuma aula registrada para este curso.</p>)}
+                        </div>
+
+                        <div className="lessons-section" style={{marginTop: '2rem'}}>
+                            <div className="lessons-header">
+                                <h4>Atividades Diárias ({course.daily_activities?.length || 0})</h4>
+                            </div>
+                            {course.daily_activities && course.daily_activities.length > 0 ? (
+                                <div className="lessons-list-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Data</th>
+                                                <th>Horas</th>
+                                                <th>Tópicos</th>
+                                                <th>Notas</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {course.daily_activities.sort((a, b) => new Date(b.date) - new Date(a.date)).map(activity => (
+                                                <tr key={activity.id}>
+                                                    <td>{new Date(activity.date).toLocaleDateString('pt-BR')}</td>
+                                                    <td>{activity.horas_estudo_dia}h</td>
+                                                    <td>{activity.topicos_estudados}</td>
+                                                    <td>{activity.notas_dia}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ) : (<p>Nenhum registro de atividade diária para este curso.</p>)}
+                        </div>
+                    </div>
+                  )}
+                </Card>
+              );
+            })}
+        </div>
+    </PageLayout>
+  );
+};
+
+export default CourseTracker;

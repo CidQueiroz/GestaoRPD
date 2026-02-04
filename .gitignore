@@ -37,4 +37,6 @@ instance/
 *.sql
 README_backup.md
 REMOCOES_PENDENTES.txt
-**/*:Zone.Identifier
+**/*:Zone.Identifierbackend/cdkteck-hub-firebase-adminsdk-fbsvc-19bf225f30.json
+backend/.venv/
+backend/Wallet_CDKTECKDB/

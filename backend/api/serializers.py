@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Usuario, Estoque, Venda, Atividade, DiarioBordo, RPD, LogPODDiario, Course, Lesson # Import Course and Lesson
+from .models import Usuario, Estoque, Venda, Atividade, DiarioBordo, RPD, LogPODDiario, Course, Lesson, WarRoomLog, DailyCourseActivity # Import Course and Lesson and DailyCourseActivity
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,18 +44,38 @@ class LogPODDiarioSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['usuario', 'data_registro']
 
-class CourseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Course
-        fields = [
-            'id', 'usuario', 'nome', 'descricao', 'progresso', 'quantidade_horas', 
-            'status', 'priority', 'link', 'data_inicio', 'data_conclusao_prevista', 
-            'data_conclusao_real', 'data_criacao', 'ultima_atualizacao'
-        ]
-        read_only_fields = ['usuario', 'data_criacao', 'ultima_atualizacao']
-
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = '__all__'
+        fields = ['id', 'course', 'data_aula', 'topicos_abordados', 'observacoes', 'concluida', 'duracao_minutos', 'data_criacao', 'ultima_atualizacao']
         read_only_fields = ['data_criacao', 'ultima_atualizacao']
+        # Tornar o campo 'course' opcional para criação aninhada
+        extra_kwargs = {
+            'course': {'required': False, 'allow_null': True}
+        }
+
+class CourseSerializer(serializers.ModelSerializer):
+    lessons = LessonSerializer(many=True, required=False)
+
+    class Meta:
+        model = Course
+        fields = [
+            'id', 'usuario', 'nome', 'descricao', 'progresso', 'quantidade_horas',
+            'status', 'priority', 'link', 'data_inicio', 'data_conclusao_prevista',
+            'data_conclusao_real', 'data_criacao', 'ultima_atualizacao', 'lessons'
+        ]
+        read_only_fields = ['usuario', 'data_criacao', 'ultima_atualizacao']
+
+
+class WarRoomLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WarRoomLog
+        fields = '__all__'
+        read_only_fields = ['usuario', 'data_registro']
+
+
+class DailyCourseActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DailyCourseActivity
+        fields = '__all__'
+        read_only_fields = ['data_registro']

@@ -1,0 +1,173 @@
+/* =========================================
+   FINANCEIRO APP - LAYOUT PRINCIPAL
+   ========================================= */
+
+.finance-app {
+  padding-top: 100px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  display: flex;
+  color: #fff;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* =========================================
+   SIDEBAR
+   ========================================= */
+
+.finance-sidebar {
+  width: 280px;
+  background: rgba(0, 0, 0, 0.3);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+}
+
+.finance-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  padding: 0 0.5rem;
+}
+
+.finance-logo-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.finance-logo-text {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.finance-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.finance-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #a0a0a0;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.finance-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #10b981;
+}
+
+.finance-nav-item--active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.finance-user-profile {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.finance-user-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.finance-user-info {
+  flex: 1;
+}
+
+.finance-user-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.finance-user-plan {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #a0a0a0;
+}
+
+/* =========================================
+   MAIN CONTENT
+   ========================================= */
+
+.finance-main {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.finance-content {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+
+@media (max-width: 768px) {
+  .finance-sidebar {
+    width: 80px;
+    padding: 1rem 0.5rem;
+  }
+
+  .finance-logo {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .finance-logo-text {
+    display: none;
+  }
+
+  .finance-nav-item span {
+    display: none;
+  }
+
+  .finance-nav-item {
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .finance-user-info {
+    display: none;
+  }
+}

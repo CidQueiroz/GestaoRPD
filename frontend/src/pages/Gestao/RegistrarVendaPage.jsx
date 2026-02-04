@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-import PageLayout from '../components/PageLayout';
+import PageLayout from '../../components/PageLayout';
+import { Card, Input, Button } from '@cidqueiroz/cdkteck-ui'; // Import CDKTECK-UI components
 
-import api from '../api';
+import api from '../../api';
 
 const RegistrarVendaPage = () => {
   const { logout } = useAuth();
@@ -85,9 +86,11 @@ const RegistrarVendaPage = () => {
 
   return (
     <PageLayout title="Registrar Venda" backTo="/gestao">
-      <div className="form-container">
-        <h2>Nova Venda</h2>
-        {message && <p className={`message-${messageType}`}>{message}</p>}
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h2>Nova Venda</h2>
+          {message && <p className={`message-${messageType}`}>{message}</p>}
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="itemEstoque">Item de Estoque:</label>
@@ -96,6 +99,7 @@ const RegistrarVendaPage = () => {
               value={selectedItem}
               onChange={(e) => setSelectedItem(e.target.value)}
               required
+              className="cdkteck-input"
             >
               <option value="">Selecione um item</option>
               {estoqueItems.map((item) => (
@@ -107,7 +111,7 @@ const RegistrarVendaPage = () => {
           </div>
           <div className="form-group">
             <label htmlFor="quantidadeVendida">Quantidade Vendida:</label>
-            <input
+            <Input
               type="number"
               id="quantidadeVendida"
               value={quantidadeVendida}
@@ -117,11 +121,10 @@ const RegistrarVendaPage = () => {
             />
           </div>
           <div className="form-actions">
-            <button type="submit" className="btn btn-primario">Registrar Venda</button>
+            <Button type="submit" variant="primary">Registrar Venda</Button>
           </div>
-        </form>
-      </div>
-    </PageLayout>
+                  </form>
+              </Card>    </PageLayout>
   );
 };
 

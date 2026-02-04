@@ -206,6 +206,7 @@ class Lesson(models.Model):
     topicos_abordados = models.TextField()
     observacoes = models.TextField(blank=True, null=True)
     concluida = models.BooleanField(default=False)
+    duracao_minutos = models.IntegerField(default=0)  # Duração da aula em minutos
     data_criacao = models.DateTimeField(auto_now_add=True)
     ultima_atualizacao = models.DateTimeField(auto_now=True)
 
@@ -214,3 +215,45 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f"Aula de {self.course.nome} em {self.data_aula.strftime('%d/%m/%Y %H:%M')}"
+
+
+
+class DailyCourseActivity(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='daily_activities')
+    date = models.DateField()
+    horas_estudo_dia = models.FloatField(default=0.0)
+    topicos_estudados = models.TextField(blank=True, null=True)
+    notas_dia = models.TextField(blank=True, null=True)
+    data_registro = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('course', 'date')
+        ordering = ['-date']
+        verbose_name = "Daily Course Activity"
+        verbose_name_plural = "Daily Course Activities"
+
+    def __str__(self):
+        return f"Atividade diária do curso {self.course.nome} em {self.date.strftime('%d/%m/%Y')}"
+
+
+class WarRoomLog(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='war_room_logs')
+    date = models.DateField()
+    nback = models.IntegerField(default=0)
+    gono = models.IntegerField(default=0)
+    lovehue = models.IntegerField(default=0)
+    agentes = models.IntegerField(default=0)
+    cursos = models.IntegerField(default=0)
+    horasEstudo = models.FloatField(default=0.0)
+    notasDia = models.TextField(blank=True, null=True)
+    data_registro = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date']
+        unique_together = ('usuario', 'date')
+        verbose_name = "War Room Log"
+        verbose_name_plural = "War Room Logs"
+
+    def __str__(self):
+        return f"War Room Log de {self.usuario.email} em {self.date.strftime('%d/%m/%Y')}"
+

@@ -6,11 +6,6 @@ export default defineConfig({
   server: {
     port: 3002,
     open: true,
-    watch: {
-      ignored: [
-        '!**/node_modules/@cidqueiroz/cdkteck-ui/dist/**'
-      ]
-    },
     fs: {
       allow: ['..'] 
     }

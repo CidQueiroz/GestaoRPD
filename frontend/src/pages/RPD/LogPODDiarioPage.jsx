@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import PageLayout from '../components/PageLayout';
+import PageLayout from '../../components/PageLayout';
 import { Card, Input, Button } from '@cidqueiroz/cdkteck-ui'; // Importe os componentes da CDKTECK-UI
-import api from '../api';
+import api from '../../api';
 
-const DiarioBordoPage = () => {
+const LogPODDiarioPage = () => {
   const { logout } = useAuth();
-  const [diarioBordo, setDiarioBordo] = useState([]);
+  const [logEntries, setLogEntries] = useState([]);
   const [atividades, setAtividades] = useState([]);
   const [selectedAtividade, setSelectedAtividade] = useState('');
   const [data, setData] = useState(new Date().toISOString().slice(0, 10));
+  const [status, setStatus] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(''); // 'success' or 'error'
 
@@ -21,21 +22,21 @@ const DiarioBordoPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
 
-  const fetchDiarioBordo = useCallback(async (page = currentPage, pageSize = itemsPerPage) => {
+  const fetchLogEntries = useCallback(async (page = currentPage, pageSize = itemsPerPage) => {
     try {
       // Adiciona parâmetros de paginação na requisição
-      const response = await api.get(`/diario_bordo/?page=${page}&page_size=${pageSize}`);
-      setDiarioBordo(response.data.results);
+      const response = await api.get(`/log_pod_diario/?page=${page}&page_size=${pageSize}`);
+      setLogEntries(response.data.results);
       setTotalItems(response.data.count);
       setTotalPages(Math.ceil(response.data.count / pageSize));
       setMessage('');
       setMessageType('');
     } catch (error) {
-      console.error("Erro ao buscar diário de bordo:", error);
+      console.error("Erro ao buscar logs:", error);
       if (error.response && error.response.status === 401) {
         logout(); // Token expirado ou inválido
       } else {
-        setMessage('Erro ao buscar diário de bordo. Verifique o console.');
+        setMessage('Erro ao buscar logs. Verifique o console.');
         setMessageType('error');
       }
     }
@@ -60,8 +61,8 @@ const DiarioBordoPage = () => {
 
 
   useEffect(() => {
-    fetchDiarioBordo(currentPage, itemsPerPage);
-  }, [currentPage, itemsPerPage, fetchDiarioBordo]); // Redraw on page/itemsPerPage change
+    fetchLogEntries(currentPage, itemsPerPage);
+  }, [currentPage, itemsPerPage, fetchLogEntries]); // Redraw on page/itemsPerPage change
 
   useEffect(() => {
     fetchAtividades(); // Busca atividades apenas uma vez ou quando necessário
@@ -72,17 +73,19 @@ const DiarioBordoPage = () => {
     setMessage('');
     setMessageType('');
     try {
-      await api.post('/diario_bordo/', {
+      await api.post('/log_pod_diario/', {
         atividade: selectedAtividade,
-        data: `${data}T00:00:00Z`, // Send in ISO format with time
+        data: `${data}T00:00:00Z`,
+        status,
       });
       setSelectedAtividade(atividades.length > 0 ? atividades[0].id : '');
       setData(new Date().toISOString().slice(0, 10));
-      setMessage('Entrada no diário de bordo adicionada com sucesso!');
+      setStatus(false);
+      setMessage('Entrada de log adicionada com sucesso!');
       setMessageType('success');
-      fetchDiarioBordo(currentPage, itemsPerPage); // Recarrega a lista
+      fetchLogEntries(currentPage, itemsPerPage); // Recarrega a lista
     } catch (error) {
-      console.error("Erro ao adicionar entrada no diário de bordo:", error);
+      console.error("Erro ao adicionar entrada de log:", error);
       if (error.response && error.response.status === 401) {
         logout();
       } else {
@@ -99,7 +102,7 @@ const DiarioBordoPage = () => {
   };
 
   return (
-    <PageLayout title="Diário de Bordo" backTo="/rpd">
+    <PageLayout title="Log POD Diário" backTo="/rpd">
       <div className="dashboard-grid">
         <Card className="dashboard-card">
           <div className="card-header">
@@ -133,6 +136,17 @@ const DiarioBordoPage = () => {
                 required
               />
             </div>
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={status}
+                  onChange={(e) => setStatus(e.target.checked)}
+                  className="cdkteck-checkbox"
+                />
+                Concluído
+              </label>
+            </div>
             <div className="form-actions" style={{ marginTop: '1rem' }}>
               <Button type="submit" variant="primary">Salvar Entrada</Button> {/* Usando Button da CDKTECK-UI */}
             </div>
@@ -143,8 +157,8 @@ const DiarioBordoPage = () => {
           <div className="card-header">
             <h3>Minhas Entradas</h3>
           </div>
-          {diarioBordo.length === 0 ? (
-            <p>Nenhuma entrada no diário de bordo.</p>
+          {logEntries.length === 0 ? (
+            <p>Nenhuma entrada de log.</p>
           ) : (
             <>
               <div className="table-responsive">
@@ -153,13 +167,15 @@ const DiarioBordoPage = () => {
                     <tr>
                       <th>Data</th>
                       <th>Atividade</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {diarioBordo.map((entrada) => (
-                      <tr key={entrada.id}>
-                        <td>{new Date(entrada.data).toLocaleDateString()}</td>
-                        <td>{atividades.find(a => a.id === entrada.atividade)?.nome_atividade || 'Atividade não encontrada'}</td>
+                    {logEntries.map((entry) => (
+                      <tr key={entry.id}>
+                        <td>{new Date(entry.data).toLocaleDateString()}</td>
+                        <td>{atividades.find(a => a.id === entry.atividade)?.nome_atividade || 'Atividade não encontrada'}</td>
+                        <td>{entry.status ? 'Concluído' : 'Pendente'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -179,4 +195,4 @@ const DiarioBordoPage = () => {
   );
 };
 
-export default DiarioBordoPage;
+export default LogPODDiarioPage;

@@ -1,5 +1,6 @@
 // GestaoRPD/frontend/src/components/PageLayout.jsx
 import React from 'react';
+import '../styles/style_gestaorpd.css';
 import { Link } from 'react-router-dom';
 import { Button } from '@cidqueiroz/cdkteck-ui';
 

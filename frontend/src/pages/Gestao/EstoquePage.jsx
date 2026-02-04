@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import PageLayout from '../components/PageLayout';
+import PageLayout from '../../components/PageLayout';
 import { Card, Input, Button } from '@cidqueiroz/cdkteck-ui'; // Importe os componentes da CDKTECK-UI
-import api from '../api';
+import api from '../../api';
 
-const AtividadesPage = () => {
+const EstoquePage = () => {
   const { logout } = useAuth();
-  const [atividades, setAtividades] = useState([]);
-  const [nomeAtividade, setNomeAtividade] = useState('');
-  const [periodo, setPeriodo] = useState('manha');
-  const [ativa, setAtiva] = useState(true);
+  const [estoque, setEstoque] = useState([]);
+  const [item, setItem] = useState('');
+  const [variacao, setVariacao] = useState('');
+  const [quantidade, setQuantidade] = useState('');
+  const [preco, setPreco] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(''); // 'success' or 'error'
 
@@ -21,52 +22,54 @@ const AtividadesPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
 
-  const fetchAtividades = useCallback(async (page = currentPage, pageSize = itemsPerPage) => {
+  const fetchEstoque = useCallback(async (page = currentPage, pageSize = itemsPerPage) => {
     try {
       // Adiciona parâmetros de paginação na requisição
-      const response = await api.get(`/atividades/?page=${page}&page_size=${pageSize}`);
-      setAtividades(response.data.results);
+      const response = await api.get(`/estoque/?page=${page}&page_size=${pageSize}`);
+      setEstoque(response.data.results);
       setTotalItems(response.data.count);
       setTotalPages(Math.ceil(response.data.count / pageSize));
       setMessage('');
       setMessageType('');
     } catch (error) {
-      console.error("Erro ao buscar atividades:", error);
+      console.error("Erro ao buscar estoque:", error);
       if (error.response && error.response.status === 401) {
         logout(); // Token expirado ou inválido
       } else {
-        setMessage('Erro ao buscar atividades. Verifique o console.');
+        setMessage('Erro ao buscar estoque. Verifique o console.');
         setMessageType('error');
       }
     }
   }, [currentPage, itemsPerPage, logout]); // Dependências para useCallback
 
   useEffect(() => {
-    fetchAtividades(currentPage, itemsPerPage);
-  }, [currentPage, itemsPerPage, fetchAtividades]); // Redraw on page/itemsPerPage change
+    fetchEstoque(currentPage, itemsPerPage);
+  }, [currentPage, itemsPerPage, fetchEstoque]); // Redraw on page/itemsPerPage change
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
     setMessageType('');
     try {
-      await api.post('/atividades/', {
-        nome_atividade: nomeAtividade,
-        periodo,
-        ativa,
+      await api.post('/estoque/', {
+        item,
+        variacao,
+        quantidade: parseInt(quantidade),
+        preco: parseFloat(preco),
       });
-      setNomeAtividade('');
-      setPeriodo('manha');
-      setAtiva(true);
-      setMessage('Atividade adicionada com sucesso!');
+      setItem('');
+      setVariacao('');
+      setQuantidade('');
+      setPreco('');
+      setMessage('Item adicionado com sucesso!');
       setMessageType('success');
-      fetchAtividades(currentPage, itemsPerPage); // Recarrega a lista de atividades atual
+      fetchEstoque(currentPage, itemsPerPage); // Recarrega a lista de estoque atual
     } catch (error) {
-      console.error("Erro ao adicionar atividade:", error);
+      console.error("Erro ao adicionar item:", error);
       if (error.response && error.response.status === 401) {
         logout();
       } else {
-        setMessage('Erro ao adicionar atividade. Verifique o console.');
+        setMessage('Erro ao adicionar item. Verifique o console.');
         setMessageType('error');
       }
     }
@@ -79,71 +82,63 @@ const AtividadesPage = () => {
   };
 
   return (
-    <PageLayout title="Gerenciador de Atividades" backTo="/rpd"> {/* backTo agora aponta para /rpd */}
+    <PageLayout title="Controle de Estoque" backTo="/gestao">
       <div className="dashboard-grid">
         <Card className="dashboard-card">
           <div className="card-header">
-            <h3>Adicionar Nova Atividade</h3>
+            <h3>Adicionar/Atualizar Item</h3>
             {message && <p className={`message-${messageType}`}>{message}</p>}
           </div>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="nomeAtividade">Nome da Atividade:</label>
-              <Input
-                type="text"
-                id="nomeAtividade"
-                value={nomeAtividade}
-                onChange={(e) => setNomeAtividade(e.target.value)}
-                required
-              />
+              <label htmlFor="item">Item:</label>
+              <Input type="text" id="item" value={item} onChange={(e) => setItem(e.target.value)} required />
             </div>
             <div className="form-group">
-              <label htmlFor="periodo">Período:</label>
-              <select id="periodo" value={periodo} onChange={(e) => setPeriodo(e.target.value)}>
-                <option value="manha">Manhã</option>
-                <option value="tarde">Tarde</option>
-                <option value="noite">Noite</option>
-              </select>
+              <label htmlFor="variacao">Variação:</label>
+              <Input type="text" id="variacao" value={variacao} onChange={(e) => setVariacao(e.target.value)} />
             </div>
             <div className="form-group">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={ativa}
-                  onChange={(e) => setAtiva(e.target.checked)}
-                />
-                Ativa
-              </label>
+              <label htmlFor="quantidade">Quantidade:</label>
+              <Input type="number" id="quantidade" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="preco">Preço:</label>
+              <Input type="number" step="0.01" id="preco" value={preco} onChange={(e) => setPreco(e.target.value)} required />
             </div>
             <div className="form-actions" style={{ marginTop: '1rem' }}>
-              <Button type="submit" variant="primary">Salvar Atividade</Button> {/* Usando Button da CDKTECK-UI */}
+              <Button type="submit" variant="primary">Salvar Item</Button> {/* Usando Button da CDKTECK-UI */}
             </div>
           </form>
         </Card>
 
         <Card className="dashboard-card">
           <div className="card-header">
-            <h3>Minhas Atividades</h3>
+            <h3>Estoque Atual</h3>
           </div>
-          {atividades.length === 0 ? (
-            <p>Nenhuma atividade cadastrada.</p>
+          {estoque.length === 0 ? (
+            <p>Nenhum item em estoque.</p>
           ) : (
             <>
               <div className="table-responsive">
                 <table className="product-table">
                   <thead>
                     <tr>
-                      <th>Nome</th>
-                      <th>Período</th>
-                      <th>Status</th>
+                      <th>Item</th>
+                      <th>Variação</th>
+                      <th>Quantidade</th>
+                      <th>Preço</th>
+                      <th>Última Atualização</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {atividades.map((atividade) => (
-                      <tr key={atividade.id}>
-                        <td>{atividade.nome_atividade}</td>
-                        <td>{atividade.periodo}</td>
-                        <td>{atividade.ativa ? 'Ativa' : 'Inativa'}</td>
+                    {estoque.map((estoqueItem) => (
+                      <tr key={estoqueItem.id}>
+                        <td>{estoqueItem.item}</td>
+                        <td>{estoqueItem.variacao}</td>
+                        <td>{estoqueItem.quantidade}</td>
+                        <td>R$ {parseFloat(estoqueItem.preco).toFixed(2)}</td>
+                        <td>{new Date(estoqueItem.ultima_atualizacao).toLocaleString()}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -163,4 +158,4 @@ const AtividadesPage = () => {
   );
 };
 
-export default AtividadesPage;
+export default EstoquePage;

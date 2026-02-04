@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import api from '../api';
-import PageLayout from '../components/PageLayout';
+import api from '../../api';
+import PageLayout from '../../components/PageLayout';
 import { Card, Input, Button } from '@cidqueiroz/cdkteck-ui'; // Importe os componentes da CDKTECK-UI
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const RPDPage = () => {
   const { logout } = useAuth();

@@ -15,7 +15,9 @@ const DashboardPage = () => {
           <h3>Controle de Estoque</h3>
           <p>Gerencie seus produtos e inventário.</p>
         </div>
-        <Link to="/gestao/estoque" className="card-action-btn">Acessar Estoque</Link>
+        <Link to="/gestao/estoque">
+          <Button variant="link" className="card-action-btn">Acessar Estoque</Button>
+        </Link>
       </Card>
 
       <Card className="dashboard-card">
@@ -23,7 +25,19 @@ const DashboardPage = () => {
           <h3>Registrar Venda</h3>
           <p>Registre suas vendas de forma rápida e fácil.</p>
         </div>
-        <Link to="/gestao/vendas/registrar" className="card-action-btn">Nova Venda</Link>
+        <Link to="/gestao/vendas/registrar">
+          <Button variant="link" className="card-action-btn">Nova Venda</Button>
+        </Link>
+      </Card>
+
+      <Card className="dashboard-card">
+        <div className="card-header">
+          <h3>Finanças & IA</h3>
+          <p>Análise financeira e insights com IA.</p>
+        </div>
+        <Link to="/financeiro">
+          <Button variant="link" className="card-action-btn">Acessar Finanças</Button>
+        </Link>
       </Card>
     </>
   );
@@ -35,7 +49,9 @@ const DashboardPage = () => {
           <h3>Gerenciar Atividades</h3>
           <p>Organize suas tarefas e projetos.</p>
         </div>
-        <Link to="/rpd/atividades" className="card-action-btn">Minhas Atividades</Link>
+        <Link to="/rpd/atividades">
+          <Button variant="link" className="card-action-btn">Minhas Atividades</Button>
+        </Link>
       </Card>
 
       <Card className="dashboard-card">
@@ -43,31 +59,9 @@ const DashboardPage = () => {
           <h3>Diário de Bordo</h3>
           <p>Registre seus pensamentos e experiências diárias.</p>
         </div>
-        <Link to="/rpd/diario_bordo" className="card-action-btn">Abrir Diário</Link>
-      </Card>
-
-      <Card className="dashboard-card">
-        <div className="card-header">
-          <h3>Registro de Pensamentos Disfuncionais (RPD)</h3>
-          <p>Identifique e reestruture pensamentos negativos.</p>
-        </div>
-        <Link to="/rpd/rpd" className="card-action-btn">Iniciar RPD</Link>
-      </Card>
-
-      <Card className="dashboard-card">
-        <div className="card-header">
-          <h3>Cursor Tracker</h3>
-          <p>Acompanhe o andamento do curso.</p>
-        </div>
-        <Link to="/rpd/cursos" className="card-action-btn">Ver acompanhamento</Link>
-      </Card>
-
-      <Card className="dashboard-card">
-        <div className="card-header">
-          <h3>Log POD Diário</h3>
-          <p>Acompanhe seu progresso diário.</p>
-        </div>
-        <Link to="/rpd/log_pod_diario" className="card-action-btn">Ver Log</Link>
+        <Link to="/rpd/diario_bordo">
+          <Button variant="link" className="card-action-btn">Abrir Diário</Button>
+        </Link>
       </Card>
 
       <Card className="dashboard-card">
@@ -75,8 +69,52 @@ const DashboardPage = () => {
           <h3>War Room</h3>
           <p>Visualize e analise os dados de forma integrada.</p>
         </div>
-        <Link to="/war-room" className="card-action-btn">Entrar na Sala</Link>
+        <Link to="/rpd/war-room">
+          <Button variant="link" className="card-action-btn">Entrar na Sala</Button>
+        </Link>
       </Card>
+      
+      <Card className="dashboard-card">
+
+        <div className="card-header">
+
+          <h3>Registro de Pensamentos Disfuncionais (RPD)</h3>
+          <p>Identifique e reestruture pensamentos negativos.</p>
+
+        </div>
+
+        <Link to="/rpd/rpd" variant="link" className="card-action-btn">Iniciar RPD</Link>
+        
+      </Card>
+
+      <Card className="dashboard-card">
+
+        <div className="card-header">
+
+          <h3>Cursor Tracker</h3>
+
+          <p>Acompanhe o andamento do curso.</p>
+
+        </div>
+
+        <Link to="/rpd/cursos" variant="link" className="card-action-btn">Ver acompanhamento</Link>
+
+      </Card>
+
+      <Card className="dashboard-card">
+
+        <div className="card-header">
+
+          <h3>Log POD Diário</h3>
+
+          <p>Acompanhe seu progresso diário.</p>
+
+        </div>
+
+        <Link to="/rpd/log_pod_diario" className="card-action-btn">Ver Log</Link>
+
+      </Card>
+
     </>
   );
 
