@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, Send } from 'lucide-react';
+import api from '../../../../api';
 
 interface Message {
   id: string;
@@ -17,7 +18,11 @@ const initialMessages: Message[] = [
   },
 ];
 
-export const ChatFinanceiro = () => {
+interface ChatFinanceiroProps {
+  onNewTransaction: () => void;
+}
+
+export const ChatFinanceiro: React.FC<ChatFinanceiroProps> = ({ onNewTransaction }) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -42,20 +47,41 @@ export const ChatFinanceiro = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue;
     setInputValue('');
     setIsTyping(true);
 
-    // Simular resposta do assistente
-    setTimeout(() => {
+    try {
+      const response = await api.post(
+        'finance-chat/',
+        { question: currentInput }
+      );
+
+      // Assuming the backend might tell us if a transaction was logged.
+      // The AI response parsing is on the backend, so we check if the parent needs a refresh.
+      if (response.data.intent === 'log_transaction') {
+        onNewTransaction();
+      }
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: 'Entendi! Registrei seu gasto. Posso ajudar com mais alguma coisa?',
+        content: response.data.text_answer,
         role: 'assistant',
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Error fetching AI response:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: 'Desculpe, não consegui processar sua solicitação no momento. Verifique a conexão com o servidor.',
+        role: 'assistant',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -92,6 +118,17 @@ export const ChatFinanceiro = () => {
             </div>
           </div>
         ))}
+        {isTyping && (
+          <div className="finance-message finance-message--assistant">
+            <div className="finance-message__content">
+              <div className="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 

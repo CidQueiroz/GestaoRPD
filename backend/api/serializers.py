@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Usuario, Estoque, Venda, Atividade, DiarioBordo, RPD, LogPODDiario, Course, Lesson, WarRoomLog, DailyCourseActivity # Import Course and Lesson and DailyCourseActivity
+from rest_framework.validators import UniqueTogetherValidator
+from rest_framework.validators import UniqueTogetherValidator
+from .models import (
+    Usuario, Estoque, Venda, Atividade, DiarioBordo, RPD, 
+    LogPODDiario, Course, Lesson, WarRoomLog, DailyCourseActivity,
+    Transaction, Goal
+)
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -56,6 +62,7 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     lessons = LessonSerializer(many=True, required=False)
+    usuario = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Course
@@ -64,7 +71,14 @@ class CourseSerializer(serializers.ModelSerializer):
             'status', 'priority', 'link', 'data_inicio', 'data_conclusao_prevista',
             'data_conclusao_real', 'data_criacao', 'ultima_atualizacao', 'lessons'
         ]
-        read_only_fields = ['usuario', 'data_criacao', 'ultima_atualizacao']
+        read_only_fields = ['data_criacao', 'ultima_atualizacao']
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Course.objects.all(),
+                fields=['usuario', 'nome'],
+                message="Você já possui um curso com este nome."
+            )
+        ]
 
 
 class WarRoomLogSerializer(serializers.ModelSerializer):
@@ -79,3 +93,16 @@ class DailyCourseActivitySerializer(serializers.ModelSerializer):
         model = DailyCourseActivity
         fields = '__all__'
         read_only_fields = ['data_registro']
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = '__all__'
+        read_only_fields = ['usuario']
+
+class GoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goal
+        fields = '__all__'
+        read_only_fields = ['usuario']

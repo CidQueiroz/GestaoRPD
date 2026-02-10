@@ -3,54 +3,29 @@ import { Target, Sparkles } from 'lucide-react';
 
 interface Meta {
   id: number;
-  nome: string;
-  valorAtual: number;
-  valorMeta: number;
-  diasRestantes: number;
-  cor: string;
-  progresso: number;
-  alcancada?: boolean;
+  name: string;
+  current_amount: number;
+  target_amount: number;
+  target_date: string;
 }
 
-const metasData: Meta[] = [
-  {
-    id: 1,
-    nome: 'Reserva de Emergência',
-    valorAtual: 6500.0,
-    valorMeta: 10000.0,
-    diasRestantes: 243,
-    cor: '#10b981',
-    progresso: 65,
-  },
-  {
-    id: 2,
-    nome: 'Viagem de Férias',
-    valorAtual: 2200.0,
-    valorMeta: 5000.0,
-    diasRestantes: 180,
-    cor: '#3b82f6',
-    progresso: 44,
-  },
-  {
-    id: 3,
-    nome: 'Novo Notebook',
-    valorAtual: 4000.0,
-    valorMeta: 4000.0,
-    diasRestantes: 0,
-    cor: '#8b5cf6',
-    progresso: 100,
-    alcancada: true,
-  },
-];
+interface MetasFinanceiroProps {
+  goals: Meta[];
+}
 
-export const MetasFinanceiro = () => {
-  const progressoGeral = 67;
-  const totalGuardado = 12700;
-  const totalMeta = 19000;
+export const MetasFinanceiro: React.FC<MetasFinanceiroProps> = ({ goals }) => {
+  const totalGuardado = goals.reduce((acc, goal) => acc + Number(goal.current_amount), 0);
+  const totalMeta = goals.reduce((acc, goal) => acc + Number(goal.target_amount), 0);
+  const progressoGeral = totalMeta > 0 ? Math.round((totalGuardado / totalMeta) * 100) : 0;
+
+  const getDaysRemaining = (targetDate: string) => {
+    if (!targetDate) return 0;
+    const diff = new Date(targetDate).getTime() - new Date().getTime();
+    return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+  };
 
   return (
     <div className="finance-metas-container contexto-gestao">
-      {/* Header */}
       <div className="finance-section-header">
         <div className="finance-section-header-info">
           <h2 className="finance-section-title">Suas Metas</h2>
@@ -61,7 +36,6 @@ export const MetasFinanceiro = () => {
         <button className="card-action-btn">+ Nova Meta</button>
       </div>
 
-      {/* Progresso Geral */}
       <div className="finance-progress-card">
         <div className="finance-progress-header">
           <div className="finance-progress-title-group">
@@ -71,8 +45,8 @@ export const MetasFinanceiro = () => {
           <span className="finance-progress-percentage">{progressoGeral}%</span>
         </div>
         <p className="finance-progress-description">
-          R$ {totalGuardado.toLocaleString('pt-BR')} de R${' '}
-          {totalMeta.toLocaleString('pt-BR')} guardados
+          R$ {totalGuardado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} de R${' '}
+          {totalMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} guardados
         </p>
         <div className="finance-progress-bar">
           <div
@@ -82,56 +56,61 @@ export const MetasFinanceiro = () => {
         </div>
       </div>
 
-      {/* Grid de Metas */}
       <div className="dashboard-grid">
-        {metasData.map((meta) => (
-          <div key={meta.id} className="dashboard-card finance-meta-card">
-            <div className="finance-meta-header">
-              <div className="finance-meta-info">
-                <h3 className="finance-meta-name">{meta.nome}</h3>
-                <span
-                  className={`finance-meta-badge ${meta.alcancada ? 'finance-meta-badge--success' : 'finance-meta-badge--pending'}`}
-                >
-                  {meta.alcancada
-                    ? '✓ Alcançada! 🎉'
-                    : `${meta.diasRestantes} dias`}
-                </span>
-              </div>
-              <p className="finance-meta-remaining">
-                Faltam R${' '}
-                {(meta.valorMeta - meta.valorAtual)
-                  .toFixed(2)
-                  .replace('.', ',')}
-              </p>
-            </div>
+        {goals.length > 0 ? goals.map((meta) => {
+          const progresso = meta.target_amount > 0 ? Math.round((Number(meta.current_amount) / Number(meta.target_amount)) * 100) : 100;
+          const isAlcancada = progresso >= 100;
+          const diasRestantes = getDaysRemaining(meta.target_date);
+          const cor = isAlcancada ? '#10b981' : '#3b82f6';
 
-            <div className="finance-meta-progress">
-              <div className="finance-meta-progress-header">
-                <span className="finance-meta-progress-label">Progresso</span>
-                <span
-                  className="finance-meta-progress-value"
-                  style={{ color: meta.cor }}
-                >
-                  {meta.progresso}%
-                </span>
+          return (
+            <div key={meta.id} className="dashboard-card finance-meta-card">
+              <div className="finance-meta-header">
+                <div className="finance-meta-info">
+                  <h3 className="finance-meta-name">{meta.name}</h3>
+                  <span
+                    className={`finance-meta-badge ${isAlcancada ? 'finance-meta-badge--success' : 'finance-meta-badge--pending'}`}
+                  >
+                    {isAlcancada
+                      ? '✓ Alcançada! 🎉'
+                      : `${diasRestantes} dias`}
+                  </span>
+                </div>
+                <p className="finance-meta-remaining">
+                  Faltam R${' '}
+                  {(Number(meta.target_amount) - Number(meta.current_amount))
+                    .toFixed(2)
+                    .replace('.', ',')}
+                </p>
               </div>
-              <div className="finance-progress-bar">
-                <div
-                  className="finance-progress-bar-fill"
-                  style={{ width: `${meta.progresso}%`, background: meta.cor }}
-                />
-              </div>
-            </div>
 
-            <div className="finance-meta-values">
-              <span>R$ {meta.valorAtual.toFixed(2).replace('.', ',')}</span>
-              <span>R$ {meta.valorMeta.toFixed(2).replace('.', ',')}</span>
+              <div className="finance-meta-progress">
+                <div className="finance-meta-progress-header">
+                  <span className="finance-meta-progress-label">Progresso</span>
+                  <span
+                    className="finance-meta-progress-value"
+                    style={{ color: cor }}
+                  >
+                    {progresso}%
+                  </span>
+                </div>
+                <div className="finance-progress-bar">
+                  <div
+                    className="finance-progress-bar-fill"
+                    style={{ width: `${progresso}%`, background: cor }}
+                  />
+                </div>
+              </div>
+
+              <div className="finance-meta-values">
+                <span>R$ {Number(meta.current_amount).toFixed(2).replace('.', ',')}</span>
+                <span>R$ {Number(meta.target_amount).toFixed(2).replace('.', ',')}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        }) : <p>Nenhuma meta cadastrada ainda.</p>}
       </div>
 
-      {/* Dica do Dia */}
       <div className="finance-tip-card">
         <div className="finance-tip-header">
           <Sparkles size={20} className="finance-icon-primary" />

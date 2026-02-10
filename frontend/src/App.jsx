@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import { useTheme } from '@cidqueiroz/cdkteck-ui';
 
 // Import Global Styles
 import '@cidqueiroz/cdkteck-ui/global.css';
@@ -31,18 +32,57 @@ const PrivateRoute = ({ children }) => {
   return user ? children : <Navigate to="/login" />;
 };
 
-function App() {
-  const location = useLocation(); 
-  const [isContactModalOpen, setContactModalOpen] = useState(false);
+  function App() {
 
-  useEffect(() => {
-    document.body.classList.add('logged-in');
-    document.body.setAttribute('data-theme', 'light'); // Set default theme to light
-    return () => {
-        document.body.classList.remove('logged-in');
-        document.body.removeAttribute('data-theme');
+    const location = useLocation();
+
+    const [isContactModalOpen, setContactModalOpen] = useState(false);
+
+    const { theme, toggleTheme } = useTheme();
+
+  
+
+    useEffect(() => {
+
+      // On initial load, sync the theme with localStorage
+
+      const savedTheme = localStorage.getItem('theme');
+
+      if (savedTheme && savedTheme !== theme) {
+
+        toggleTheme();
+
+      }
+
+    }, []); // Runs only once on mount
+
+  
+
+    const handleThemeToggle = () => {
+
+      // Determine the next theme and save it to localStorage before toggling
+
+      const nextTheme = theme === 'light' ? 'dark' : 'light';
+
+      localStorage.setItem('theme', nextTheme);
+
+      toggleTheme();
+
     };
-  }, []);
+
+  
+
+    useEffect(() => {
+
+      document.body.classList.add('logged-in');
+
+      return () => {
+
+        document.body.classList.remove('logged-in');
+
+      };
+
+    }, []);
 
   const ReactRouterLink = (props) => (
     <Link {...props} />
@@ -55,6 +95,7 @@ function App() {
       <Header 
         LinkComponent={ReactRouterLink}
         usePathname={() => location.pathname}
+        onThemeToggle={handleThemeToggle}
       />
       
       <main className="flex-grow">

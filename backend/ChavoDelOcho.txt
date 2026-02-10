@@ -1,0 +1,40 @@
+CHAVES API GEMINI
+"cydy.potter@gmail.com": "AIzaSyAMm4yfuloFUErNTK8J1f5mgjvG90gwGzA",-----
+"cydy.potter@gmail.com": "AIzaSyBWRE04BBTX_EmsU8URKIkA471i2sCBthQ",-----
+"cydy.queiroz@gmail.com": "AIzaSyDQcgEQ-BwS16wELS0jx8I8FLRQ5pbb9Bk",-----
+"cdkteck@gmail.com": "AIzaSyDdLGIHCvWNQVo0ENZvDJq42M7kZSa8Xzs",-----
+"cidirclay.queiroz.assistente@gmail.com": "AIzaSyCIxaNSr_tLnsmQ5QEUMkRJ3bNQeq1J42E",-----
+"cidifood1@gmail.com": "AIzaSyAVQ5Vhnrz1jV4UE9jO9SCCXOXMhgBgIQw",-----
+"cidifood2@gmail.com": "AIzaSyDV5XpGRmdaKygHa9q1EQYI9ahJk3F4cL8",-----
+"cidifood2@gmail.com": "AIzaSyAEyHHyA-VwuzvtjsH-g8u2PEP6jk7iBpY",-----
+"cidifood3@gmail.com": "AIzaSyDzjGxeEqm1oh1urWIVNwor3S22FbUlYIE",
+"cidifood4@gmail.com": "AIzaSyAFmekZXpfuHGb3CQ1jaKNLt9znz0EulUg"----
+
+# --- Minhas Chaves do Gemini ---
+export GEMINI_API_KEY_CONTA0="AIzaSyAMm4yfuloFUErNTK8J1f5mgjvG90gwGzA"
+export GEMINI_API_KEY_CONTA1="AIzaSyBWRE04BBTX_EmsU8URKIkA471i2sCBthQ"
+export GEMINI_API_KEY_CONTA2="AIzaSyDQcgEQ-BwS16wELS0jx8I8FLRQ5pbb9Bk"
+export GEMINI_API_KEY_CONTA3="AIzaSyDdLGIHCvWNQVo0ENZvDJq42M7kZSa8Xzs"
+export GEMINI_API_KEY_CONTA4="AIzaSyCIxaNSr_tLnsmQ5QEUMkRJ3bNQeq1J42E"
+export GEMINI_API_KEY_CONTA5="AIzaSyAVQ5Vhnrz1jV4UE9jO9SCCXOXMhgBgIQw"
+export GEMINI_API_KEY_CONTA6="AIzaSyDV5XpGRmdaKygHa9q1EQYI9ahJk3F4cL8"
+export GEMINI_API_KEY_CONTA7="AIzaSyAEyHHyA-VwuzvtjsH-g8u2PEP6jk7iBpY"
+export GEMINI_API_KEY_CONTA8="AIzaSyDzjGxeEqm1oh1urWIVNwor3S22FbUlYIE"
+export GEMINI_API_KEY_CONTA9="AIzaSyAFmekZXpfuHGb3CQ1jaKNLt9znz0EulUg"
+
+
+# --- Apelidos para trocar de conta ---
+alias gemini0="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA0 && echo '✅ Usando a Chave de API 0'"
+alias gemini1="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA1 && echo '✅ Usando a Chave de API 1'"
+alias gemini2="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA2 && echo '✅ Usando a Chave de API 2'"
+alias gemini3="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA3 && echo '✅ Usando a Chave de API 3'"
+alias gemini4="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA4 && echo '✅ Usando a Chave de API 4'"
+alias gemini5="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA5 && echo '✅ Usando a Chave de API 5'"
+alias gemini6="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA6 && echo '✅ Usando a Chave de API 6'"
+alias gemini7="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA7 && echo '✅ Usando a Chave de API 7'"
+alias gemini8="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA8 && echo '✅ Usando a Chave de API 8'"
+alias gemini9="export GEMINI_API_KEY=$GEMINI_API_KEY_CONTA9 && echo '✅ Usando a Chave de API 9'"
+
+
+# Define a primeira conta como padrão ao abrir o terminal
+gemini1

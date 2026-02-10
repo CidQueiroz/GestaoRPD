@@ -1,14 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ChatFinanceiro } from './components/ChatFinanceiro';
 import { MetasFinanceiro } from './components/MetasFinanceiro';
 import { RelatoriosFinanceiro } from './components/RelatoriosFinanceiro';
 import { FinanceiroRightSidebar } from './components/FinanceiroRightSidebar';
-import { MessageCircle, Target, BarChart3, Settings, Wallet } from 'lucide-react';
+import { MessageCircle, Target, BarChart3, Wallet } from 'lucide-react';
+import api from '../../../api';
+
+interface Transaction {
+  id: number;
+  description: string;
+  category: string;
+  amount: number;
+  transaction_type: 'receita' | 'despesa';
+  date: string;
+}
+
+interface Goal {
+  id: number;
+  name: string;
+  current_amount: number;
+  target_amount: number;
+  target_date: string;
+}
 
 type TabType = 'chat' | 'metas' | 'relatorios';
 
 export const FinanceiroApp = () => {
   const [activeTab, setActiveTab] = useState<TabType>('chat');
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [transactionsRes, goalsRes] = await Promise.all([
+        api.get('transactions/'),
+        api.get('goals/'),
+      ]);
+      setTransactions(transactionsRes.data.results || []);
+      setGoals(goalsRes.data.results || []);
+      setError(null);
+    } catch (err) {
+      setError('Não foi possível carregar os dados financeiros.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const menuItems = [
     { id: 'chat' as TabType, label: 'Chat', icon: MessageCircle },
@@ -17,15 +61,18 @@ export const FinanceiroApp = () => {
   ];
 
   const renderContent = () => {
+    if (loading) return <div>Carregando...</div>;
+    if (error) return <div className="message-error">{error}</div>;
+
     switch (activeTab) {
       case 'chat':
-        return <ChatFinanceiro />;
+        return <ChatFinanceiro onNewTransaction={fetchData} />;
       case 'metas':
-        return <MetasFinanceiro />;
+        return <MetasFinanceiro goals={goals} />;
       case 'relatorios':
-        return <RelatoriosFinanceiro />;
+        return <RelatoriosFinanceiro transactions={transactions} />;
       default:
-        return <ChatFinanceiro />;
+        return <ChatFinanceiro onNewTransaction={fetchData} />;
     }
   };
 
@@ -71,7 +118,9 @@ export const FinanceiroApp = () => {
       {/* Main Content */}
       <main className="finance-main">
         <div className="finance-content">{renderContent()}</div>
-        {activeTab === 'chat' && <FinanceiroRightSidebar />}
+        {activeTab === 'chat' && (
+          <FinanceiroRightSidebar transactions={transactions} loading={loading} />
+        )}
       </main>
     </div>
   );

@@ -11,116 +11,24 @@
 │   │   │       ├── migrate_data.py
 │   │   │       ├── popular_banco.py
 │   │   │       ├── populate_courses.py
-│   │   │       ├── __pycache__
-│   │   │       │   ├── __init__.cpython-311.pyc
-│   │   │       │   ├── __init__.cpython-39.pyc
-│   │   │       │   ├── migrate_data.cpython-313.pyc
-│   │   │       │   ├── popular_banco.cpython-39.pyc
-│   │   │       │   ├── populate_courses.cpython-311.pyc
-│   │   │       │   ├── populate_courses.cpython-39.pyc
-│   │   │       │   └── script_shell.cpython-39.pyc
 │   │   │       └── script_shell.py
 │   │   ├── migrations
 │   │   │   ├── 0001_initial.py
-│   │   │   ├── 0002_estoque.py
-│   │   │   ├── 0003_venda.py
-│   │   │   ├── 0004_atividade.py
-│   │   │   ├── 0005_diariobordo.py
-│   │   │   ├── 0006_rpd.py
-│   │   │   ├── 0007_logpoddiario.py
-│   │   │   ├── 0008_empresa_estoque_empresa_venda_empresa.py
-│   │   │   ├── 0009_course_session.py
-│   │   │   ├── 0010_lesson_delete_session.py
-│   │   │   ├── 0011_alter_course_options_course_link_course_priority.py
-│   │   │   ├── 0012_alter_course_priority.py
-│   │   │   ├── 0013_course_quantidade_horas.py
-│   │   │   ├── __init__.py
-│   │   │   └── __pycache__
-│   │   │       ├── 0001_initial.cpython-311.pyc
-│   │   │       ├── 0001_initial.cpython-313.pyc
-│   │   │       ├── 0001_initial.cpython-39.pyc
-│   │   │       ├── 0002_estoque.cpython-311.pyc
-│   │   │       ├── 0002_estoque.cpython-313.pyc
-│   │   │       ├── 0002_estoque.cpython-39.pyc
-│   │   │       ├── 0003_venda.cpython-311.pyc
-│   │   │       ├── 0003_venda.cpython-313.pyc
-│   │   │       ├── 0003_venda.cpython-39.pyc
-│   │   │       ├── 0004_atividade.cpython-311.pyc
-│   │   │       ├── 0004_atividade.cpython-313.pyc
-│   │   │       ├── 0004_atividade.cpython-39.pyc
-│   │   │       ├── 0005_diariobordo.cpython-311.pyc
-│   │   │       ├── 0005_diariobordo.cpython-313.pyc
-│   │   │       ├── 0005_diariobordo.cpython-39.pyc
-│   │   │       ├── 0006_rpd.cpython-311.pyc
-│   │   │       ├── 0006_rpd.cpython-313.pyc
-│   │   │       ├── 0006_rpd.cpython-39.pyc
-│   │   │       ├── 0007_logpoddiario.cpython-311.pyc
-│   │   │       ├── 0007_logpoddiario.cpython-313.pyc
-│   │   │       ├── 0007_logpoddiario.cpython-39.pyc
-│   │   │       ├── 0008_empresa_estoque_empresa_venda_empresa.cpython-311.pyc
-│   │   │       ├── 0008_empresa_estoque_empresa_venda_empresa.cpython-39.pyc
-│   │   │       ├── 0009_course_session.cpython-311.pyc
-│   │   │       ├── 0009_course_session.cpython-39.pyc
-│   │   │       ├── 0010_lesson_delete_session.cpython-311.pyc
-│   │   │       ├── 0010_lesson_delete_session.cpython-39.pyc
-│   │   │       ├── 0011_alter_course_options_course_link_course_priority.cpython-311.pyc
-│   │   │       ├── 0011_alter_course_options_course_link_course_priority.cpython-39.pyc
-│   │   │       ├── 0012_alter_course_priority.cpython-311.pyc
-│   │   │       ├── 0012_alter_course_priority.cpython-39.pyc
-│   │   │       ├── 0013_course_quantidade_horas.cpython-311.pyc
-│   │   │       ├── __init__.cpython-311.pyc
-│   │   │       ├── __init__.cpython-313.pyc
-│   │   │       └── __init__.cpython-39.pyc
+│   │   │   ├── 0002_goal_transaction_delete_dummytestmodel.py
+│   │   │   └── __init__.py
 │   │   ├── models.py
 │   │   ├── pagination.py
-│   │   ├── __pycache__
-│   │   │   ├── admin.cpython-311.pyc
-│   │   │   ├── admin.cpython-313.pyc
-│   │   │   ├── admin.cpython-39.pyc
-│   │   │   ├── apps.cpython-311.pyc
-│   │   │   ├── apps.cpython-313.pyc
-│   │   │   ├── apps.cpython-39.pyc
-│   │   │   ├── authentication.cpython-311.pyc
-│   │   │   ├── authentication.cpython-39.pyc
-│   │   │   ├── __init__.cpython-311.pyc
-│   │   │   ├── __init__.cpython-313.pyc
-│   │   │   ├── __init__.cpython-39.pyc
-│   │   │   ├── models.cpython-311.pyc
-│   │   │   ├── models.cpython-313.pyc
-│   │   │   ├── models.cpython-39.pyc
-│   │   │   ├── pagination.cpython-311.pyc
-│   │   │   ├── pagination.cpython-39.pyc
-│   │   │   ├── serializers.cpython-311.pyc
-│   │   │   ├── serializers.cpython-313.pyc
-│   │   │   ├── serializers.cpython-39.pyc
-│   │   │   ├── urls.cpython-311.pyc
-│   │   │   ├── urls.cpython-313.pyc
-│   │   │   ├── urls.cpython-39.pyc
-│   │   │   ├── views.cpython-311.pyc
-│   │   │   ├── views.cpython-313.pyc
-│   │   │   └── views.cpython-39.pyc
+│   │   ├── permissions.py
 │   │   ├── serializers.py
+│   │   ├── tests_course_lesson.py
 │   │   ├── tests.py
 │   │   ├── urls.py
 │   │   └── views.py
 │   ├── cdkteck-hub-firebase-adminsdk-fbsvc-19bf225f30.json
-│   ├── cdkteck-hub-firebase-adminsdk-fbsvc-19bf225f30.json:Zone.Identifier
+│   ├── ChavoDelOcho.txt
 │   ├── core
 │   │   ├── asgi.py
 │   │   ├── __init__.py
-│   │   ├── __pycache__
-│   │   │   ├── __init__.cpython-311.pyc
-│   │   │   ├── __init__.cpython-313.pyc
-│   │   │   ├── __init__.cpython-39.pyc
-│   │   │   ├── settings.cpython-311.pyc
-│   │   │   ├── settings.cpython-313.pyc
-│   │   │   ├── settings.cpython-39.pyc
-│   │   │   ├── urls.cpython-311.pyc
-│   │   │   ├── urls.cpython-313.pyc
-│   │   │   ├── urls.cpython-39.pyc
-│   │   │   ├── wsgi.cpython-311.pyc
-│   │   │   ├── wsgi.cpython-313.pyc
-│   │   │   └── wsgi.cpython-39.pyc
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   └── wsgi.py
@@ -128,17 +36,7 @@
 │   ├── Dockerfile
 │   ├── .env
 │   ├── manage.py
-│   ├── requirements.txt
-│   └── Wallet_CDKTECKDB
-│       ├── cwallet.sso
-│       ├── ewallet.p12
-│       ├── ewallet.pem
-│       ├── keystore.jks
-│       ├── ojdbc.properties
-│       ├── README
-│       ├── sqlnet.ora
-│       ├── tnsnames.ora
-│       └── truststore.jks
+│   └── requirements.txt
 ├── estrutura_do_projeto.txt
 ├── .firebase
 │   └── hosting.ZGlzdA.cache
@@ -173,21 +71,40 @@
 │   │   ├── context
 │   │   │   ├── AuthContext.jsx
 │   │   │   └── ThemeContext.jsx
+│   │   ├── FinanceiroApp.jsx
 │   │   ├── firebase.js
 │   │   ├── index.jsx
 │   │   ├── pages
-│   │   │   ├── AtividadesPage.jsx
-│   │   │   ├── curso_tracker.jsx
+│   │   │   ├── curso_tracker3.jsx.backup
 │   │   │   ├── DashboardPage.jsx
-│   │   │   ├── DiarioBordoPage.jsx
-│   │   │   ├── EstoquePage.jsx
+│   │   │   ├── FinanceiroPage.jsx
+│   │   │   ├── Gestao
+│   │   │   │   ├── EstoquePage.jsx
+│   │   │   │   ├── Financeiro
+│   │   │   │   │   ├── components
+│   │   │   │   │   │   ├── chat2_financa.png
+│   │   │   │   │   │   ├── chat_financa.png
+│   │   │   │   │   │   ├── ChatFinanceiro.tsx
+│   │   │   │   │   │   ├── FinanceiroRightSidebar.tsx
+│   │   │   │   │   │   ├── meta_financa.png
+│   │   │   │   │   │   ├── MetasFinanceiro.tsx
+│   │   │   │   │   │   ├── relatorio_financa.png
+│   │   │   │   │   │   └── RelatoriosFinanceiro.tsx
+│   │   │   │   │   ├── FinanceiroApp.tsx
+│   │   │   │   │   └── styles
+│   │   │   │   │       ├── financeiro-layout.css
+│   │   │   │   │       └── financeiro-styles.css
+│   │   │   │   └── RegistrarVendaPage.jsx
 │   │   │   ├── LoginPage.jsx
-│   │   │   ├── LogPODDiarioPage.jsx
 │   │   │   ├── Privacidade.jsx
-│   │   │   ├── RegistrarVendaPage.jsx
-│   │   │   ├── RPDPage.jsx
-│   │   │   ├── Termos.jsx
-│   │   │   └── war-room.jsx
+│   │   │   ├── RPD
+│   │   │   │   ├── AtividadesPage.jsx
+│   │   │   │   ├── curso_tracker.jsx
+│   │   │   │   ├── DiarioBordoPage.jsx
+│   │   │   │   ├── LogPODDiarioPage.jsx
+│   │   │   │   ├── RPDPage.jsx
+│   │   │   │   └── war-room.jsx
+│   │   │   └── Termos.jsx
 │   │   └── styles
 │   │       └── style_gestaorpd.css
 │   ├── vite.config.js
@@ -216,4 +133,4 @@
 ├── trello_board.md
 └── tsconfig.json
 
-3648 directories, 10802 files
+26 directories, 107 files

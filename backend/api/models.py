@@ -257,3 +257,35 @@ class WarRoomLog(models.Model):
     def __str__(self):
         return f"War Room Log de {self.usuario.email} em {self.date.strftime('%d/%m/%Y')}"
 
+# --- MODELOS FINANCEIROS ---
+
+class Transaction(models.Model):
+    TRANSACTION_TYPE_CHOICES = (
+        ('receita', 'Receita'),
+        ('despesa', 'Despesa'),
+    )
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='transactions')
+    description = models.CharField(max_length=255)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    transaction_type = models.CharField(max_length=7, choices=TRANSACTION_TYPE_CHOICES)
+    category = models.CharField(max_length=100, blank=True, null=True)
+    date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date']
+
+    def __str__(self):
+        return f"{self.description} - R${self.amount}"
+
+class Goal(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='goals')
+    name = models.CharField(max_length=255)
+    target_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    target_date = models.DateField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+

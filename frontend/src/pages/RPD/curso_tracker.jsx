@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext'; // Import useAuth
 import api from '../../api'; // Import your API client
 
 import PageLayout from '../../components/PageLayout';
-import { Card, Input, Button } from '@cidqueiroz/cdkteck-ui'; // Import CDKTECK-UI components
+import { Card, Input, Button, Modal } from '@cidqueiroz/cdkteck-ui'; // Import CDKTECK-UI components
 
 const CourseTracker = () => {
   const { logout } = useAuth();
@@ -442,26 +442,10 @@ const CourseTracker = () => {
             <p className="header-subtitle">CDK TECK</p>
           </div>
           <div className="header-actions">
-            <Button onClick={() => setShowAddCourseForm(!showAddCourseForm)} variant="primary">
-              <Plus size={18} />
-              {showAddCourseForm ? 'Ocultar' : 'Adicionar Curso'}
-            </Button>
-            <div className="course-tracker__export-container">
-              <Button onClick={() => setShowExportMenu(!showExportMenu)} variant="secondary">
-                <Download size={18} />
-                Exportar
-              </Button>
-              {showExportMenu && (
-                <div className="course-tracker__export-menu">
-                  <button onClick={() => { exportToCSV(); setShowExportMenu(false); }} className="course-tracker__export-item">
-                    📊 Exportar CSV
-                  </button>
-                  <button onClick={() => { exportToJSON(); setShowExportMenu(false); }} className="course-tracker__export-item">
-                    📦 Exportar JSON
-                  </button>
-                </div>
-              )}
-            </div>
+          <Button onClick={() => setShowAddCourseForm(!showAddCourseForm)} variant="primary">
+            <Plus size={18} />
+            {showAddCourseForm ? 'Ocultar' : 'Adicionar Curso'}
+          </Button>
           </div>
         </header>
 
@@ -472,12 +456,46 @@ const CourseTracker = () => {
             <h2>Adicionar Novo Curso</h2>
             
             <form onSubmit={handleAddCourse} className="course-tracker__form">
+
+              <div className="course-tracker__form-group">
+
+                <label htmlFor="newCourseName">Nome do Curso:</label>
+
+                <Input
+                  id="newCourseName"
+                  type="text"
+                  name="nome"
+                  value={newCourseForm.nome}
+                  onChange={(e) => setNewCourseForm({...newCourseForm, nome: e.target.value})}
+                  placeholder="Nome do curso"
+                  required
+                />
+
+              </div>
+
+              <div className="course-tracker__form-group">
+
+                <label htmlFor="newCourseHours">Quantidade de Horas:</label>
+
+                <Input
+                  id="newCourseHours"
+                  type="number"
+                  name="quantidade_horas"
+                  value={newCourseForm.quantidade_horas}
+                  onChange={(e) => setNewCourseForm({...newCourseForm, quantidade_horas: parseInt(e.target.value, 10) || 0})}
+                  min="0"
+                  required
+                />
+
+              </div>
               
               <div className="form-group">
+
                 <label>Status</label>
+
                 <select
-                  value={course.status}
-                  onChange={(e) => handleUpdateCourse(course.id, 'status', e.target.value)}
+                  value={newCourseForm.status}
+                  onChange={(e) => setNewCourseForm({...newCourseForm, status: e.target.value})}
                   className="cdkteck-input"
                   // Removido o estilo inline para melhor compatibilidade com temas
                   >
@@ -486,6 +504,7 @@ const CourseTracker = () => {
                   <option value="Concluído">Concluído</option>
                   <option value="Cancelado">Cancelado</option>
                 </select>
+                
               </div>
 
               <div className="form-group">
@@ -493,8 +512,8 @@ const CourseTracker = () => {
                 <label>Prioridade</label>
                 
                 <select
-                  value={course.priority}
-                  onChange={(e) => handleUpdateCourse(course.id, 'priority', e.target.value)}
+                  value={newCourseForm.priority}
+                  onChange={(e) => setNewCourseForm({...newCourseForm, priority: e.target.value})}
                   className="cdkteck-input"
                   // Removido o estilo inline para melhor compatibilidade com temas
                   >
@@ -545,6 +564,21 @@ const CourseTracker = () => {
                   name="link"
                   value={newCourseForm.link}
                   onChange={(e) => setNewCourseForm({...newCourseForm, link: e.target.value})}
+                />
+
+              </div>
+
+              <div className="course-tracker__form-group">
+
+                <label htmlFor="newCourseDescription">Descrição:</label>
+
+                <textarea
+                  id="newCourseDescription"
+                  name="descricao"
+                  value={newCourseForm.descricao}
+                  onChange={(e) => setNewCourseForm({...newCourseForm, descricao: e.target.value})}
+                  placeholder="Descrição detalhada do curso"
+                  className="cdkteck-textarea"
                 />
 
               </div>
@@ -745,7 +779,7 @@ const CourseTracker = () => {
                             </div>
                             <div className="form-group">
                               <label>Descrição</label>
-                              <p className="cdkteck-input-static">{course.descricao || 'N/A'}</p>
+                              <p className="cdkteck-textarea">{course.descricao || 'N/A'}</p>
                             </div>
                           </>
                         )}
