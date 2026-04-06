@@ -4,6 +4,7 @@
 *.swo
 *.swp
 .firebase/
+/.env
 
 
 # Frontend (React/Vite)
@@ -41,3 +42,4 @@ REMOCOES_PENDENTES.txt
 backend/cdkteck-hub-firebase-adminsdk-fbsvc-19bf225f30.json
 backend/.venv/
 backend/Wallet_CDKTECKDB/
+RPD.csv

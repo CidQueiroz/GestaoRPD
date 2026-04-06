@@ -228,6 +228,17 @@ const CourseTracker = () => {
 
   // --- UI & Helper Functions ---
   const toggleCollapse = (courseId) => {
+    const isCurrentlyCollapsed = collapsedCourses[courseId] !== false;
+
+    // If we are about to expand the course
+    if (isCurrentlyCollapsed) {
+      const course = courses.find(c => c.id === courseId);
+      // And if the lessons for that course haven't been loaded yet
+      if (course && !course.lessons) {
+        fetchLessonsForCourse(courseId);
+      }
+    }
+
     setCollapsedCourses(prev => ({
       ...prev,
       [courseId]: !prev[courseId]

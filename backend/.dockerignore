@@ -1,0 +1,27 @@
+# Git
+.git
+.gitignore
+
+# Virtualenv
+.venv
+venv
+*/.venv
+*/venv
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# IDE
+.idea
+.vscode
+
+# Docker
+Dockerfile
+
+# Wallets and secrets that should not be in the image
+*.pem
+*.json
+.env

@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+
+# Node modules
+node_modules
+
+# Yalc
+.yalc
+yalc.lock
+
+# Build output
+dist
+
+# Env files
+.env
+
+# IDE
+.idea
+.vscode
+
+# Docker
+Dockerfile

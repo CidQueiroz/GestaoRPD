@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: gestaorpd_backend
+    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - NODE_AUTH_TOKEN=${NODE_AUTH_TOKEN}
+    container_name: gestaorpd_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend

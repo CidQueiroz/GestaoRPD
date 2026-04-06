@@ -11,9 +11,9 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    exclude: ['@cidqueiroz/cdkteck-ui']
+    // exclude: ['@cidqueiroz/cdkteck-ui']
   },
   resolve: {
-    preserveSymlinks: true 
+    // preserveSymlinks: true 
   }
 });

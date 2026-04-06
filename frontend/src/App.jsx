@@ -102,8 +102,6 @@ const PrivateRoute = ({ children }) => {
         <Suspense fallback={<div>Carregando página...</div>}>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/privacidade" element={<Privacidade />} />
-            <Route path="/termos" element={<Termos />} />
             <Route path="/" element={<PrivateRoute><Navigate to="/gestao" /></PrivateRoute>} />
             <Route path="/gestao" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
             <Route path="/gestao/estoque" element={<PrivateRoute><EstoquePage /></PrivateRoute>} />

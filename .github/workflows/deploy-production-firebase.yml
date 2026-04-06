@@ -17,12 +17,12 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: 2. Download Build Artifact from Release Workflow
-        uses: dawidd6/action-download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          workflow: release.yml
           name: dist
           path: frontend/dist
-          run_id: ${{ github.event.workflow_run.id }}
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 3. Verify build output
         run: |
