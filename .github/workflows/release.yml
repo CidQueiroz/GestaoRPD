@@ -18,13 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Checkout cdkteck-ui Repository
-        uses: actions/checkout@v4
-        with:
-          repository: CidQueiroz/cdkteck-ui
-          path: cdkteck-ui
-          token: ${{ secrets.GH_PAT }} 
-          
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
