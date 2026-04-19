@@ -7,8 +7,8 @@ on:
 
 jobs:
   deploy:
-    # Removed 'if:' condition as it's no longer triggered by workflow_run
     runs-on: ubuntu-latest
+    environment: Staging
 
     steps:
       - name: Checkout code
