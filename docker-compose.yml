@@ -1,11 +1,10 @@
-version: '3.8'
-
 services:
   backend:
     build:
       context: ./backend
     container_name: gestaorpd_backend
-    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
+    # Em dev usamos runserver, em prod o comando é sobrescrito
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend:/app
     ports:
@@ -14,12 +13,17 @@ services:
       - ./backend/.env
 
   frontend:
-    build:
-      context: ./frontend
-      args:
-        - NODE_AUTH_TOKEN=${NODE_AUTH_TOKEN}
+    image: node:20-slim
     container_name: gestaorpd_frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     ports:
-      - "80:80"
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - NODE_AUTH_TOKEN=${NODE_AUTH_TOKEN}
+    command: sh -c "npm config set //npm.pkg.github.com/:_authToken $${NODE_AUTH_TOKEN} && npm install && npm run dev -- --host"
     depends_on:
       - backend

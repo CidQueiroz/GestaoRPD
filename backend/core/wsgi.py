@@ -8,6 +8,15 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 """
 
 import os
+import sys
+
+# Oracle Compatibility Shim
+try:
+    import oracledb
+    oracledb.version = "8.3.0"
+    sys.modules["cx_Oracle"] = oracledb
+except ImportError:
+    pass
 
 from django.core.wsgi import get_wsgi_application
 

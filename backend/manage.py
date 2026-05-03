@@ -3,6 +3,14 @@
 import os
 import sys
 
+# Oracle Compatibility Shim
+try:
+    import oracledb
+    oracledb.version = "8.3.0"
+    sys.modules["cx_Oracle"] = oracledb
+except ImportError:
+    pass
+
 
 def main():
     """Run administrative tasks."""

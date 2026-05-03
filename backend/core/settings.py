@@ -36,7 +36,7 @@ from firebase_admin import credentials
 # Firebase Admin SDK Initialization
 FIREBASE_SERVICE_ACCOUNT_KEY = os.environ.get(
     'FIREBASE_SERVICE_ACCOUNT_KEY',
-    '/home/cidquei/CDKTECK/GestaoRPD/backend/cdkteck-hub-firebase-adminsdk-fbsvc-19bf225f30.json' # User provided path
+    os.path.join(BASE_DIR, 'cdkteck-hub-firebase-adminsdk-fbsvc-19bf225f30.json')
 )
 
 if os.path.exists(FIREBASE_SERVICE_ACCOUNT_KEY):
@@ -220,3 +220,7 @@ LOGGING = {
         },
     }
 }
+
+# Firebase Auth Fix: Allow popups
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
+
